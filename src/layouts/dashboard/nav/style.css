@@ -1,0 +1,7 @@
+.navTop {
+  background-color: #315796;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 32px 10px;
+}

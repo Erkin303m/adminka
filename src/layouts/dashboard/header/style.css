@@ -1,0 +1,18 @@
+.number {
+  /* font-family: 'Montserrat'; */
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  margin: 0;
+  padding: 0;
+  color: #315796;
+}
+.companyName {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 160%;
+  margin: 0;
+  padding: 0;
+  color: #7b8794;
+}
