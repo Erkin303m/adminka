@@ -46,20 +46,21 @@ export default function Header({ onOpenNav }) {
   return (
     <StyledRoot>
       <StyledToolbar>
-        <IconButton
-          onClick={onOpenNav}
-          sx={{
-            mr: 1,
-            color: 'text.primary',
-            display: { lg: 'none' },
+        <Stack
+          direction="row"
+          alignItems="center"
+          spacing={{
+            xs: 0.5,
+            sm: 1,
           }}
         >
-          <Iconify icon="eva:menu-2-fill" />
-        </IconButton>
-
-        <Searchbar />
+          <AccountPopover />
+          <div>
+            <p className='number'>+998998561222</p>
+            <p className='companyName'> (JSC "Uzbektelekom")</p>
+          </div>
+        </Stack>
         <Box sx={{ flexGrow: 1 }} />
-
         <Stack
           direction="row"
           alignItems="center"
@@ -69,9 +70,8 @@ export default function Header({ onOpenNav }) {
           }}
         >
           <LanguagePopover />
-          <NotificationsPopover />
-          <AccountPopover />
         </Stack>
+
       </StyledToolbar>
     </StyledRoot>
   );

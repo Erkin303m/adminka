@@ -15,6 +15,10 @@ import DashboardAppPage from './pages/DashboardAppPage';
 export default function Router() {
   const routes = useRoutes([
     {
+      path: '/login',
+      element: <LoginPage />,
+    },
+    {
       path: '/dashboard',
       element: <DashboardLayout />,
       children: [
@@ -24,10 +28,6 @@ export default function Router() {
         { path: 'products', element: <ProductsPage /> },
         { path: 'blog', element: <BlogPage /> },
       ],
-    },
-    {
-      path: 'login',
-      element: <LoginPage />,
     },
     {
       element: <SimpleLayout />,
