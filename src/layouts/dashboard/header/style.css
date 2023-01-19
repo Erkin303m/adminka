@@ -16,3 +16,12 @@
   padding: 0;
   color: #7b8794;
 }
+.imgFlag {
+  width: 30px;
+  border-radius: 3px;
+}
+.imgFlag2 {
+  width: 30px;
+  border-radius: 3px;
+  margin-right: 5px;
+}

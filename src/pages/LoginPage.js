@@ -1,17 +1,15 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { styled } from '@mui/material/styles';
-import { Container, Typography, Divider, Stack, Button, TextField, IconButton, InputAdornment, Checkbox } from '@mui/material';
+import { Container, Typography, Stack, TextField, IconButton, InputAdornment } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { LoadingButton } from '@mui/lab';
 import axios from 'axios';
-// import api from '../api';
-import Logo from '../components/logo';
+import swal from 'sweetalert';
 import Iconify from '../components/iconify';
 import useResponsive from '../hooks/useResponsive';
-import "./style.css"
-
-
+import './style.css';
+import IMG from './LOGISTIC.png';
 
 const StyledRoot = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
@@ -43,12 +41,8 @@ export default function LoginPage() {
   const navigation = useNavigate();
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
-
-
   const mdUp = useResponsive('up', 'md');
-
   const [showPassword, setShowPassword] = useState(false);
-
 
   const sendData = async () => {
     await axios
@@ -57,55 +51,51 @@ export default function LoginPage() {
         password,
       })
       .then((ress) => {
-        console.log("success", ress);
-        loginToScreen(ress.data.access)
-        navigation('/dashboard/app')
+        console.log('success', ress);
+        loginToScreen(ress.data.access);
+        navigation('/dashboard/app');
+        localStorage.clear();
+        localStorage.setItem('userData', JSON.stringify(ress.data));
       })
       .catch((err) => {
-        console.log("error", err);
-        navigation('/dashboard/app')
+        console.log('error', err);
+        swal({
+          title: 'Login yoki parol xato!',
+          text: 'Tekshirib qaytadan tering',
+          icon: 'error',
+          dangerMode: true,
+          timer: 2000,
+        });
       });
-
   };
-
-
 
   const loginToScreen = (token) => {
     const config = {
       headers: {
-        'Authorization': `Bearer  + ${token}`
-      }
-    }
-    axios.get(
-      'http://185.217.131.179:8888/company/company/me',
-      config
-    )
+        Authorization: `Bearer  + ${token}`,
+      },
+    };
+    axios
+      .get('http://185.217.131.179:8888/company/company/me', config)
       .then((response) => {
-        console.log(response)
+        console.log(response);
       })
-      .catch(err =>
-        console.log("err:", err))
+      .catch((err) => console.log('err:', err));
   };
 
   return (
     <>
       <Helmet>
-        <title> Login</title>
+        <title> Войти</title>
       </Helmet>
 
       <StyledRoot>
-        <Logo
-          sx={{
-            position: 'fixed',
-            top: { xs: 16, sm: 24, md: 40 },
-            left: { xs: 16, sm: 24, md: 40 },
-          }}
-        />
+        <img src={IMG} alt="" className="img2" />
 
         {mdUp && (
           <StyledSection>
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Hi, Welcome
+              Привет, добро пожаловать
             </Typography>
             <img src="/assets/illustrations/illustration_login.png" alt="login" />
           </StyledSection>
@@ -114,7 +104,7 @@ export default function LoginPage() {
         <Container maxWidth="sm">
           <StyledContent>
             <Typography variant="h4" gutterBottom>
-              Sign in
+              Войти
             </Typography>
 
             <Typography variant="body2" sx={{ mb: 5 }}>
@@ -123,10 +113,10 @@ export default function LoginPage() {
 
             <>
               <Stack spacing={3}>
-                <TextField name="email" label="Email address" onChange={(v) => setLogin(v.target.value)} />
+                <TextField name="email" label="Номер телефона" onChange={(v) => setLogin(v.target.value)} />
                 <TextField
                   name="password"
-                  label="Password"
+                  label="Пароль"
                   onChange={(v) => setPassword(v.target.value)}
                   type={showPassword ? 'text' : 'password'}
                   InputProps={{
@@ -140,8 +130,15 @@ export default function LoginPage() {
                   }}
                 />
               </Stack>
-              <LoadingButton fullWidth size="large" type="submit" variant="contained" onClick={() => sendData()} className='salom' >
-                Login
+              <LoadingButton
+                fullWidth
+                size="large"
+                type="submit"
+                variant="contained"
+                onClick={() => sendData()}
+                className="salom"
+              >
+                Войти
               </LoadingButton>
             </>
           </StyledContent>

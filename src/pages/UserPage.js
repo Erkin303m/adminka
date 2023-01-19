@@ -1,48 +1,38 @@
 import { Helmet } from 'react-helmet-async';
-import { filter } from 'lodash';
+import { filter, get } from 'lodash';
 import { sentenceCase } from 'change-case';
-import { useState } from 'react';
-// @mui
+import { useEffect, useState } from 'react';
 import {
   Card,
   Table,
   Stack,
   Paper,
-  Avatar,
   Button,
-  Popover,
   Checkbox,
   TableRow,
-  MenuItem,
   TableBody,
   TableCell,
   Container,
   Typography,
-  IconButton,
   TableContainer,
-  TablePagination,
 } from '@mui/material';
-// components
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 import Label from '../components/label';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
-// sections
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
-// mock
 import USERLIST from '../_mock/user';
 
-// ----------------------------------------------------------------------
-
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Company', alignRight: false },
-  { id: 'role', label: 'Role', alignRight: false },
-  { id: 'isVerified', label: 'Verified', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
-  { id: '' },
+  { id: 'name', label: 'Имя', alignRight: false },
+  { id: 'company', label: 'Информация о заказе', alignRight: false },
+  { id: 'drop', label: 'Падение места', alignRight: false },
+  { id: 'role', label: 'Метод оплаты', alignRight: false },
+  { id: 'isVerified', label: 'Проверено', alignRight: false },
+  { id: 'status', label: 'Статус', alignRight: false },
 ];
-
-// ----------------------------------------------------------------------
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -75,19 +65,12 @@ function applySortFilter(array, comparator, query) {
 
 export default function UserPage() {
   const [open, setOpen] = useState(null);
-
   const [page, setPage] = useState(0);
-
   const [order, setOrder] = useState('asc');
-
   const [selected, setSelected] = useState([]);
-
   const [orderBy, setOrderBy] = useState('name');
-
   const [filterName, setFilterName] = useState('');
-
   const [rowsPerPage, setRowsPerPage] = useState(5);
-
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
   };
@@ -126,44 +109,72 @@ export default function UserPage() {
     setSelected(newSelected);
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setPage(0);
-    setRowsPerPage(parseInt(event.target.value, 10));
-  };
-
-  const handleFilterByName = (event) => {
-    setPage(0);
-    setFilterName(event.target.value);
-  };
-
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
   const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
 
+  const [mainData, setMainData] = useState([]);
+  const navigation = useNavigate();
+
+  useEffect(() => {
+    sendData();
+  }, []);
+
+  const sendData = async () => {
+    await axios
+      .get(`http://185.217.131.179:8888/api/v1/company/order`)
+      .then((ress) => {
+        console.log('success', ress.data.results);
+        setMainData(get(ress, 'data.results', ''));
+      })
+      .catch((err) => {
+        console.log('error', err);
+      });
+  };
+
+  const delData = async (id) => {
+    await axios
+      .delete(`http://185.217.131.179:8888/api/v1/company/order/${id}`)
+      .then((ress) => {
+        console.log('success del', ress);
+        sendData();
+      })
+      .catch((err) => {
+        console.log('error', err);
+      });
+  };
+
+  const search = (item) => {
+    const a = mainData.filter((s) => {
+      return s.name.toLowerCase().includes(item.toLowerCase());
+    });
+    setMainData(a);
+  };
+
   return (
     <>
       <Helmet>
-        <title> User | Minimal UI </title>
+        <title> Заявка</title>
       </Helmet>
 
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            User
+            Заявка
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-            New User
+          <Button
+            variant="contained"
+            startIcon={<Iconify icon="eva:plus-fill" />}
+            onClick={() => navigation('/dashboard/products')}
+          >
+            Новый Заявки
           </Button>
         </Stack>
 
         <Card>
-          <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+          <input type="text" placeholder="Search" className="input3" onChange={(v) => search(v.target.value)} />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
@@ -178,39 +189,30 @@ export default function UserPage() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name, role, status, company, avatarUrl, isVerified } = row;
-                    const selectedUser = selected.indexOf(name) !== -1;
-
+                  {mainData.map((row, i) => {
                     return (
-                      <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
-                        <TableCell padding="checkbox">
-                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, name)} />
-                        </TableCell>
+                      <TableRow hover key={i} tabIndex={-1} s>
+                        <TableCell padding="checkbox"> </TableCell>
 
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={name} src={avatarUrl} />
                             <Typography variant="subtitle2" noWrap>
-                              {name}
+                              {row.name}
                             </Typography>
                           </Stack>
                         </TableCell>
 
-                        <TableCell align="left">{company}</TableCell>
+                        <TableCell align="center">{row.order_info}</TableCell>
 
-                        <TableCell align="left">{role}</TableCell>
+                        <TableCell align="center">{row.drop_of_place}</TableCell>
+                        <TableCell align="center">{row.paymentMethod}</TableCell>
 
-                        <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
+                        <TableCell align="center">{row.order_owner}</TableCell>
 
-                        <TableCell align="left">
-                          <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
-                        </TableCell>
-
-                        <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
-                            <Iconify icon={'eva:more-vertical-fill'} />
-                          </IconButton>
+                        <TableCell align="center">
+                          <Label color={(row.status === 'sending' && 'success') || 'error'}>
+                            {sentenceCase(row.status)}
+                          </Label>
                         </TableCell>
                       </TableRow>
                     );
@@ -248,47 +250,8 @@ export default function UserPage() {
               </Table>
             </TableContainer>
           </Scrollbar>
-
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={USERLIST.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
         </Card>
       </Container>
-
-      <Popover
-        open={Boolean(open)}
-        anchorEl={open}
-        onClose={handleCloseMenu}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-          sx: {
-            p: 1,
-            width: 140,
-            '& .MuiMenuItem-root': {
-              px: 1,
-              typography: 'body2',
-              borderRadius: 0.75,
-            },
-          },
-        }}
-      >
-        <MenuItem>
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-          Edit
-        </MenuItem>
-
-        <MenuItem sx={{ color: 'error.main' }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-          Delete
-        </MenuItem>
-      </Popover>
     </>
   );
 }

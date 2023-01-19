@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
-import { Box, Stack, AppBar, Toolbar, IconButton } from '@mui/material';
+import { Box, Stack, AppBar, Toolbar } from '@mui/material';
+import { get } from 'lodash';
+
 import { bgBlur } from '../../../utils/cssStyles';
 import AccountPopover from './AccountPopover';
 import LanguagePopover from './LanguagePopover';
-import "./style.css"
-
-// ----------------------------------------------------------------------
+import './style.css';
 
 const NAV_WIDTH = 280;
 
@@ -30,11 +30,11 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   },
 }));
 
-// ----------------------------------------------------------------------
-
 Header.propTypes = {
   onOpenNav: PropTypes.func,
 };
+const cat = JSON.parse(localStorage.getItem('userData'));
+console.log(cat);
 
 export default function Header({ onOpenNav }) {
   return (
@@ -50,8 +50,8 @@ export default function Header({ onOpenNav }) {
         >
           <AccountPopover />
           <div>
-            <p className='number'>+998998561222</p>
-            <p className='companyName'> (JSC "Uzbektelekom")</p>
+            <p className="number">{get(cat, 'data.phone_number', '')}</p>
+            <p className="companyName">{get(cat, 'data.company_name', '')}</p>
           </div>
         </Stack>
         <Box sx={{ flexGrow: 1 }} />
@@ -65,7 +65,6 @@ export default function Header({ onOpenNav }) {
         >
           <LanguagePopover />
         </Stack>
-
       </StyledToolbar>
     </StyledRoot>
   );

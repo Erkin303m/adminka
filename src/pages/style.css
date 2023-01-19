@@ -1,3 +1,46 @@
 .salom {
   margin-top: 50px;
 }
+.img2 {
+  width: 100px;
+  height: 80px;
+}
+.card2 {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+.input2 {
+  padding: 20px;
+  font-size: 15px;
+  border-radius: 10px;
+  outline: 1px;
+  border: 1px solid rgb(141, 141, 141);
+  width: 400px;
+  margin-bottom: 50px;
+}
+.buttonDel {
+  background-color: rgba(240, 248, 255, 0);
+  border: none;
+  padding: 0;
+}
+.input3 {
+  padding: 20px;
+  font-size: 15px;
+  border-radius: 10px;
+  outline: 1px;
+  border: 1px solid rgb(141, 141, 141);
+  width: 400px;
+  margin-bottom: 50px;
+  margin: 10px 0 10px 10px;
+}
+.select-items {
+  position: absolute;
+  background-color: #313131;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
+}

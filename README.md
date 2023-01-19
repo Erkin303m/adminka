@@ -22,6 +22,7 @@
 - [Users](https://minimal-kit-react.vercel.app/dashboard/user)
 - [Product](https://minimal-kit-react.vercel.app/dashboard/products)
 - [Blog](https://minimal-kit-react.vercel.app/dashboard/blog)
+- [Blog2](https://minimal-kit-react.vercel.app/dashboard/blog)
 - [Login](https://minimal-kit-react.vercel.app/login)
 - [Not Found](https://minimal-kit-react.vercel.app/404)
 

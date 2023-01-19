@@ -3,24 +3,18 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { styled, alpha } from '@mui/material/styles';
 import { Box, Link, Drawer, Typography, Avatar, Stack } from '@mui/material';
-import account from '../../../_mock/account';
+import { get } from 'lodash';
 import useResponsive from '../../../hooks/useResponsive';
 import Scrollbar from '../../../components/scrollbar';
 import NavSection from '../../../components/nav-section';
-import navConfig from './config';
-import uz from './uzcloud.png';
-import "./style.css"
+// import navConfig from './config';
+import uz from './LOGISTIC.png';
+import SvgColor from '../../../components/svg-color';
+import './style.css';
 
+const icon = (name) => <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />;
 
 const NAV_WIDTH = 280;
-
-const StyledAccount = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  padding: theme.spacing(2, 2.5),
-  borderRadius: Number(theme.shape.borderRadius) * 1.5,
-  backgroundColor: alpha(theme.palette.grey[500], 0.12),
-}));
 
 // ----------------------------------------------------------------------
 
@@ -41,38 +35,109 @@ export default function Nav({ openNav, onCloseNav }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
+  const cat = JSON.parse(localStorage.getItem('userData'));
+
   const renderContent = (
     <Scrollbar
       sx={{
         height: 1,
         '& .simplebar-content': { height: 1, display: 'flex', flexDirection: 'column' },
       }}
+      className="mainScroolBar"
     >
-      <div className="navTop" >
-        <img src={uz} alt="" />
+      <div className="navTop">
+        <img src={uz} alt="logistic logo" className="logo" />
       </div>
 
-      {/* <Box sx={{ mb: 5, mx: 2.5 }}>
-        <Link underline="none">
-          <StyledAccount>
-            <Avatar src={account.photoURL} alt="photoURL" />
+      {/* menu filter */}
 
-            <Box sx={{ ml: 2 }}>
-              <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                {account.displayName}
-              </Typography>
+      {get(cat, 'data.role', '') === 'director' ? (
+        <NavSection
+          data={[
+            {
+              title: 'Запрос',
+              path: '/dashboard/products',
+              icon: icon('ic_cart'),
+            },
+            {
+              title: 'Заявка',
+              path: '/dashboard/user',
+              icon: icon('ic_user'),
+            },
+            {
+              title: 'Главная',
+              path: '/dashboard/app',
+              icon: icon('ic_analytics'),
+            },
+            {
+              title: 'Чат',
+              path: '/dashboard/chat',
+              icon: icon('ic_blog'),
+            },
+            {
+              title: 'Сотрудники',
+              path: '/dashboard/xodim',
+              icon: icon('ic_blog'),
+            },
+          ]}
+        />
+      ) : null}
 
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {account.role}
-              </Typography>
-            </Box>
-          </StyledAccount>
-        </Link>
-      </Box> */}
+      {get(cat, 'data.role', '') === 'manager' ? (
+        <NavSection
+          data={[
+            {
+              title: 'Запрос',
+              path: '/dashboard/products',
+              icon: icon('ic_cart'),
+            },
+            {
+              title: 'Заявка',
+              path: '/dashboard/user',
+              icon: icon('ic_user'),
+            },
+            {
+              title: 'Чат',
+              path: '/dashboard/chat',
+              icon: icon('ic_blog'),
+            },
+          ]}
+        />
+      ) : null}
 
-      <NavSection data={navConfig} />
+      {get(cat, 'data.role', '') === 'dispatcher' ? (
+        <NavSection
+          data={[
+            {
+              title: 'Заявка',
+              path: '/dashboard/user',
+              icon: icon('ic_user'),
+            },
+            {
+              title: 'Главная',
+              path: '/dashboard/app',
+              icon: icon('ic_analytics'),
+            },
+            {
+              title: 'Чат',
+              path: '/dashboard/chat',
+              icon: icon('ic_blog'),
+            },
 
+            // {
+            //   title: 'Договоры',
+            //   path: '/dashboard/blog',
+            //   icon: icon('ic_blog'),
+            // },
+          ]}
+        />
+      ) : null}
 
+      <div className="companyName2">
+        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+          Logisctic Solution
+        </Typography>
+      </div>
     </Scrollbar>
   );
 
