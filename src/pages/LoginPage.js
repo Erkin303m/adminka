@@ -52,7 +52,7 @@ export default function LoginPage() {
       })
       .then((ress) => {
         console.log('success', ress);
-        loginToScreen(ress.data.access);
+        // loginToScreen(ress.data.access);
         navigation('/dashboard/app');
         localStorage.clear();
         localStorage.setItem('userData', JSON.stringify(ress.data));
@@ -69,19 +69,19 @@ export default function LoginPage() {
       });
   };
 
-  const loginToScreen = (token) => {
-    const config = {
-      headers: {
-        Authorization: `Bearer  + ${token}`,
-      },
-    };
-    axios
-      .get('http://185.217.131.179:8888/company/company/me', config)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((err) => console.log('err:', err));
-  };
+  // const loginToScreen = (token) => {
+  //   const config = {
+  //     headers: {
+  //       Authorization: `Bearer  + ${token}`,
+  //     },
+  //   };
+  //   axios
+  //     .get('http://185.217.131.179:8888/company/company/me', config)
+  //     .then((response) => {
+  //       console.log(response);
+  //     })
+  //     .catch((err) => console.log('err:', err));
+  // };
 
   return (
     <>
