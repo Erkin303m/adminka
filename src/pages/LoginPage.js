@@ -46,7 +46,7 @@ export default function LoginPage() {
 
   const sendData = async () => {
     await axios
-      .post(`http://185.217.131.179:8888/api/v1/company/token/obtain`, {
+      .post(`https://185.217.131.179:8888/api/v1/company/token/obtain`, {
         phone_number: login,
         password,
       })
