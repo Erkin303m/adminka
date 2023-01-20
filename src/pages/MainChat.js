@@ -6,7 +6,7 @@ import './style.css';
 import { useState } from 'react';
 
 export default function MainChat() {
-  const [message, setMessage] = useState('');
+  // const [message, setMessage] = useState('');
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
       console.log(event.target.value);

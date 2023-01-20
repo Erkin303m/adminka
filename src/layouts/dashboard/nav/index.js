@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { styled, alpha } from '@mui/material/styles';
-import { Box, Link, Drawer, Typography, Avatar, Stack } from '@mui/material';
+import { Box, Drawer, Typography } from '@mui/material';
 import { get } from 'lodash';
 import useResponsive from '../../../hooks/useResponsive';
 import Scrollbar from '../../../components/scrollbar';
@@ -32,7 +31,6 @@ export default function Nav({ openNav, onCloseNav }) {
     if (openNav) {
       onCloseNav();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   const cat = JSON.parse(localStorage.getItem('userData'));

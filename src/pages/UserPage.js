@@ -8,7 +8,6 @@ import {
   Stack,
   Paper,
   Button,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
@@ -22,7 +21,7 @@ import { useNavigate } from 'react-router-dom';
 import Label from '../components/label';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
-import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
+import { UserListHead } from '../sections/@dashboard/user';
 import USERLIST from '../_mock/user';
 
 const TABLE_HEAD = [
@@ -71,13 +70,6 @@ export default function UserPage() {
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const handleOpenMenu = (event) => {
-    setOpen(event.currentTarget);
-  };
-
-  const handleCloseMenu = () => {
-    setOpen(null);
-  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -92,21 +84,6 @@ export default function UserPage() {
       return;
     }
     setSelected([]);
-  };
-
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-    }
-    setSelected(newSelected);
   };
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
@@ -128,18 +105,6 @@ export default function UserPage() {
       .then((ress) => {
         console.log('success', ress.data.results);
         setMainData(get(ress, 'data.results', ''));
-      })
-      .catch((err) => {
-        console.log('error', err);
-      });
-  };
-
-  const delData = async (id) => {
-    await axios
-      .delete(`http://185.217.131.179:8888/api/v1/company/order/${id}`)
-      .then((ress) => {
-        console.log('success del', ress);
-        sendData();
       })
       .catch((err) => {
         console.log('error', err);

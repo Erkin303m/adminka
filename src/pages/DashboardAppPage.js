@@ -3,12 +3,10 @@ import { faker } from '@faker-js/faker';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography } from '@mui/material';
-import { useSelector } from 'react-redux';
 
 import Iconify from '../components/iconify';
 // sections
 import {
-  AppTasks,
   AppNewsUpdate,
   AppOrderTimeline,
   AppCurrentVisits,
@@ -24,10 +22,6 @@ export default function DashboardAppPage() {
   // console.log('initialState', datas);
 
   const cat = JSON.parse(localStorage.getItem('userData'));
-
-  const change = () => {
-    const data = [];
-  };
 
   return (
     <>

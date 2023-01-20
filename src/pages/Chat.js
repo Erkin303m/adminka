@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 // @mui
-import { Grid, Button, Container, Stack, Typography } from '@mui/material';
+import { Button, Container, Stack, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 import Iconify from '../components/iconify';
@@ -26,13 +26,6 @@ export default function BlogPage() {
             New chat
           </Button>
         </Stack>
-
-        {/* <Stack>
-          <div>
-            <h1>asd</h1>
-            <h1>asd</h1>
-          </div>
-        </Stack> */}
       </Container>
     </>
   );

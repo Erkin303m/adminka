@@ -1,47 +1,10 @@
 import { Helmet } from 'react-helmet-async';
-import { filter, get } from 'lodash';
-import { sentenceCase } from 'change-case';
+import { get } from 'lodash';
 import { useEffect, useState } from 'react';
-import {
-  Card,
-  Table,
-  Stack,
-  Paper,
-  Avatar,
-  Button,
-  Popover,
-  Checkbox,
-  TableRow,
-  MenuItem,
-  TableBody,
-  TableCell,
-  Container,
-  Typography,
-  IconButton,
-  TableContainer,
-  TablePagination,
-} from '@mui/material';
+import { Stack, Button, Container, Typography } from '@mui/material';
 import axios from 'axios';
 
-import Label from '../components/label';
 import Iconify from '../components/iconify';
-import Scrollbar from '../components/scrollbar';
-import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
-import USERLIST from '../_mock/user';
-
-// ----------------------------------------------------------------------
-
-const TABLE_HEAD = [
-  { id: 'name', label: 'Имя', alignRight: false },
-  { id: 'company', label: 'Информация о заказе', alignRight: false },
-  { id: 'drop', label: 'Падение места', alignRight: false },
-  { id: 'role', label: 'Метод оплаты', alignRight: false },
-  { id: 'isVerified', label: 'Проверено', alignRight: false },
-  { id: 'status', label: 'Статус', alignRight: false },
-  { id: '' },
-];
-
-// ----------------------------------------------------------------------
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
