@@ -58,7 +58,7 @@ export default function LoginPage() {
         localStorage.setItem('userData', JSON.stringify(ress.data));
       })
       .catch((err) => {
-        console.log('sendData error');
+        console.log('sendData error', err);
         swal({
           title: 'Login yoki parol xato!',
           text: 'Tekshirib qaytadan tering',
