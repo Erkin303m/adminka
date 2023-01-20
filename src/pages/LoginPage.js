@@ -51,14 +51,14 @@ export default function LoginPage() {
         password,
       })
       .then((ress) => {
-        console.log('success', ress);
+        console.log(' sendData success', ress);
         // loginToScreen(ress.data.access);
         navigation('/dashboard/app');
         localStorage.clear();
         localStorage.setItem('userData', JSON.stringify(ress.data));
       })
       .catch((err) => {
-        console.log('error', err);
+        console.log('sendData error');
         swal({
           title: 'Login yoki parol xato!',
           text: 'Tekshirib qaytadan tering',

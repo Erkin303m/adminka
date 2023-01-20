@@ -28,25 +28,25 @@ export default function UserPage() {
   const [status, setStatus] = useState('');
   const [country, setCuntry] = useState('');
   const [city, setCity] = useState('');
-  const [paymant, setPaymant] = useState('');
+  const [packages, setPackages] = useState('');
+  const [cash, setCash] = useState('');
 
   const sendData = async () => {
     await axios
-      .post(`http://185.217.131.179:8888/api/v1/company/order`, {
-        name: 'ssssss',
-        id: 5,
-        packageMethod: 'string',
-        paymentMethod: 'Cash',
-        first_payment: 10000,
-        pending_of_place: 'Toshkent',
-        drop_of_place: 'Moscow',
-        order_owner: "Namazov Sardor Botir Og'li",
-        order_weight: 10,
-        order_info: 'Ruchka',
-        status: 'sending',
+      .post(`http://185.217.131.179:8888/api/v1/company/order/`, {
+        name: userName,
+        packageMethod: packages,
+        paymentMethod: cash,
+        first_payment: firstPayment,
+        pending_of_place: waiting,
+        drop_of_place: drop,
+        order_owner: 1,
+        order_weight: massa,
+        order_info: info,
+        status,
         customs: [1],
-        country: 'Uzbekistan',
-        city: '5ty',
+        country,
+        city,
       })
       .then((ress) => {
         console.log('success', ress);
@@ -77,16 +77,16 @@ export default function UserPage() {
         <div className="card3">
           <input
             type="text"
-            placeholder="paymentMethod"
+            placeholder="Метод упаковки"
             className="input2"
-            onChange={(v) => setPayment(v.target.value)}
+            onChange={(v) => setPackages(v.target.value)}
           />
         </div>
 
         <div className="card3">
           <input
             type="number"
-            placeholder="first_payment"
+            placeholder="Первый взнос"
             className="input2"
             onChange={(v) => setFirstPayment(v.target.value)}
           />
@@ -125,8 +125,21 @@ export default function UserPage() {
         </div>
 
         <div className="card3">
-          <input type="text" placeholder="Status" className="input2" onChange={(v) => setStatus(v.target.value)} />
+          <input
+            type="text"
+            placeholder="Status"
+            list="data"
+            className="input2"
+            onChange={(v) => setStatus(v.target.value)}
+          />
+          <datalist id="data">
+            <option value="sending" />
+            <option value="arrived" />
+            <option value="way" />
+            <option value="approved" />
+          </datalist>
         </div>
+
         <div className="card3">
           <input type="text" placeholder="Страна" className="input2" onChange={(v) => setCuntry(v.target.value)} />
         </div>
@@ -139,14 +152,13 @@ export default function UserPage() {
           <input
             type="text"
             placeholder="Payment"
-            list="data"
+            list="data3"
             className="input2"
-            onChange={(v) => setPaymant(v.target.value)}
+            onChange={(v) => setCash(v.target.value)}
           />
-          <datalist id="data">
-            <option value="se" />
-            <option value="qws" />
-            <option value="swww" />
+          <datalist id="data3">
+            <option value="cash" />
+            <option value="card" />
           </datalist>
         </div>
       </div>
