@@ -1,3 +1,4 @@
+/* #315796 */
 .salom {
   margin-top: 50px;
 }
@@ -19,6 +20,15 @@
   outline: 1px;
   border: 1px solid rgb(141, 141, 141);
   width: 400px;
+  margin-bottom: 50px;
+}
+.input22 {
+  padding: 20px;
+  font-size: 15px;
+  border-radius: 10px;
+  outline: 1px;
+  border: 1px solid rgb(141, 141, 141);
+  flex: 1;
   margin-bottom: 50px;
 }
 .buttonDel {
@@ -43,4 +53,75 @@
   left: 0;
   right: 0;
   z-index: 99;
+}
+.mainMassageCard {
+  flex: 1;
+  height: 350px;
+  overflow: auto;
+  padding: 20px 10px;
+}
+.someCard {
+  display: flex;
+  flex: 1;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgb(255, 255, 255);
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(141, 112, 255);
+  border-radius: 2px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #020202;
+}
+
+.cardMassage2 {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cardMassage1 {
+  display: flex;
+  justify-content: flex-start;
+}
+.colorCard1 {
+  background-color: #315796;
+  padding: 0 20px;
+  border-radius: 10px;
+  color: white;
+  width: 400px;
+}
+
+.colorCard2 {
+  background-color: rgb(66, 53, 255);
+  padding: 0 20px;
+  border-radius: 10px;
+  color: white;
+  width: 400px;
+}
+.topUserCard {
+  background-color: #315796;
+  border-radius: 10px 10px 0 0;
+  padding-left: 20px;
+  padding-bottom: 10px;
+  color: white;
+}
+
+.word55 {
+  margin: 0;
+  padding: 0;
+}
+.card333 {
+  display: flex;
 }

@@ -11,6 +11,7 @@ import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
 import Chat from './pages/Chat';
 import Xodim from './pages/Hodim';
+import MainChat from './pages/MainChat';
 
 // ----------------------------------------------------------------------
 
@@ -31,6 +32,7 @@ export default function Router() {
         { path: 'blog', element: <BlogPage /> },
         { path: 'chat', element: <Chat /> },
         { path: 'xodim', element: <Xodim /> },
+        { path: 'mainChat', element: <MainChat /> },
       ],
     },
     {
