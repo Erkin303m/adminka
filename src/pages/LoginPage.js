@@ -45,8 +45,9 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   const sendData = async () => {
+    localStorage.clear();
     await axios
-      .post(`https://185.217.131.179:8888/api/v1/company/token/obtain`, {
+      .post(`http://185.217.131.179:8888/api/v1/company/token/obtain`, {
         phone_number: login,
         password,
       })
@@ -54,7 +55,6 @@ export default function LoginPage() {
         console.log(' sendData success', ress);
         // loginToScreen(ress.data.access);
         navigation('/dashboard/app');
-        localStorage.clear();
         localStorage.setItem('userData', JSON.stringify(ress.data));
       })
       .catch((err) => {
