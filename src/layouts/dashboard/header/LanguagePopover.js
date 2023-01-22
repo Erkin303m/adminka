@@ -1,8 +1,8 @@
 import { useState } from 'react';
 // @mui
 import { alpha } from '@mui/material/styles';
-import { Box, MenuItem, Stack, IconButton, Popover } from '@mui/material';
-import "./style.css"
+import { MenuItem, Stack, IconButton, Popover } from '@mui/material';
+import './style.css';
 
 // ----------------------------------------------------------------------
 
@@ -12,7 +12,6 @@ const LANGS = [
     label: 'Русский',
     url: 'https://upload.wikimedia.org/wikipedia/en/thumb/f/f3/Flag_of_Russia.svg/800px-Flag_of_Russia.svg.png',
   },
-
 ];
 
 // ----------------------------------------------------------------------
@@ -41,7 +40,7 @@ export default function LanguagePopover() {
           }),
         }}
       >
-        <img src={LANGS[0].url} alt={LANGS[0].label} className='imgFlag' />
+        <img src={LANGS[0].url} alt={LANGS[0].label} className="imgFlag" />
       </IconButton>
 
       <Popover

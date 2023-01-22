@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import { Box, Stack, AppBar, Toolbar } from '@mui/material';
 import { get } from 'lodash';
@@ -30,13 +29,10 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   },
 }));
 
-Header.propTypes = {
-  onOpenNav: PropTypes.func,
-};
 const cat = JSON.parse(localStorage.getItem('userData'));
 console.log(cat);
 
-export default function Header({ onOpenNav }) {
+export default function Header() {
   return (
     <StyledRoot>
       <StyledToolbar>
@@ -51,7 +47,7 @@ export default function Header({ onOpenNav }) {
           <AccountPopover />
           <div>
             <p className="number">{get(cat, 'data.phone_number', '')}</p>
-            <p className="companyName">{get(cat, 'data.company_name', '')}</p>
+            <p className="companyName">{get(cat, 'data.first_name', 'User')}</p>
           </div>
         </Stack>
         <Box sx={{ flexGrow: 1 }} />

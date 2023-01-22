@@ -1,24 +1,12 @@
 import { Helmet } from 'react-helmet-async';
-import { get } from 'lodash';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Stack, Button, Container, Typography } from '@mui/material';
 import axios from 'axios';
 
 import Iconify from '../components/iconify';
 
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
 export default function UserPage() {
   const [userName, setUserName] = useState('');
-  const [payment, setPayment] = useState('');
   const [firstPayment, setFirstPayment] = useState('');
   const [waiting, setWaiting] = useState('');
   const [drop, setDrop] = useState('');
@@ -33,14 +21,14 @@ export default function UserPage() {
 
   const sendData = async () => {
     await axios
-      .post(`http://185.217.131.179:8888/api/v1/company/order/`, {
+      .post(`http://185.217.131.179:8888/api/v1/company/order`, {
         name: userName,
         packageMethod: packages,
         paymentMethod: cash,
         first_payment: firstPayment,
         pending_of_place: waiting,
         drop_of_place: drop,
-        order_owner: 1,
+        order_owner: owner,
         order_weight: massa,
         order_info: info,
         status,

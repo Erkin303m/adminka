@@ -73,6 +73,7 @@ export default function AccountPopover() {
           onClick={() => {
             handleClose();
             navigation('/');
+            localStorage.clear();
           }}
           sx={{ m: 1 }}
         >

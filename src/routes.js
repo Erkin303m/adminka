@@ -3,11 +3,11 @@ import { Navigate, useRoutes } from 'react-router-dom';
 import DashboardLayout from './layouts/dashboard';
 //
 import BlogPage from './pages/BlogPage';
-import UserPage from './pages/UserPage';
+import Zayavka from './pages/Zayavka';
 import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
-import ProductsPage from './pages/ProductsPage';
-import DashboardAppPage from './pages/DashboardAppPage';
+import Zapros from './pages/Zapros';
+import Main from './pages/Main';
 import Chat from './pages/Chat';
 import Xodim from './pages/Hodim';
 import MainChat from './pages/MainChat';
@@ -25,9 +25,9 @@ export default function Router() {
       element: <DashboardLayout />,
       children: [
         { element: <Navigate to="/dashboard/app" />, index: true },
-        { path: 'app', element: <DashboardAppPage /> },
-        { path: 'user', element: <UserPage /> },
-        { path: 'products', element: <ProductsPage /> },
+        { path: 'app', element: <Main /> },
+        { path: 'user', element: <Zayavka /> },
+        { path: 'products', element: <Zapros /> },
         { path: 'blog', element: <BlogPage /> },
         { path: 'chat', element: <Chat /> },
         { path: 'xodim', element: <Xodim /> },

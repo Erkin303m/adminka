@@ -53,9 +53,9 @@ export default function Nav({ openNav, onCloseNav }) {
         <NavSection
           data={[
             {
-              title: 'Запрос',
-              path: '/dashboard/products',
-              icon: icon('ic_cart'),
+              title: 'Главная',
+              path: '/dashboard/app',
+              icon: icon('ic_analytics'),
             },
             {
               title: 'Заявка',
@@ -63,9 +63,9 @@ export default function Nav({ openNav, onCloseNav }) {
               icon: icon('ic_user'),
             },
             {
-              title: 'Главная',
-              path: '/dashboard/app',
-              icon: icon('ic_analytics'),
+              title: 'Запрос',
+              path: '/dashboard/products',
+              icon: icon('ic_cart'),
             },
             {
               title: 'Чат',
@@ -85,14 +85,14 @@ export default function Nav({ openNav, onCloseNav }) {
         <NavSection
           data={[
             {
-              title: 'Запрос',
-              path: '/dashboard/products',
-              icon: icon('ic_cart'),
-            },
-            {
               title: 'Заявка',
               path: '/dashboard/user',
               icon: icon('ic_user'),
+            },
+            {
+              title: 'Запрос',
+              path: '/dashboard/products',
+              icon: icon('ic_cart'),
             },
             {
               title: 'Чат',
@@ -107,14 +107,14 @@ export default function Nav({ openNav, onCloseNav }) {
         <NavSection
           data={[
             {
-              title: 'Заявка',
-              path: '/dashboard/user',
-              icon: icon('ic_user'),
-            },
-            {
               title: 'Главная',
               path: '/dashboard/app',
               icon: icon('ic_analytics'),
+            },
+            {
+              title: 'Заявка',
+              path: '/dashboard/user',
+              icon: icon('ic_user'),
             },
             {
               title: 'Чат',
@@ -127,6 +127,28 @@ export default function Nav({ openNav, onCloseNav }) {
             //   path: '/dashboard/blog',
             //   icon: icon('ic_blog'),
             // },
+          ]}
+        />
+      ) : null}
+
+      {get(cat, 'data.role', '') === 'driver' ? (
+        <NavSection
+          data={[
+            {
+              title: 'Главная',
+              path: '/dashboard/app',
+              icon: icon('ic_analytics'),
+            },
+            {
+              title: 'Заявка',
+              path: '/dashboard/user',
+              icon: icon('ic_user'),
+            },
+            {
+              title: 'Чат',
+              path: '/dashboard/chat',
+              icon: icon('ic_blog'),
+            },
           ]}
         />
       ) : null}

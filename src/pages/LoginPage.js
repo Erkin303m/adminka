@@ -45,7 +45,6 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   const sendData = async () => {
-    localStorage.clear();
     await axios
       .post(`http://185.217.131.179:8888/api/v1/company/token/obtain`, {
         phone_number: login,
@@ -53,9 +52,11 @@ export default function LoginPage() {
       })
       .then((ress) => {
         console.log(' sendData success', ress);
-        // loginToScreen(ress.data.access);
+        localStorage.clear();
         navigation('/dashboard/app');
         localStorage.setItem('userData', JSON.stringify(ress.data));
+        loginToScreen(ress.data.access);
+        window.location.reload(true);
       })
       .catch((err) => {
         console.log('sendData error', err);
@@ -69,19 +70,19 @@ export default function LoginPage() {
       });
   };
 
-  // const loginToScreen = (token) => {
-  //   const config = {
-  //     headers: {
-  //       Authorization: `Bearer  + ${token}`,
-  //     },
-  //   };
-  //   axios
-  //     .get('http://185.217.131.179:8888/company/company/me', config)
-  //     .then((response) => {
-  //       console.log(response);
-  //     })
-  //     .catch((err) => console.log('err:', err));
-  // };
+  const loginToScreen = (token) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer  + ${token}`,
+      },
+    };
+    axios
+      .get('http://185.217.131.179:8888/company/company/me/', config)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => console.log('err:', err));
+  };
 
   return (
     <>

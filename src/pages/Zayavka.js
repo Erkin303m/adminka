@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { filter, get } from 'lodash';
+import { get } from 'lodash';
 import { sentenceCase } from 'change-case';
 import { useEffect, useState } from 'react';
 import {
@@ -33,43 +33,10 @@ const TABLE_HEAD = [
   { id: 'status', label: 'Статус', alignRight: false },
 ];
 
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function applySortFilter(array, comparator, query) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  if (query) {
-    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
-  }
-  return stabilizedThis.map((el) => el[0]);
-}
-
 export default function UserPage() {
-  const [open, setOpen] = useState(null);
-  const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState('name');
-  const [filterName, setFilterName] = useState('');
-  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -86,28 +53,31 @@ export default function UserPage() {
     setSelected([]);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
-
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
-
-  const isNotFound = !filteredUsers.length && !!filterName;
+  const emptyRows = 1 > 0 ? Math.max(0, (1 + 0) * 5 - USERLIST.length) : 0;
 
   const [mainData, setMainData] = useState([]);
   const navigation = useNavigate();
+  const cat = JSON.parse(localStorage.getItem('userData'));
 
   useEffect(() => {
     sendData();
   }, []);
 
   const sendData = async () => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${get(cat, 'access', '')}`,
+      },
+    };
+    console.log(config);
     await axios
-      .get(`http://185.217.131.179:8888/api/v1/company/order`)
+      .get(`http://185.217.131.179:8888/api/v1/company/order/`)
       .then((ress) => {
-        console.log('success', ress.data.results);
+        console.log('success zayavka', ress.data.results);
         setMainData(get(ress, 'data.results', ''));
       })
       .catch((err) => {
-        console.log('error', err);
+        console.log('error zayavka', err);
       });
   };
 
@@ -121,7 +91,7 @@ export default function UserPage() {
   return (
     <>
       <Helmet>
-        <title> Заявка</title>
+        <title>Заявка</title>
       </Helmet>
 
       <Container>
@@ -189,7 +159,7 @@ export default function UserPage() {
                   )}
                 </TableBody>
 
-                {isNotFound && (
+                {mainData.length <= 0 && (
                   <TableBody>
                     <TableRow>
                       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -199,13 +169,11 @@ export default function UserPage() {
                           }}
                         >
                           <Typography variant="h6" paragraph>
-                            Not found
+                            Не найден
                           </Typography>
 
                           <Typography variant="body2">
-                            No results found for &nbsp;
-                            <strong>&quot;{filterName}&quot;</strong>.
-                            <br /> Try checking for typos or using complete words.
+                            Попробуйте проверить на опечатки или использовать полные слова.
                           </Typography>
                         </Paper>
                       </TableCell>
