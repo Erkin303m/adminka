@@ -153,6 +153,31 @@ export default function Nav({ openNav, onCloseNav }) {
         />
       ) : null}
 
+      {get(cat, 'data.role', '') !== 'driver' &&
+      get(cat, 'data.role', '') !== 'manager' &&
+      get(cat, 'data.role', '') !== 'dispatcher' &&
+      get(cat, 'data.role', '') !== 'director' ? (
+        <NavSection
+          data={[
+            {
+              title: 'Главная',
+              path: '/dashboard/app',
+              icon: icon('ic_analytics'),
+            },
+            {
+              title: 'Заявка',
+              path: '/dashboard/user',
+              icon: icon('ic_user'),
+            },
+            {
+              title: 'Чат',
+              path: '/dashboard/chat',
+              icon: icon('ic_blog'),
+            },
+          ]}
+        />
+      ) : null}
+
       <div className="companyName2">
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
           Logisctic Solution
