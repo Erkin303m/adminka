@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { LoadingButton } from '@mui/lab';
 import axios from 'axios';
 import swal from 'sweetalert';
+import { useDispatch } from 'react-redux';
+
 import Iconify from '../components/iconify';
 import useResponsive from '../hooks/useResponsive';
 import './style.css';
@@ -43,6 +45,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const mdUp = useResponsive('up', 'md');
   const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useDispatch();
 
   const sendData = async () => {
     await axios
@@ -51,12 +54,13 @@ export default function LoginPage() {
         password,
       })
       .then((ress) => {
-        console.log(' sendData success', ress);
-        localStorage.clear();
         navigation('/dashboard/app');
         localStorage.setItem('userData', JSON.stringify(ress.data));
-        loginToScreen(ress.data.access);
-        window.location.reload(true);
+        // loginToScreen(ress.data.access);
+        // window.location.reload(true);
+
+        const data = { type: 'ADD_USER', payload: ress.data };
+        dispatch(data);
       })
       .catch((err) => {
         console.log('sendData error', err);

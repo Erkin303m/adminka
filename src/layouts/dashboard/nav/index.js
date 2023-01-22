@@ -169,11 +169,6 @@ export default function Nav({ openNav, onCloseNav }) {
               path: '/dashboard/user',
               icon: icon('ic_user'),
             },
-            {
-              title: 'Чат',
-              path: '/dashboard/chat',
-              icon: icon('ic_blog'),
-            },
           ]}
         />
       ) : null}

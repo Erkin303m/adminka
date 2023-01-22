@@ -1,6 +1,7 @@
 import { styled } from '@mui/material/styles';
 import { Box, Stack, AppBar, Toolbar } from '@mui/material';
 import { get } from 'lodash';
+import { useSelector } from 'react-redux';
 
 import { bgBlur } from '../../../utils/cssStyles';
 import AccountPopover from './AccountPopover';
@@ -29,10 +30,9 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   },
 }));
 
-const cat = JSON.parse(localStorage.getItem('userData'));
-console.log(cat);
-
 export default function Header() {
+  const cat = JSON.parse(localStorage.getItem('userData'));
+  const data = useSelector((state) => state);
   return (
     <StyledRoot>
       <StyledToolbar>
@@ -46,8 +46,16 @@ export default function Header() {
         >
           <AccountPopover />
           <div>
-            <p className="number">{get(cat, 'data.phone_number', '')}</p>
-            <p className="companyName">{get(cat, 'data.first_name', 'User')}</p>
+            <p className="number">
+              {get(data, 'data.phone_number', '').length > 2
+                ? get(data, 'data.phone_number', '')
+                : get(cat, 'data.phone_number', '')}
+            </p>
+            <p className="companyName">
+              {get(data, 'data.first_name', '').length > 2
+                ? get(data, 'data.first_name', '')
+                : get(cat, 'data.first_name', 'User')}
+            </p>
           </div>
         </Stack>
         <Box sx={{ flexGrow: 1 }} />
