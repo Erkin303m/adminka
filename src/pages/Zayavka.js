@@ -79,7 +79,6 @@ export default function UserPage() {
     await axios
       .get(`http://185.217.131.179:8888/api/v1/company/order/`, config)
       .then((ress) => {
-        console.log('success zayavka', ress.data.results);
         setMainData(get(ress, 'data.results', ''));
       })
       .catch((err) => {

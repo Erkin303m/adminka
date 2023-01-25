@@ -56,7 +56,7 @@ export default function LoginPage() {
       .then((ress) => {
         navigation('/dashboard/app');
         localStorage.setItem('userData', JSON.stringify(ress.data));
-        console.log(ress);
+        console.log('login', ress);
         loginToScreen(ress.data.access);
         // window.location.reload(true);
 

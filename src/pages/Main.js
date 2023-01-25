@@ -12,19 +12,25 @@ export default function DashboardAppPage() {
   const theme = useTheme();
   const [data, setData] = useState([]);
 
-  // const cat = JSON.parse(localStorage.getItem('userData'));
+  const cat = JSON.parse(localStorage.getItem('userData'));
   useEffect(() => {
     getData();
   }, []);
 
   const getData = async () => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${get(cat, 'access', '')}`,
+      },
+    };
     await axios
-      .get(`http://185.217.131.179:8888/api/v1/company/dashboard/director/`)
+      .get(`http://185.217.131.179:8888/api/v1/company/dashboard/director/`, config)
       .then((ress) => {
-        setData(get(ress, 'data', []));
+        setData(get(ress, 'data.statistics', []));
+        console.log('Main data', ress);
       })
       .catch((err) => {
-        console.log('getData error', err);
+        console.log('main error', err);
       });
   };
   return (

@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import { useState } from 'react';
 import { Stack, Button, Container, Typography } from '@mui/material';
 import axios from 'axios';
+import { get } from 'lodash';
 
 import Iconify from '../components/iconify';
 
@@ -24,27 +25,32 @@ export default function UserPage() {
   const [citySending, setCitySending] = useState('');
   const [cityPending, setCityPending] = useState('');
 
+  const cat = JSON.parse(localStorage.getItem('userData'));
+
   const sendData = async () => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${get(cat, 'access', '')}`,
+      },
+    };
     await axios
-      .post(`http://185.217.131.179:8888/api/v1/company/order`, {
-        name: userName,
-        packageMethod: packages,
-        paymentMethod: cash,
-        first_payment: firstPayment,
-        pending_of_place: waiting,
-        drop_of_place: drop,
-        order_owner: owner,
-        order_weight: massa,
-        order_info: info,
-        status,
-        customs: [1],
-        country,
-        city,
-        full_payment: fullPayment,
-        country_sending: countrySending,
-        country_pending: countryPending,
-        city_sending: citySending,
-        city_pending: cityPending,
+      .post(`http://185.217.131.179:8888/api/v1/company/order/`, config, {
+        name: 'string',
+        packageMethod: 'string',
+        paymentMethod: 'cash',
+        first_payment: 12,
+        pending_of_place: 'string',
+        drop_of_place: 'string',
+        full_payment: 12,
+        order_owner: 1,
+        order_weight: 12,
+        order_info: 'string',
+        status: 'sending',
+        customs: [1, 2],
+        country_sending: '12',
+        country_pending: '12',
+        city_sending: '12',
+        city_pending: '12',
       })
       .then((ress) => {
         console.log('success', ress);

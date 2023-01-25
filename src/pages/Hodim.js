@@ -26,13 +26,14 @@ import Label from '../components/label';
 import Iconify from '../components/iconify';
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Имя', alignRight: false },
-  { id: 'company', label: 'Role', alignRight: false },
-  { id: 'drop', label: 'Password', alignRight: false },
-  { id: 'role', label: 'Метод оплаты', alignRight: false },
+  { id: 'name', label: 'ID', alignRight: false },
+  { id: 'company', label: 'Phone', alignRight: false },
+  { id: 'drop', label: 'Role', alignRight: false },
 ];
 
 export default function UserPage() {
+  const [tableData, setTableData] = useState([]);
+
   const [userName, setUserName] = useState('');
   const [role, setRole] = useState('');
   const [password1, setPassword1] = useState('');
@@ -45,6 +46,7 @@ export default function UserPage() {
   const [gender, setGender] = useState('');
   const [avatar, setAvatar] = useState('');
   const [experience, setExperience] = useState('');
+
   console.log(avatar);
   useEffect(() => {
     sendWorkers();
@@ -52,20 +54,29 @@ export default function UserPage() {
   const cat = JSON.parse(localStorage.getItem('userData'));
 
   const sendData = async () => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${get(cat, 'access', '')}`,
+      },
+    };
     await axios
-      .post(`http://185.217.131.179:8888/api/v1/dashboard/director/`, {
-        first_name: userName,
-        last_name: lastName,
-        middle_name: middleName,
-        birthday,
-        gender,
-        avatar,
-        experience,
-        password_1: password1,
-        password_2: password2,
-        phone_number: phone,
-        role,
-      })
+      .post(
+        `http://185.217.131.179:8888/api/v1/company/dashboard/director/`,
+        {
+          first_name: userName,
+          last_name: lastName,
+          middle_name: middleName,
+          birthday,
+          gender,
+          avatar,
+          experience,
+          password_1: password1,
+          password_2: password2,
+          phone_number: phone,
+          role,
+        },
+        config
+      )
       .then((ress) => {
         console.log('success', ress);
       })
@@ -81,21 +92,24 @@ export default function UserPage() {
       },
     };
     await axios
-      .get(`http://185.217.131.179:8888/api/v1/dashboard/director`, config)
+      .get(`http://185.217.131.179:8888/api/v1/company/dashboard/director/`, config)
       .then((ress) => {
-        console.log('success sendWorkers:', ress);
+        setTableData(get(ress, 'data.staffs', []));
+        console.log(ress);
       })
       .catch((err) => {
-        console.log('error sendWorkers:', err);
+        console.log('sendWorkers error', err);
       });
   };
+
   const search = (item) => {
     const a = mainData.filter((s) => {
-      return s.name.toLowerCase().includes(item.toLowerCase());
+      return s.id.toLowerCase().includes(item.toLowerCase());
     });
     setMainData(a);
   };
 
+  console.log('tableData', tableData);
   return (
     <>
       <Helmet>
@@ -158,7 +172,6 @@ export default function UserPage() {
           />
           <datalist id="data">
             <option value="manager" />
-            <option value="director" />
             <option value="dispatcher" />
           </datalist>
         </div>
@@ -207,31 +220,26 @@ export default function UserPage() {
               <Table>
                 <UserListHead headLabel={TABLE_HEAD} rowCount={USERLIST.length} />
                 <TableBody>
-                  {mainData.map((row, i) => {
+                  {tableData.map((row, i) => {
                     return (
                       <TableRow hover key={i} tabIndex={-1} s>
                         <TableCell padding="checkbox"> </TableCell>
 
-                        <TableCell component="th" scope="row" padding="none">
-                          <Stack direction="row" alignItems="center" spacing={2}>
-                            <Typography variant="subtitle2" noWrap>
-                              {row.name}
-                            </Typography>
-                          </Stack>
-                        </TableCell>
+                        <Stack direction="row" alignItems="center" spacing={2}>
+                          <Typography variant="subtitle2" noWrap>
+                            {get(row, 'id', '')}
+                          </Typography>
+                        </Stack>
 
-                        <TableCell align="center">{row.order_info}</TableCell>
+                        <TableCell align="start">{get(row, 'phone_number', '')}</TableCell>
 
-                        <TableCell align="center">{row.drop_of_place}</TableCell>
-                        <TableCell align="center">{row.paymentMethod}</TableCell>
+                        <TableCell align="start">{get(row, 'role', '')}</TableCell>
 
-                        <TableCell align="center">{row.order_owner}</TableCell>
-
-                        <TableCell align="center">
+                        {/* <TableCell align="center">
                           <Label color={(row.status === 'sending' && 'success') || 'error'}>
                             {sentenceCase(row.status)}
                           </Label>
-                        </TableCell>
+                        </TableCell> */}
                       </TableRow>
                     );
                   })}
