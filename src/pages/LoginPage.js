@@ -56,8 +56,8 @@ export default function LoginPage() {
       .then((ress) => {
         navigation('/dashboard/app');
         localStorage.setItem('userData', JSON.stringify(ress.data));
-        console.log(ress.data);
-        // loginToScreen(ress.data.access);
+        console.log(ress);
+        loginToScreen(ress.data.access);
         // window.location.reload(true);
 
         const data = { type: 'ADD_USER', payload: ress.data };
@@ -78,7 +78,7 @@ export default function LoginPage() {
   const loginToScreen = (token) => {
     const config = {
       headers: {
-        Authorization: `Bearer  + ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     };
     axios

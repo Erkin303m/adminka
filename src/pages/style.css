@@ -10,8 +10,15 @@
   flex: 1;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding: 0 20px;
+}
+.card3 {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  width: '100%';
 }
 .input2 {
   padding: 20px;
@@ -19,7 +26,7 @@
   border-radius: 10px;
   outline: 1px;
   border: 1px solid rgb(141, 141, 141);
-  width: 400px;
+  width: 300px;
   margin-bottom: 50px;
 }
 .input22 {
@@ -30,6 +37,23 @@
   border: 1px solid rgb(141, 141, 141);
   flex: 1;
   margin-bottom: 50px;
+}
+
+.input333 {
+  padding: 20px;
+  font-size: 15px;
+  border-radius: 10px;
+  outline: 1px;
+  border: 1px solid rgb(141, 141, 141);
+  flex: 1;
+  margin-bottom: 50px;
+  display: none;
+}
+.fileButton {
+  background-color: #2065d1;
+  padding: 10px 20px;
+  border-radius: 10px;
+  color: white;
 }
 .buttonDel {
   background-color: rgba(240, 248, 255, 0);

@@ -36,6 +36,7 @@ export default function AppConversionRates({ title, subheader, chartData, ...oth
     xaxis: {
       categories: chartLabels,
     },
+    colors: ['#B920D8'],
   });
 
   return (

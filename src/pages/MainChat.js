@@ -5,7 +5,10 @@ import { Container, Stack, Typography } from '@mui/material';
 import './style.css';
 import { useState } from 'react';
 
-export default function MainChat() {
+export default function MainChat(props) {
+  const { route } = props;
+  console.log('main chat id=>', route.params.id);
+
   // const [message, setMessage] = useState('');
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {

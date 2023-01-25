@@ -69,9 +69,15 @@ export default function UserPage() {
         Authorization: `Bearer ${get(cat, 'access', '')}`,
       },
     };
-    console.log(config);
+
+    // const config = {
+    //   headers: {
+    //     Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc0NTM4MTc1LCJqdGkiOiJiOTVkM2I5ZTg1MTc0MmJhYjRlNDMwODQwMDEyNzVmNSIsInVzZXJfaWQiOjk4fQ.6ymXUWhM8mQxZiXV6dMOqhav2MBLpdWOJBylCTvvuIA`,
+    //   },
+    // };
+
     await axios
-      .get(`http://185.217.131.179:8888/api/v1/company/order/`)
+      .get(`http://185.217.131.179:8888/api/v1/company/order/`, config)
       .then((ress) => {
         console.log('success zayavka', ress.data.results);
         setMainData(get(ress, 'data.results', ''));
@@ -145,7 +151,14 @@ export default function UserPage() {
                         <TableCell align="center">{row.order_owner}</TableCell>
 
                         <TableCell align="center">
-                          <Label color={(row.status === 'sending' && 'success') || 'error'}>
+                          <Label
+                            color={
+                              (row.status === 'sending' && 'primary') ||
+                              (row.status === 'way' && 'warning') ||
+                              (row.status === 'arrived' && 'success') ||
+                              'error'
+                            }
+                          >
                             {sentenceCase(row.status)}
                           </Label>
                         </TableCell>

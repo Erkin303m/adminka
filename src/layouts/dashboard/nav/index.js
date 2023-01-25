@@ -153,10 +153,7 @@ export default function Nav({ openNav, onCloseNav }) {
         />
       ) : null}
 
-      {get(cat, 'data.role', '') !== 'driver' &&
-      get(cat, 'data.role', '') !== 'manager' &&
-      get(cat, 'data.role', '') !== 'dispatcher' &&
-      get(cat, 'data.role', '') !== 'director' ? (
+      {get(cat, 'data.role', '') === 'order_owner' ? (
         <NavSection
           data={[
             {
@@ -168,6 +165,11 @@ export default function Nav({ openNav, onCloseNav }) {
               title: 'Заявка',
               path: '/dashboard/user',
               icon: icon('ic_user'),
+            },
+            {
+              title: 'Запрос',
+              path: '/dashboard/products',
+              icon: icon('ic_cart'),
             },
           ]}
         />

@@ -43,16 +43,16 @@ export default function DashboardAppPage() {
             <AppCurrentVisits
               title="Сотрудники"
               chartData={[
-                { label: 'Водитель', value: get(data, 'drivers', '0') },
                 { label: 'Менеджеры', value: get(data, 'managers', '0') },
-                { label: 'Владельцы заказов', value: get(data, 'order_owners', '0') },
                 { label: 'Диспетчеры', value: get(data, 'dispetchers', '0') },
+                { label: 'Владельцы заказов', value: get(data, 'order_owners', '0') },
+                { label: 'Водитель', value: get(data, 'drivers', '0') },
               ]}
               chartColors={[
+                '#20D82F',
                 theme.palette.primary.main,
-                theme.palette.info.main,
-                theme.palette.warning.main,
                 theme.palette.error.main,
+                theme.palette.warning.main,
               ]}
             />
           </Grid>
@@ -71,6 +71,21 @@ export default function DashboardAppPage() {
               ]}
             />
           </Grid>
+
+          {/* <Grid item xs={12} md={6} lg={7}>
+            <AppConversionRates
+              title="Статус "
+              // subheader=""
+              chartData={[
+                { label: 'Отменено', value: 100 },
+                { label: 'Приехал ', value: 200 },
+                { label: 'Way ', value: get(data, 'status_way', '0') },
+                { label: 'Отправка ', value: get(data, 'status_sending', '0') },
+                { label: 'Sending ', value: get(data, 'status_sending', '0') },
+                { label: 'Workers count', value: get(data, 'workers_count', '0') },
+              ]}
+            />
+          </Grid> */}
         </Grid>
       </Container>
     </>

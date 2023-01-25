@@ -14,7 +14,10 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import { sentenceCase } from 'change-case';
+import { get } from 'lodash';
+
 import { UserListHead } from '../sections/@dashboard/user';
+
 import USERLIST from '../_mock/user';
 import Scrollbar from '../components/scrollbar';
 
@@ -36,15 +39,32 @@ export default function UserPage() {
   const [password2, setPassword2] = useState('');
   const [phone, setPhone] = useState('');
   const [mainData, setMainData] = useState([]);
+  const [lastName, setLastName] = useState('');
+  const [middleName, setMiddleName] = useState('');
+  const [birthday, setBirthday] = useState('');
+  const [gender, setGender] = useState('');
+  const [avatar, setAvatar] = useState('');
+  const [experience, setExperience] = useState('');
+  console.log(avatar);
+  useEffect(() => {
+    sendWorkers();
+  }, []);
+  const cat = JSON.parse(localStorage.getItem('userData'));
 
   const sendData = async () => {
     await axios
       .post(`http://185.217.131.179:8888/api/v1/dashboard/director/`, {
         first_name: userName,
-        role,
+        last_name: lastName,
+        middle_name: middleName,
+        birthday,
+        gender,
+        avatar,
+        experience,
         password_1: password1,
         password_2: password2,
         phone_number: phone,
+        role,
       })
       .then((ress) => {
         console.log('success', ress);
@@ -54,13 +74,14 @@ export default function UserPage() {
       });
   };
 
-  useEffect(() => {
-    sendWorkers();
-  }, []);
-
   const sendWorkers = async () => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${get(cat, 'access', '')}`,
+      },
+    };
     await axios
-      .get(`http://185.217.131.179:8888/api/v1/dashboard/director`)
+      .get(`http://185.217.131.179:8888/api/v1/dashboard/director`, config)
       .then((ress) => {
         console.log('success sendWorkers:', ress);
       })
@@ -93,6 +114,40 @@ export default function UserPage() {
         <div className="card3">
           <input type="text" placeholder="Имя" className="input2" onChange={(v) => setUserName(v.target.value)} />
         </div>
+        <div className="card3">
+          <input type="text" placeholder="last_name" className="input2" onChange={(v) => setLastName(v.target.value)} />
+        </div>
+
+        <div className="card3">
+          <input
+            type="text"
+            placeholder="middleName"
+            className="input2"
+            onChange={(v) => setMiddleName(v.target.value)}
+          />
+        </div>
+
+        <div className="card3">
+          <input type="date" placeholder="date" className="input2" onChange={(v) => setBirthday(v.target.value)} />
+        </div>
+
+        <div className="card3">
+          <input type="text" placeholder="gender" className="input2" onChange={(v) => setGender(v.target.value)} />
+        </div>
+
+        <div className="card3">
+          <input type="file" placeholder="avatar" className="input2" onChange={(v) => setAvatar(v.target.value)} />
+        </div>
+
+        <div className="card3">
+          <input
+            type="text"
+            placeholder="experience"
+            className="input2"
+            onChange={(v) => setExperience(v.target.value)}
+          />
+        </div>
+
         <div className="card3">
           <input
             type="text"
@@ -127,6 +182,9 @@ export default function UserPage() {
 
         <div className="card3">
           <input type="text" placeholder="Phone" className="input2" onChange={(v) => setPhone(v.target.value)} />
+        </div>
+        <div className="card3">
+          <h1> </h1>
         </div>
       </div>
       <Container>

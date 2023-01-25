@@ -18,6 +18,11 @@ export default function UserPage() {
   const [city, setCity] = useState('');
   const [packages, setPackages] = useState('');
   const [cash, setCash] = useState('');
+  const [fullPayment, setfullPayment] = useState('');
+  const [countrySending, setCountrySending] = useState('');
+  const [countryPending, setCountryPending] = useState('');
+  const [citySending, setCitySending] = useState('');
+  const [cityPending, setCityPending] = useState('');
 
   const sendData = async () => {
     await axios
@@ -35,6 +40,11 @@ export default function UserPage() {
         customs: [1],
         country,
         city,
+        full_payment: fullPayment,
+        country_sending: countrySending,
+        country_pending: countryPending,
+        city_sending: citySending,
+        city_pending: cityPending,
       })
       .then((ress) => {
         console.log('success', ress);
@@ -148,6 +158,55 @@ export default function UserPage() {
             <option value="cash" />
             <option value="card" />
           </datalist>
+        </div>
+
+        <div className="card3">
+          <input
+            type="text"
+            placeholder="fullPayment"
+            className="input2"
+            onChange={(v) => setfullPayment(v.target.value)}
+          />
+        </div>
+
+        <div className="card3">
+          <input
+            type="text"
+            placeholder="countrySending"
+            className="input2"
+            onChange={(v) => setCountrySending(v.target.value)}
+          />
+        </div>
+
+        <div className="card3">
+          <input
+            type="text"
+            placeholder="countryPending"
+            className="input2"
+            onChange={(v) => setCountryPending(v.target.value)}
+          />
+        </div>
+
+        <div className="card3">
+          <input
+            type="text"
+            placeholder="citySending"
+            className="input2"
+            onChange={(v) => setCitySending(v.target.value)}
+          />
+        </div>
+
+        <div className="card3">
+          <input
+            type="text"
+            placeholder="cityPending"
+            className="input2"
+            onChange={(v) => setCityPending(v.target.value)}
+          />
+        </div>
+
+        <div className="card3">
+          <h1> </h1>
         </div>
       </div>
       <Container>
