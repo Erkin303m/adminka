@@ -57,7 +57,7 @@ export default function LoginPage() {
         navigation('/dashboard/app');
         localStorage.setItem('userData', JSON.stringify(ress.data));
         console.log('login', ress);
-        loginToScreen(ress.data.access);
+        // loginToScreen(ress.data.access);
         // window.location.reload(true);
 
         const data = { type: 'ADD_USER', payload: ress.data };
@@ -75,19 +75,19 @@ export default function LoginPage() {
       });
   };
 
-  const loginToScreen = (token) => {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    axios
-      .get('http://185.217.131.179:8888/company/company/me/', config)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((err) => console.log('err:', err));
-  };
+  // const loginToScreen = (token) => {
+  //   const config = {
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   };
+  //   axios
+  //     .get('http://185.217.131.179:8888/company/company/me/', config)
+  //     .then((response) => {
+  //       console.log(response);
+  //     })
+  //     .catch((err) => console.log('err:', err));
+  // };
 
   return (
     <>

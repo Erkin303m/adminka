@@ -63,7 +63,8 @@
     "react-scripts": "^5.0.1",
     "simplebar-react": "^2.4.3",
     "sweetalert": "^2.1.2",
-    "web-vitals": "^3.0.3"
+    "web-vitals": "^3.0.3",
+    "websocket": "^1.0.34"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",

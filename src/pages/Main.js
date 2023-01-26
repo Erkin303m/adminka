@@ -30,7 +30,7 @@ export default function DashboardAppPage() {
         console.log('Main data', ress);
       })
       .catch((err) => {
-        console.log('main error', err);
+        console.log('Main error', err);
       });
   };
   return (
