@@ -34,24 +34,49 @@ export default function UserPage() {
       },
     };
     await axios
-      .post(`http://185.217.131.179:8888/api/v1/company/order/`, config, {
-        name: 'string',
-        packageMethod: 'string',
-        paymentMethod: 'cash',
-        first_payment: 12,
-        pending_of_place: 'string',
-        drop_of_place: 'string',
-        full_payment: 12,
-        order_owner: 1,
-        order_weight: 12,
-        order_info: 'string',
-        status: 'sending',
-        customs: [1, 2],
-        country_sending: '12',
-        country_pending: '12',
-        city_sending: '12',
-        city_pending: '12',
-      })
+      .post(
+        `http://185.217.131.179:8888/api/v1/company/order/`,
+        // {
+        //   name: 'string',
+        //   packageMethod: 'string',
+        //   paymentMethod: 'cash',
+        //   first_payment: 12,
+        //   pending_of_place: 'string',
+        //   drop_of_place: 'string',
+        //   full_payment: 12,
+        //   order_owner: 1,
+        //   order_weight: 12,
+        //   order_info: 'string',
+        //   status: 'sending',
+        //   customs: [1, 2],
+        //   country_sending: '12',
+        //   country_pending: '12',
+        //   city_sending: '12',
+        //   city_pending: '12',
+        // },
+
+        {
+          name: userName,
+          packageMethod: packages,
+          paymentMethod: cash,
+          first_payment: firstPayment,
+          pending_of_place: waiting,
+          drop_of_place: drop,
+          order_owner: owner,
+          full_payment: fullPayment,
+          order_weight: massa,
+          order_info: info,
+          status,
+          customs: [1, 2],
+          country,
+          city,
+          country_sending: countrySending,
+          country_pending: countryPending,
+          city_sending: citySending,
+          city_pending: cityPending,
+        },
+        config
+      )
       .then((ress) => {
         console.log('success', ress);
       })

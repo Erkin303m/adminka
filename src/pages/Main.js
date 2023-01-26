@@ -77,21 +77,6 @@ export default function DashboardAppPage() {
               ]}
             />
           </Grid>
-
-          {/* <Grid item xs={12} md={6} lg={7}>
-            <AppConversionRates
-              title="Статус "
-              // subheader=""
-              chartData={[
-                { label: 'Отменено', value: 100 },
-                { label: 'Приехал ', value: 200 },
-                { label: 'Way ', value: get(data, 'status_way', '0') },
-                { label: 'Отправка ', value: get(data, 'status_sending', '0') },
-                { label: 'Sending ', value: get(data, 'status_sending', '0') },
-                { label: 'Workers count', value: get(data, 'workers_count', '0') },
-              ]}
-            />
-          </Grid> */}
         </Grid>
       </Container>
     </>
