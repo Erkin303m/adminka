@@ -3,19 +3,39 @@ import { Helmet } from 'react-helmet-async';
 import { Container, Stack, Typography } from '@mui/material';
 // components
 import './style.css';
-import { useState } from 'react';
+import { io } from 'socket.io-client';
+import { get } from 'lodash';
+import axios from 'axios';
 
 export default function MainChat(props) {
   const { route } = props;
-  console.log('main chat id=>', route.params.id);
+  const token = get(route, 'params.item', '');
 
-  // const [message, setMessage] = useState('');
-  const handleKeyDown = (event) => {
+  // const socket = io.connect('http://localhost:4000/');
+  // socket.on('Data', (data) => {
+  //   console.log(data);
+  // });
+
+  // socket.on('Temperature', (data) => {
+  //   console.log(data);
+  // });
+
+  // socket.emmit('Realtime', 'Realll');
+
+  const handleKeyDown = async (event) => {
     if (event.key === 'Enter') {
-      console.log(event.target.value);
-      event.target.value = '';
+      await axios
+        .post(`http://185.217.131.179:8888/api/v1/company/token/obtain/token=${token}`)
+        .then((ress) => {
+          console.log('login', ress);
+          event.target.value = '';
+        })
+        .catch((err) => {
+          console.log('sendData error', err);
+        });
     }
   };
+
   return (
     <>
       <Helmet>
