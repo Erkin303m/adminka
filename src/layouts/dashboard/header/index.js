@@ -1,5 +1,6 @@
+import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
-import { Box, Stack, AppBar, Toolbar } from '@mui/material';
+import { Box, Stack, AppBar, Toolbar, IconButton } from '@mui/material';
 import { get } from 'lodash';
 import { useSelector } from 'react-redux';
 
@@ -7,6 +8,7 @@ import { bgBlur } from '../../../utils/cssStyles';
 import AccountPopover from './AccountPopover';
 import LanguagePopover from './LanguagePopover';
 import './style.css';
+import Iconify from '../../../components/iconify';
 
 const NAV_WIDTH = 280;
 
@@ -29,8 +31,11 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
     padding: theme.spacing(0, 5),
   },
 }));
+Header.propTypes = {
+  onOpenNav: PropTypes.func,
+};
 
-export default function Header() {
+export default function Header({ onOpenNav }) {
   const cat = JSON.parse(localStorage.getItem('userData'));
   const data = useSelector((state) => state);
   return (
@@ -44,6 +49,16 @@ export default function Header() {
             sm: 1,
           }}
         >
+          <IconButton
+            onClick={onOpenNav}
+            sx={{
+              mr: 1,
+              color: 'text.primary',
+              display: { lg: 'none' },
+            }}
+          >
+            <Iconify icon="eva:menu-2-fill" />
+          </IconButton>
           <AccountPopover />
           <div>
             <p className="number">
