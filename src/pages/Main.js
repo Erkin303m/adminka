@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { get } from 'lodash';
 // sections
-import { AppCurrentVisits, AppConversionRates } from '../sections/@dashboard/app';
+import { AppCurrentVisits, AppConversionRates, AppWidgetSummary } from '../sections/@dashboard/app';
 
 export default function DashboardAppPage() {
   const theme = useTheme();
@@ -45,14 +45,48 @@ export default function DashboardAppPage() {
         </Typography>
 
         <Grid container spacing={3}>
+          <Grid item xs={12} sm={6} md={3}>
+            <AppWidgetSummary
+              title="Менеджеры"
+              total={get(data, 'managers', 0)}
+              icon={'material-symbols:domain-verification-rounded'}
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={3}>
+            <AppWidgetSummary
+              title="Диспетчеры"
+              total={get(data, 'dispetchers', 0)}
+              color="success"
+              icon={'material-symbols:phone-android-rounded'}
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={3}>
+            <AppWidgetSummary
+              title="Владельцы заказов"
+              total={get(data, 'order_owners', 0)}
+              color="warning"
+              icon={'material-symbols:person'}
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={3}>
+            <AppWidgetSummary
+              title="Водитель"
+              total={get(data, 'drivers', 0)}
+              color="error"
+              icon={'ic:outline-directions-car-filled'}
+            />
+          </Grid>
           <Grid item xs={12} md={6} lg={5}>
             <AppCurrentVisits
               title="Сотрудники"
               chartData={[
-                { label: 'Менеджеры', value: get(data, 'managers', '0') },
-                { label: 'Диспетчеры', value: get(data, 'dispetchers', '0') },
-                { label: 'Владельцы заказов', value: get(data, 'order_owners', '0') },
-                { label: 'Водитель', value: get(data, 'drivers', '0') },
+                { label: 'Менеджеры', value: get(data, 'managers', 0) },
+                { label: 'Диспетчеры', value: get(data, 'dispetchers', 0) },
+                { label: 'Владельцы заказов', value: get(data, 'order_owners', 0) },
+                { label: 'Водитель', value: get(data, 'drivers', 0) },
               ]}
               chartColors={[
                 '#20D82F',

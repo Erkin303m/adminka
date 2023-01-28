@@ -30,7 +30,8 @@ const TABLE_HEAD = [
   { id: 'drop', label: 'Падение места', alignRight: false },
   { id: 'role', label: 'Метод оплаты', alignRight: false },
   { id: 'isVerified', label: 'Проверено', alignRight: false },
-  { id: 'status', label: 'Статус', alignRight: false },
+  { id: 'date', label: 'Дата', alignRight: false },
+  { id: 'status', label: 'Status', alignRight: false },
 ];
 
 export default function UserPage() {
@@ -69,12 +70,6 @@ export default function UserPage() {
         Authorization: `Bearer ${get(cat, 'access', '')}`,
       },
     };
-
-    // const config = {
-    //   headers: {
-    //     Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc0NTM4MTc1LCJqdGkiOiJiOTVkM2I5ZTg1MTc0MmJhYjRlNDMwODQwMDEyNzVmNSIsInVzZXJfaWQiOjk4fQ.6ymXUWhM8mQxZiXV6dMOqhav2MBLpdWOJBylCTvvuIA`,
-    //   },
-    // };
 
     await axios
       .get(`http://185.217.131.179:8888/api/v1/company/order/`, config)
@@ -148,6 +143,7 @@ export default function UserPage() {
                         <TableCell align="center">{row.paymentMethod}</TableCell>
 
                         <TableCell align="center">{row.order_owner}</TableCell>
+                        <TableCell align="center">{row.created_at.slice(0, 10)}</TableCell>
 
                         <TableCell align="center">
                           <Label

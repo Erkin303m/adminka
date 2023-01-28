@@ -70,12 +70,6 @@ export default function UserPage() {
       },
     };
 
-    // const config = {
-    //   headers: {
-    //     Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc0NTM4MTc1LCJqdGkiOiJiOTVkM2I5ZTg1MTc0MmJhYjRlNDMwODQwMDEyNzVmNSIsInVzZXJfaWQiOjk4fQ.6ymXUWhM8mQxZiXV6dMOqhav2MBLpdWOJBylCTvvuIA`,
-    //   },
-    // };
-
     await axios
       .get(`http://185.217.131.179:8888/api/v1/company/order/`, config)
       .then((ress) => {

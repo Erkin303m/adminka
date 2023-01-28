@@ -10,6 +10,8 @@ import axios from 'axios';
 export default function MainChat(props) {
   const { route } = props;
   const token = get(route, 'params.item', '');
+  const cat = JSON.parse(localStorage.getItem('userData'));
+  console.log('mainChat', get(cat, 'data.role', ''));
 
   // const socket = io.connect('http://localhost:4000/');
   // socket.on('Data', (data) => {
@@ -42,10 +44,68 @@ export default function MainChat(props) {
         <title> Чат </title>
       </Helmet>
 
+      {get(cat, 'data.role', '') !== 'dispatcher' ? (
+        <Container>
+          <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+            <Typography variant="h4" gutterBottom>
+              Order owner
+            </Typography>
+          </Stack>
+
+          <Stack>
+            <div className="topUserCard">
+              <h1 className="word55">name</h1>
+              <p className="word55">+998914568585</p>
+            </div>
+          </Stack>
+
+          <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+            <div className="someCard">
+              <div className="mainMassageCard">
+                <div className="cardMassage1">
+                  <div className="colorCard1">
+                    <p>
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro eveniet eos fugit officiis illum
+                      totam! Animi at vel quos possimus distinctio recusandae dolore voluptas. Delectus, eum ut! Magnam,
+                      quaerat nesciunt.
+                    </p>
+                  </div>
+                </div>
+                <div className="cardMassage2">
+                  <div className="colorCard2">
+                    <p>asa</p>
+                  </div>
+                </div>
+                <div className="cardMassage1">
+                  <div className="colorCard1">
+                    <p>
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro eveniet eos fugit officiis illum
+                      totam! Animi at vel quos possimus distinctio recusandae dolore voluptas. Delectus, eum ut! Magnam,
+                      quaerat nesciunt.
+                    </p>
+                  </div>
+                </div>
+                <div className="cardMassage2">
+                  <div className="colorCard2">
+                    <p>asa</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Stack>
+
+          <Stack>
+            <div className="card333">
+              <input type="text" placeholder="Message..." className="input22" onKeyDown={handleKeyDown} />
+            </div>
+          </Stack>
+        </Container>
+      ) : null}
+
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Main Chat
+            Driver
           </Typography>
         </Stack>
 
@@ -59,6 +119,20 @@ export default function MainChat(props) {
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <div className="someCard">
             <div className="mainMassageCard">
+              <div className="cardMassage1">
+                <div className="colorCard1">
+                  <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro eveniet eos fugit officiis illum
+                    totam! Animi at vel quos possimus distinctio recusandae dolore voluptas. Delectus, eum ut! Magnam,
+                    quaerat nesciunt.
+                  </p>
+                </div>
+              </div>
+              <div className="cardMassage2">
+                <div className="colorCard2">
+                  <p>asa</p>
+                </div>
+              </div>
               <div className="cardMassage1">
                 <div className="colorCard1">
                   <p>

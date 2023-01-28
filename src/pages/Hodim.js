@@ -15,6 +15,7 @@ import {
 import axios from 'axios';
 import { sentenceCase } from 'change-case';
 import { get } from 'lodash';
+import swal from 'sweetalert';
 
 import { UserListHead } from '../sections/@dashboard/user';
 
@@ -54,6 +55,9 @@ export default function UserPage() {
   const cat = JSON.parse(localStorage.getItem('userData'));
 
   const sendData = async () => {
+    const formData = new FormData();
+    formData.append('myFile', avatar);
+
     const config = {
       headers: {
         Authorization: `Bearer ${get(cat, 'access', '')}`,
@@ -67,8 +71,8 @@ export default function UserPage() {
           last_name: lastName,
           middle_name: middleName,
           birthday,
-          // gender,
-          // avatar,
+          gender,
+          avatar: formData,
           experience,
           password_1: password1,
           password_2: password2,
@@ -79,6 +83,12 @@ export default function UserPage() {
       )
       .then((ress) => {
         console.log('success', ress);
+        swal({
+          title: "Hodim qo'shildi!",
+          icon: 'success',
+          dangerMode: false,
+          timer: 3000,
+        });
       })
       .catch((err) => {
         console.log('error', err);
@@ -150,7 +160,7 @@ export default function UserPage() {
         </div>
 
         <div className="card3">
-          <input type="file" placeholder="avatar" className="input2" onChange={(v) => setAvatar(v.target.value)} />
+          <input type="file" placeholder="avatar" className="input2" onChange={(v) => setAvatar(v.target.files[0])} />
         </div>
 
         <div className="card3">

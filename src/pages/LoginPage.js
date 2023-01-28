@@ -7,6 +7,7 @@ import { LoadingButton } from '@mui/lab';
 import axios from 'axios';
 import swal from 'sweetalert';
 import { useDispatch } from 'react-redux';
+import { get } from 'lodash';
 
 import Iconify from '../components/iconify';
 import useResponsive from '../hooks/useResponsive';
@@ -54,11 +55,26 @@ export default function LoginPage() {
         password,
       })
       .then((ress) => {
-        navigation('/dashboard/app');
-        localStorage.setItem('userData', JSON.stringify(ress.data));
         console.log('login', ress);
         // loginToScreen(ress.data.access);
         // window.location.reload(true);
+
+        if (
+          get(ress, 'data.data.role', '') === 'director' ||
+          get(ress, 'data.data.role', '') === 'manager' ||
+          get(ress, 'data.data.role', '') === 'dispatcher'
+        ) {
+          navigation('/dashboard/app');
+          localStorage.setItem('userData', JSON.stringify(ress.data));
+        } else {
+          swal({
+            title: 'Afsuski sizda kirish huquqi yoq!',
+            text: 'Bu sayt faqatgina kirish huquqi bor foydalanuvchilar uchun',
+            icon: 'warning',
+            dangerMode: false,
+            timer: 3000,
+          });
+        }
 
         const data = { type: 'ADD_USER', payload: ress.data };
         dispatch(data);
@@ -70,7 +86,7 @@ export default function LoginPage() {
           text: 'Tekshirib qaytadan tering',
           icon: 'error',
           dangerMode: true,
-          timer: 2000,
+          timer: 3000,
         });
       });
   };

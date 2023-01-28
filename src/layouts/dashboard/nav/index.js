@@ -12,6 +12,7 @@ import SvgColor from '../../../components/svg-color';
 import './style.css';
 
 const icon = (name) => <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />;
+const icon2 = (name) => <SvgColor src={`/assets/icons/${name}.svg`} sx={{ width: 1, height: 1 }} />;
 
 const NAV_WIDTH = 280;
 
@@ -60,7 +61,7 @@ export default function Nav({ openNav, onCloseNav }) {
             {
               title: 'Заявка',
               path: '/dashboard/user',
-              icon: icon('ic_user'),
+              icon: icon2('list'),
             },
             {
               title: 'Запрос',
@@ -70,12 +71,12 @@ export default function Nav({ openNav, onCloseNav }) {
             {
               title: 'Чат',
               path: '/dashboard/chat',
-              icon: icon('ic_blog'),
+              icon: icon2('chat'),
             },
             {
               title: 'Сотрудники',
               path: '/dashboard/xodim',
-              icon: icon('ic_blog'),
+              icon: icon('ic_user'),
             },
           ]}
         />
@@ -87,7 +88,7 @@ export default function Nav({ openNav, onCloseNav }) {
             {
               title: 'Заявка',
               path: '/dashboard/user',
-              icon: icon('ic_user'),
+              icon: icon2('list'),
             },
             {
               title: 'Запрос',
@@ -97,7 +98,7 @@ export default function Nav({ openNav, onCloseNav }) {
             {
               title: 'Чат',
               path: '/dashboard/chat',
-              icon: icon('ic_blog'),
+              icon: icon2('chat'),
             },
           ]}
         />
@@ -114,12 +115,12 @@ export default function Nav({ openNav, onCloseNav }) {
             {
               title: 'Заявка',
               path: '/dashboard/user',
-              icon: icon('ic_user'),
+              icon: icon2('list'),
             },
             {
               title: 'Чат',
               path: '/dashboard/chat',
-              icon: icon('ic_blog'),
+              icon: icon2('chat'),
             },
 
             // {
@@ -142,12 +143,12 @@ export default function Nav({ openNav, onCloseNav }) {
             {
               title: 'Заявка',
               path: '/dashboard/user',
-              icon: icon('ic_user'),
+              icon: icon2('list'),
             },
             {
               title: 'Чат',
               path: '/dashboard/chat',
-              icon: icon('ic_blog'),
+              icon: icon2('chat'),
             },
           ]}
         />
@@ -164,7 +165,7 @@ export default function Nav({ openNav, onCloseNav }) {
             {
               title: 'Заявка',
               path: '/dashboard/user',
-              icon: icon('ic_user'),
+              icon: icon2('list'),
             },
             {
               title: 'Запрос',

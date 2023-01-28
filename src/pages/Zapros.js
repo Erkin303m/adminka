@@ -134,7 +134,7 @@ export default function UserPage() {
         </div>
         <div className="card3">
           <input
-            type="text"
+            type="number"
             placeholder="Владелец заказа"
             className="input2"
             onChange={(v) => setOwner(v.target.value)}
@@ -165,7 +165,7 @@ export default function UserPage() {
             <option value="sending" />
             <option value="arrived" />
             <option value="way" />
-            <option value="approved" />
+            <option value="declined" />
           </datalist>
         </div>
 
@@ -193,7 +193,7 @@ export default function UserPage() {
 
         <div className="card3">
           <input
-            type="text"
+            type="number"
             placeholder="fullPayment"
             className="input2"
             onChange={(v) => setfullPayment(v.target.value)}
