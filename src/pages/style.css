@@ -148,3 +148,62 @@
 .card333 {
   display: flex;
 }
+.primary {
+  background-color: #2065d1;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  color: white;
+}
+
+.warning {
+  background-color: #eaea19;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  color: rgb(1, 1, 1);
+}
+
+.success {
+  background-color: #43ea19;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  color: rgb(1, 1, 1);
+}
+
+.error {
+  background-color: #e61616;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  color: rgb(255, 255, 255);
+}
+
+option:nth-child(1) {
+  background-color: white;
+  color: black;
+}
+option:nth-child(2) {
+  background-color: white;
+  color: black;
+}
+option:nth-child(3) {
+  background-color: white;
+  color: black;
+}
+option:nth-child(4) {
+  background-color: white;
+  color: black;
+}
+
+option:hover {
+  background-color: white !important;
+}
+/* select option:hover {
+  background-color: white;
+} */

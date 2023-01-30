@@ -1,40 +1,37 @@
 import { Helmet } from 'react-helmet-async';
-// @mui
-import { Container, Stack, Typography } from '@mui/material';
-// components
+import { Button, Container, Stack, Typography } from '@mui/material';
 import './style.css';
-import { io } from 'socket.io-client';
+// import { io } from 'socket.io-client';
+import socketIO from 'socket.io-client';
 import { get } from 'lodash';
 import axios from 'axios';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Iconify from '../components/iconify';
+
+// const socket = socketIO.connect('ws://185.217.131.179:8004');
 
 export default function MainChat(props) {
   const { route } = props;
-  const token = get(route, 'params.item', '');
+  const navigation = useNavigate();
   const cat = JSON.parse(localStorage.getItem('userData'));
-  console.log('mainChat', get(cat, 'data.role', ''));
 
-  // const socket = io.connect('http://localhost:4000/');
-  // socket.on('Data', (data) => {
-  //   console.log(data);
-  // });
+  const otherID = 4;
+  const myID = get(cat, 'data.id', '');
 
-  // socket.on('Temperature', (data) => {
-  //   console.log(data);
-  // });
+  // const socket = io(`ws://185.217.131.179:8004/chat/?token=${get(cat, 'access', '')}`);
 
-  // socket.emmit('Realtime', 'Realll');
-
-  const handleKeyDown = async (event) => {
+  const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      await axios
-        .post(`http://185.217.131.179:8888/api/v1/company/token/obtain/token=${token}`)
-        .then((ress) => {
-          console.log('login', ress);
-          event.target.value = '';
-        })
-        .catch((err) => {
-          console.log('sendData error', err);
-        });
+      console.log(event.target.value);
+      event.target.value = '';
+    }
+  };
+
+  const handleKeyDown2 = (event) => {
+    if (event.key === 'Enter') {
+      console.log(event.target.value);
+      event.target.value = '';
     }
   };
 
@@ -43,6 +40,13 @@ export default function MainChat(props) {
       <Helmet>
         <title> Чат </title>
       </Helmet>
+      <Container>
+        <Stack direction="row" alignItems="center" justifyContent="flex-end" mb={5}>
+          <Button variant="contained" onClick={() => navigation('/dashboard/chat')}>
+            Назад
+          </Button>
+        </Stack>
+      </Container>
 
       {get(cat, 'data.role', '') !== 'dispatcher' ? (
         <Container>
@@ -153,7 +157,7 @@ export default function MainChat(props) {
 
         <Stack>
           <div className="card333">
-            <input type="text" placeholder="Message..." className="input22" onKeyDown={handleKeyDown} />
+            <input type="text" placeholder="Message..." className="input22" onKeyDown={handleKeyDown2} />
           </div>
         </Stack>
       </Container>

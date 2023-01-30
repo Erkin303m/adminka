@@ -24,10 +24,17 @@ export default function UserPage() {
   const [countryPending, setCountryPending] = useState('');
   const [citySending, setCitySending] = useState('');
   const [cityPending, setCityPending] = useState('');
+  const [customs, setCustoms] = useState('');
 
   const cat = JSON.parse(localStorage.getItem('userData'));
 
   const sendData = async () => {
+    const fCustoms = customs.split('');
+    const ff = [];
+    for (let i = 0; i < fCustoms.length; i += 1) {
+      ff.push(parseInt(fCustoms[i], 10));
+    }
+
     const config = {
       headers: {
         Authorization: `Bearer ${get(cat, 'access', '')}`,
@@ -67,7 +74,7 @@ export default function UserPage() {
           order_weight: massa,
           order_info: info,
           status,
-          customs: [1, 2],
+          customs: ff,
           country,
           city,
           country_sending: countrySending,
@@ -170,6 +177,10 @@ export default function UserPage() {
         </div>
 
         <div className="card3">
+          <input type="number" placeholder="Customs" className="input2" onChange={(v) => setCustoms(v.target.value)} />
+        </div>
+
+        <div className="card3">
           <input type="text" placeholder="Страна" className="input2" onChange={(v) => setCuntry(v.target.value)} />
         </div>
 
@@ -234,10 +245,6 @@ export default function UserPage() {
             className="input2"
             onChange={(v) => setCityPending(v.target.value)}
           />
-        </div>
-
-        <div className="card3">
-          <h1> </h1>
         </div>
       </div>
       <Container>

@@ -16,6 +16,7 @@ import axios from 'axios';
 import { sentenceCase } from 'change-case';
 import { get } from 'lodash';
 import swal from 'sweetalert';
+import { useNavigate } from 'react-router-dom';
 
 import { UserListHead } from '../sections/@dashboard/user';
 
@@ -53,6 +54,7 @@ export default function UserPage() {
     sendWorkers();
   }, []);
   const cat = JSON.parse(localStorage.getItem('userData'));
+  const navigation = useNavigate();
 
   const sendData = async () => {
     const formData = new FormData();
@@ -244,12 +246,6 @@ export default function UserPage() {
                         <TableCell align="start">{get(row, 'phone_number', '')}</TableCell>
 
                         <TableCell align="start">{get(row, 'role', '')}</TableCell>
-
-                        {/* <TableCell align="center">
-                          <Label color={(row.status === 'sending' && 'success') || 'error'}>
-                            {sentenceCase(row.status)}
-                          </Label>
-                        </TableCell> */}
                       </TableRow>
                     );
                   })}

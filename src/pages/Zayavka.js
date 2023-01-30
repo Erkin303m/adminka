@@ -59,6 +59,7 @@ export default function UserPage() {
   const [mainData, setMainData] = useState([]);
   const navigation = useNavigate();
   const cat = JSON.parse(localStorage.getItem('userData'));
+  console.log(cat);
 
   useEffect(() => {
     sendData();
@@ -86,6 +87,24 @@ export default function UserPage() {
       return s.name.toLowerCase().includes(item.toLowerCase());
     });
     setMainData(a);
+  };
+
+  const changinStatus = async (item) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${get(cat, 'access', '')}`,
+      },
+    };
+
+    await axios
+      .get(`http://185.217.131.179:8888/api/v1/company/order/`, config)
+      .then((ress) => {
+        console.log('success changin status', ress);
+        // setMainData(get(ress, 'data.results', ''));
+      })
+      .catch((err) => {
+        console.log('error zayavka', err);
+      });
   };
 
   return (
@@ -146,16 +165,36 @@ export default function UserPage() {
                         <TableCell align="center">{row.created_at.slice(0, 10)}</TableCell>
 
                         <TableCell align="center">
-                          <Label
-                            color={
-                              (row.status === 'sending' && 'primary') ||
-                              (row.status === 'way' && 'warning') ||
-                              (row.status === 'arrived' && 'success') ||
-                              'error'
-                            }
-                          >
-                            {sentenceCase(row.status)}
-                          </Label>
+                          {get(cat, 'data.role', '') === 'dispatcher' ? (
+                            <Label
+                              color={
+                                (row.status === 'sending' && 'primary') ||
+                                (row.status === 'way' && 'warning') ||
+                                (row.status === 'arrived' && 'success') ||
+                                'error'
+                              }
+                            >
+                              {sentenceCase(row.status)}
+                            </Label>
+                          ) : (
+                            <select
+                              name="cars"
+                              id="cars"
+                              defaultValue={row.status}
+                              className={
+                                (row.status === 'sending' && 'primary') ||
+                                (row.status === 'way' && 'warning') ||
+                                (row.status === 'arrived' && 'success') ||
+                                'error'
+                              }
+                              onChange={(item) => changinStatus(item.target.value)}
+                            >
+                              <option value="sending">Sending</option>
+                              <option value="way">Way</option>
+                              <option value="arrived">Arrived</option>
+                              <option value="declined">Declined</option>
+                            </select>
+                          )}
                         </TableCell>
                       </TableRow>
                     );
