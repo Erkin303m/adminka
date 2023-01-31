@@ -95,9 +95,16 @@ export default function UserPage() {
         Authorization: `Bearer ${get(cat, 'access', '')}`,
       },
     };
+    const id = 13;
 
     await axios
-      .patch(`http://185.217.131.179:8888/api/v1/company/dashboard/manager/change_status/`, {}, config)
+      .post(
+        `http://185.217.131.179:8888/api/v1/company/dashboard/manager/${id}/status_change/`,
+        {
+          status: item,
+        },
+        config
+      )
       .then((ress) => {
         console.log('success changin status', ress);
         // setMainData(get(ress, 'data.results', ''));

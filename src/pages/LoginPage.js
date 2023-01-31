@@ -57,14 +57,15 @@ export default function LoginPage() {
       .then((ress) => {
         console.log('login', ress);
         // loginToScreen(ress.data.access);
-        // window.location.reload(true);
 
         if (get(ress, 'data.data.role', '') === 'director' || get(ress, 'data.data.role', '') === 'dispatcher') {
           navigation('/dashboard/app');
           localStorage.setItem('userData', JSON.stringify(ress.data));
+          window.location.reload(true);
         } else if (get(ress, 'data.data.role', '') === 'manager') {
           navigation('/dashboard/user');
           localStorage.setItem('userData', JSON.stringify(ress.data));
+          window.location.reload(true);
         } else {
           swal({
             title: 'Afsuski sizda kirish huquqi yoq!',

@@ -38,11 +38,24 @@ export default function MainChat() {
     if (event.key === 'Enter') {
       socket.send(
         JSON.stringify({
-          action: 'get_messages_by_room',
-          pk: 2,
-          request_id: 122322220,
-          page: 1,
-          page_size: 30,
+          action: 'send_message',
+          pk: 5,
+          request_id: 4,
+          senderId: 3,
+          username: 'Вы',
+          avatar: '',
+          content: event.target.value,
+          date: 'Sat Jan 28 2023',
+          timestamp: '2023-01-27T19:05:22.514Z',
+          system: false,
+          saved: true,
+          distributed: true,
+          seen: true,
+          deleted: false,
+          failure: true,
+          disableActions: false,
+          disableReactions: true,
+          reactions: null,
         })
       );
       setMyMessage(event.target.value);

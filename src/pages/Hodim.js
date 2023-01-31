@@ -74,7 +74,7 @@ export default function UserPage() {
           middle_name: middleName,
           birthday,
           gender,
-          avatar: formData,
+          // avatar: formData,
           experience,
           password_1: password1,
           password_2: password2,
