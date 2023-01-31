@@ -50,7 +50,7 @@ export default function LoginPage() {
 
   const sendData = async () => {
     await axios
-      .post(`http://185.217.131.179:8008/api/v1/company/token/obtain`, {
+      .post(`http://185.217.131.179:8888/api/v1/company/token/obtain`, {
         phone_number: login,
         password,
       })
@@ -59,12 +59,11 @@ export default function LoginPage() {
         // loginToScreen(ress.data.access);
         // window.location.reload(true);
 
-        if (
-          get(ress, 'data.data.role', '') === 'director' ||
-          get(ress, 'data.data.role', '') === 'manager' ||
-          get(ress, 'data.data.role', '') === 'dispatcher'
-        ) {
+        if (get(ress, 'data.data.role', '') === 'director' || get(ress, 'data.data.role', '') === 'dispatcher') {
           navigation('/dashboard/app');
+          localStorage.setItem('userData', JSON.stringify(ress.data));
+        } else if (get(ress, 'data.data.role', '') === 'manager') {
+          navigation('/dashboard/user');
           localStorage.setItem('userData', JSON.stringify(ress.data));
         } else {
           swal({
@@ -130,7 +129,7 @@ export default function LoginPage() {
             </Typography>
 
             <Typography variant="body2" sx={{ mb: 5 }}>
-              Don’t have an account?
+              Зарегистрируйтесь, если у вас нет учетной записи?
             </Typography>
 
             <>

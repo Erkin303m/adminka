@@ -1,29 +1,52 @@
 import { Helmet } from 'react-helmet-async';
 import { Button, Container, Stack, Typography } from '@mui/material';
 import './style.css';
-// import { io } from 'socket.io-client';
-import socketIO from 'socket.io-client';
+import { w3cwebsocket as Socket } from 'websocket';
 import { get } from 'lodash';
 import axios from 'axios';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Iconify from '../components/iconify';
 
-// const socket = socketIO.connect('ws://185.217.131.179:8004');
+export default function MainChat() {
+  const dispatcherID = 1;
 
-export default function MainChat(props) {
-  const { route } = props;
+  const [data1, setData1] = useState([]);
+  const [data2, setData2] = useState([]);
+  const [myMessage, setMyMessage] = useState('');
+  const [roomID, setRoomID] = useState(0);
+
   const navigation = useNavigate();
   const cat = JSON.parse(localStorage.getItem('userData'));
 
-  const otherID = 4;
-  const myID = get(cat, 'data.id', '');
+  const socket = new Socket(`ws://185.217.131.179:8004/chat/?token=${get(cat, 'access', '')}`);
 
-  // const socket = io(`ws://185.217.131.179:8004/chat/?token=${get(cat, 'access', '')}`);
+  useEffect(() => {
+    socket.onopen = (data) => {
+      console.log('ana ulandi', data);
+      setRoomID(get(data, 'roomId', 0));
+    };
+
+    socket.onmessage = (data) => {
+      const someData = JSON.parse(data.data);
+      console.log('Xabar keldi qaravor lichkaga', someData);
+      setData1(someData.data[0]);
+    };
+  }, []);
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      console.log(event.target.value);
+      socket.send(
+        JSON.stringify({
+          action: 'get_messages_by_room',
+          pk: 2,
+          request_id: 122322220,
+          page: 1,
+          page_size: 30,
+        })
+      );
+      setMyMessage(event.target.value);
+
       event.target.value = '';
     }
   };
@@ -68,30 +91,12 @@ export default function MainChat(props) {
               <div className="mainMassageCard">
                 <div className="cardMassage1">
                   <div className="colorCard1">
-                    <p>
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro eveniet eos fugit officiis illum
-                      totam! Animi at vel quos possimus distinctio recusandae dolore voluptas. Delectus, eum ut! Magnam,
-                      quaerat nesciunt.
-                    </p>
+                    <p>{get(data1, 'lastMessage.content', '')}222</p>
                   </div>
                 </div>
                 <div className="cardMassage2">
                   <div className="colorCard2">
-                    <p>asa</p>
-                  </div>
-                </div>
-                <div className="cardMassage1">
-                  <div className="colorCard1">
-                    <p>
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro eveniet eos fugit officiis illum
-                      totam! Animi at vel quos possimus distinctio recusandae dolore voluptas. Delectus, eum ut! Magnam,
-                      quaerat nesciunt.
-                    </p>
-                  </div>
-                </div>
-                <div className="cardMassage2">
-                  <div className="colorCard2">
-                    <p>asa</p>
+                    <p>{myMessage}</p>
                   </div>
                 </div>
               </div>

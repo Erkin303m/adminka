@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Stack, Button, Container, Typography } from '@mui/material';
 import axios from 'axios';
 import { get } from 'lodash';
+import swal from 'sweetalert';
 
 import Iconify from '../components/iconify';
 
@@ -86,9 +87,22 @@ export default function UserPage() {
       )
       .then((ress) => {
         console.log('success', ress);
+        swal({
+          title: 'Продукт успешно добавлен!',
+          text: 'Ознакомьтесь с добавленным товаром в разделе Заявки',
+          icon: 'success',
+          dangerMode: false,
+          timer: 3000,
+        });
       })
       .catch((err) => {
         console.log('error', err);
+        swal({
+          title: 'Информация введена неверно, проверьте интернет!',
+          icon: 'error',
+          dangerMode: true,
+          timer: 3000,
+        });
       });
   };
 
@@ -205,7 +219,7 @@ export default function UserPage() {
         <div className="card3">
           <input
             type="number"
-            placeholder="fullPayment"
+            placeholder="Полная оплата"
             className="input2"
             onChange={(v) => setfullPayment(v.target.value)}
           />
@@ -214,7 +228,7 @@ export default function UserPage() {
         <div className="card3">
           <input
             type="text"
-            placeholder="countrySending"
+            placeholder="Страна отправки"
             className="input2"
             onChange={(v) => setCountrySending(v.target.value)}
           />
@@ -223,7 +237,7 @@ export default function UserPage() {
         <div className="card3">
           <input
             type="text"
-            placeholder="countryPending"
+            placeholder="Страна ожидании"
             className="input2"
             onChange={(v) => setCountryPending(v.target.value)}
           />
@@ -232,7 +246,7 @@ export default function UserPage() {
         <div className="card3">
           <input
             type="text"
-            placeholder="citySending"
+            placeholder="Город отправки"
             className="input2"
             onChange={(v) => setCitySending(v.target.value)}
           />
@@ -241,7 +255,7 @@ export default function UserPage() {
         <div className="card3">
           <input
             type="text"
-            placeholder="cityPending"
+            placeholder="Город ожидании"
             className="input2"
             onChange={(v) => setCityPending(v.target.value)}
           />

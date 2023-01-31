@@ -97,7 +97,7 @@ export default function UserPage() {
     };
 
     await axios
-      .get(`http://185.217.131.179:8888/api/v1/company/order/`, config)
+      .patch(`http://185.217.131.179:8888/api/v1/company/dashboard/manager/change_status/`, {}, config)
       .then((ress) => {
         console.log('success changin status', ress);
         // setMainData(get(ress, 'data.results', ''));
@@ -128,7 +128,7 @@ export default function UserPage() {
         </Stack>
 
         <Card>
-          <input type="text" placeholder="Search" className="input3" onChange={(v) => search(v.target.value)} />
+          <input type="text" placeholder="Поиск" className="input3" onChange={(v) => search(v.target.value)} />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
@@ -148,15 +148,15 @@ export default function UserPage() {
                       <TableRow hover key={i} tabIndex={-1} s>
                         <TableCell padding="checkbox"> </TableCell>
 
-                        <TableCell component="th" scope="row" padding="none">
+                        <TableCell component="th" scope="row" padding="none" className="nameProduct">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Typography variant="subtitle2" noWrap>
-                              {row.name}
-                            </Typography>
+                            <p>{row.name}</p>
                           </Stack>
                         </TableCell>
 
-                        <TableCell align="center">{row.order_info}</TableCell>
+                        <TableCell align="center" className="nameProduct">
+                          {row.order_info}
+                        </TableCell>
 
                         <TableCell align="center">{row.drop_of_place}</TableCell>
                         <TableCell align="center">{row.paymentMethod}</TableCell>

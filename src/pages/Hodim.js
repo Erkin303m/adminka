@@ -86,7 +86,7 @@ export default function UserPage() {
       .then((ress) => {
         console.log('success', ress);
         swal({
-          title: "Hodim qo'shildi!",
+          title: 'Сотрудник присоединился!',
           icon: 'success',
           dangerMode: false,
           timer: 3000,
@@ -94,6 +94,12 @@ export default function UserPage() {
       })
       .catch((err) => {
         console.log('error', err);
+        swal({
+          title: 'Сотрудник не присоединился!',
+          icon: 'error',
+          dangerMode: true,
+          timer: 3000,
+        });
       });
   };
 
