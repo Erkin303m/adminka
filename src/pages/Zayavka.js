@@ -89,7 +89,7 @@ export default function UserPage() {
     setMainData(a);
   };
 
-  const changinStatus = async (item) => {
+  const changinStatus = async (item, i) => {
     const config = {
       headers: {
         Authorization: `Bearer ${get(cat, 'access', '')}`,
@@ -108,6 +108,9 @@ export default function UserPage() {
       .then((ress) => {
         console.log('success changin status', ress);
         // setMainData(get(ress, 'data.results', ''));
+        const a = [...mainData];
+        a[i].status = item;
+        setMainData(a);
       })
       .catch((err) => {
         console.log('error zayavka', err);
@@ -194,7 +197,7 @@ export default function UserPage() {
                                 (row.status === 'arrived' && 'success') ||
                                 'error'
                               }
-                              onChange={(item) => changinStatus(item.target.value)}
+                              onChange={(item) => changinStatus(item.target.value, i)}
                             >
                               <option value="sending">Sending</option>
                               <option value="way">Way</option>
