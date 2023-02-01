@@ -73,9 +73,10 @@ export default function UserPage() {
     };
 
     await axios
-      .get(`http://185.217.131.179:8888/api/v1/company/order/`, config)
+      .get(`http://185.217.131.179:8888/api/v1/company/order/?limit=10&offset=20`, config)
       .then((ress) => {
         setMainData(get(ress, 'data.results', ''));
+        console.log(ress.data);
       })
       .catch((err) => {
         console.log('error zayavka', err);
@@ -89,14 +90,13 @@ export default function UserPage() {
     setMainData(a);
   };
 
-  const changinStatus = async (item, i) => {
+  const changinStatus = async (item, i, row) => {
     const config = {
       headers: {
         Authorization: `Bearer ${get(cat, 'access', '')}`,
       },
     };
-    const id = 13;
-
+    const id = get(row, 'id', 0);
     await axios
       .post(
         `http://185.217.131.179:8888/api/v1/company/dashboard/manager/${id}/status_change/`,
@@ -197,7 +197,7 @@ export default function UserPage() {
                                 (row.status === 'arrived' && 'success') ||
                                 'error'
                               }
-                              onChange={(item) => changinStatus(item.target.value, i)}
+                              onChange={(item) => changinStatus(item.target.value, i, row)}
                             >
                               <option value="sending">Sending</option>
                               <option value="way">Way</option>

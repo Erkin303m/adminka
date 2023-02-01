@@ -17,6 +17,7 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { w3cwebsocket as Socket } from 'websocket';
 
 import Label from '../components/label';
 import Iconify from '../components/iconify';
@@ -37,6 +38,11 @@ export default function UserPage() {
   const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState('name');
+  const [mainData, setMainData] = useState([]);
+
+
+  const cat = JSON.parse(localStorage.getItem('userData'));
+
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -55,9 +61,7 @@ export default function UserPage() {
 
   const emptyRows = 1 > 0 ? Math.max(0, (1 + 0) * 5 - USERLIST.length) : 0;
 
-  const [mainData, setMainData] = useState([]);
   const navigation = useNavigate();
-  const cat = JSON.parse(localStorage.getItem('userData'));
 
   useEffect(() => {
     sendData();

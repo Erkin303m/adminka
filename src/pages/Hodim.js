@@ -13,17 +13,13 @@ import {
   TableContainer,
 } from '@mui/material';
 import axios from 'axios';
-import { sentenceCase } from 'change-case';
 import { get } from 'lodash';
 import swal from 'sweetalert';
-import { useNavigate } from 'react-router-dom';
 
 import { UserListHead } from '../sections/@dashboard/user';
 
 import USERLIST from '../_mock/user';
 import Scrollbar from '../components/scrollbar';
-
-import Label from '../components/label';
 
 import Iconify from '../components/iconify';
 
@@ -54,11 +50,11 @@ export default function UserPage() {
     sendWorkers();
   }, []);
   const cat = JSON.parse(localStorage.getItem('userData'));
-  const navigation = useNavigate();
 
   const sendData = async () => {
     const formData = new FormData();
     formData.append('myFile', avatar);
+    console.log(formData);
 
     const config = {
       headers: {
@@ -74,7 +70,7 @@ export default function UserPage() {
           middle_name: middleName,
           birthday,
           gender,
-          // avatar: formData,
+          avatar,
           experience,
           password_1: password1,
           password_2: password2,
@@ -164,7 +160,16 @@ export default function UserPage() {
         </div>
 
         <div className="card3">
-          <input type="text" placeholder="gender" className="input2" onChange={(v) => setGender(v.target.value)} />
+          <input
+            type="text"
+            placeholder="gender"
+            list="data4"
+            className="input2"
+            onChange={(v) => setGender(v.target.value)}
+          />
+          <datalist id="data4">
+            <option value="male" />
+          </datalist>
         </div>
 
         <div className="card3">
@@ -249,9 +254,9 @@ export default function UserPage() {
                           </Typography>
                         </Stack>
 
-                        <TableCell align="start">{get(row, 'phone_number', '')}</TableCell>
+                        <TableCell align="left">{get(row, 'phone_number', '')}</TableCell>
 
-                        <TableCell align="start">{get(row, 'role', '')}</TableCell>
+                        <TableCell align="left">{get(row, 'role', '')}</TableCell>
                       </TableRow>
                     );
                   })}
