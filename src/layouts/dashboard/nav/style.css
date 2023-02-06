@@ -3,7 +3,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* padding: 9px 10px; */
+  flex: 1;
+}
+
+@media only screen and (max-width: 600px) {
+  .navTop {
+    width: 280px;
+  }
+}
+.mainCard{
+height: 50vh;
 }
 .companyName2 {
   display: flex;
@@ -19,7 +28,7 @@
 }
 .mainScroolBar {
   display: flex;
-  flex-direction: row;
-  /* justify-content: space-between; */
-  align-items: flex-end;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }

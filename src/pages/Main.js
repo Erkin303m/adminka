@@ -56,7 +56,7 @@ export default function DashboardAppPage() {
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary
               title="Диспетчеры"
-              total={get(data, 'dispetchers', 0)}
+              total={get(data, 'dispetchers', 0) === 0 ? 1 : get(data, 'dispetchers', 0)}
               color="success"
               icon={'material-symbols:phone-android-rounded'}
             />
@@ -81,7 +81,7 @@ export default function DashboardAppPage() {
           </Grid>
           <Grid item xs={12} md={6} lg={5}>
             <AppCurrentVisits
-              title="Сотрудники"
+              title="Сотрудники и другие"
               chartData={[
                 { label: 'Менеджеры', value: get(data, 'managers', 0) },
                 { label: 'Диспетчеры', value: get(data, 'dispetchers', 0) },

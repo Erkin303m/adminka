@@ -24,7 +24,6 @@ import Scrollbar from '../components/scrollbar';
 import Iconify from '../components/iconify';
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'ID', alignRight: false },
   { id: 'company', label: 'Phone', alignRight: false },
   { id: 'drop', label: 'Role', alignRight: false },
 ];
@@ -235,24 +234,19 @@ export default function UserPage() {
       </Container>
 
       <Container>
-        <Card>
+        <Card sx={{ maxWidth: 600 }}>
           <input type="text" placeholder="Search" className="input3" onChange={(v) => search(v.target.value)} />
 
           <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
+            <TableContainer sx={{ maxWidth: 600 }}>
               <Table>
                 <UserListHead headLabel={TABLE_HEAD} rowCount={USERLIST.length} />
                 <TableBody>
                   {tableData.map((row, i) => {
                     return (
                       <TableRow hover key={i} tabIndex={-1} s>
-                        <TableCell padding="checkbox"> </TableCell>
 
-                        <Stack direction="row" alignItems="center" spacing={2}>
-                          <Typography variant="subtitle2" noWrap>
-                            {get(row, 'id', '')}
-                          </Typography>
-                        </Stack>
+                     
 
                         <TableCell align="left">{get(row, 'phone_number', '')}</TableCell>
 

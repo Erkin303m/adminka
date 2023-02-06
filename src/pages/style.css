@@ -29,14 +29,23 @@
   width: 300px;
   margin-bottom: 50px;
 }
-.input22 {
+
+.input222 {
   padding: 20px;
   font-size: 15px;
   border-radius: 10px;
   outline: 1px;
   border: 1px solid rgb(141, 141, 141);
-  flex: 1;
+  width: 130px;
   margin-bottom: 50px;
+}
+.input22 {
+  padding: 15px 20px;
+  font-size: 15px;
+  border-radius: 10px;
+  outline: 1px;
+  border: 1px solid rgb(141, 141, 141);
+  flex: 1;
 }
 
 .input333 {
@@ -80,13 +89,15 @@
 }
 .mainMassageCard {
   flex: 1;
-  height: 350px;
+  height: 370px;
   overflow: auto;
   padding: 20px 10px;
+
 }
 .someCard {
   display: flex;
   flex: 1;
+  height: 370px;
 }
 
 ::-webkit-scrollbar {
@@ -101,7 +112,7 @@
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #315796;
+  background: #0072c9;
 }
 
 /* Handle on hover */
@@ -112,29 +123,38 @@
 .cardMassage2 {
   display: flex;
   justify-content: flex-end;
+  margin-bottom: 10px;
 }
 
 .cardMassage1 {
   display: flex;
   justify-content: flex-start;
+  margin-bottom: 10px;
 }
 .colorCard1 {
-  background-color: #315796;
+  background-color: #e7e7e7;
   padding: 0 20px;
   border-radius: 10px;
-  color: white;
+  color: rgb(0, 0, 0);
   width: 400px;
 }
 
+.colorCard1:hover{
+  background-color: #dedede;
+}
+
+.colorCard2:hover{
+  background-color: #006cbe;
+}
 .colorCard2 {
-  background-color: rgb(66, 53, 255);
+  background-color: #0072c9;
   padding: 0 20px;
   border-radius: 10px;
   color: white;
   width: 400px;
 }
 .topUserCard {
-  background-color: #315796;
+  background-color: #0072c9;
   border-radius: 10px 10px 0 0;
   padding-left: 20px;
   padding-bottom: 10px;
@@ -147,6 +167,7 @@
 }
 .card333 {
   display: flex;
+  align-items: center;
 }
 .primary {
   background-color: #2065d1;
@@ -210,4 +231,119 @@ option:hover {
 
 .nameProduct {
   max-width: 100px;
+}
+.driverCard {
+  margin-bottom: 50px;
+}
+
+.zayavkaName {
+  padding-left: 15px;
+}
+
+.mainCenterWord {
+  padding: 20px 0;
+  text-align: center;
+}
+
+.mainCenterWord2 {
+  padding: 20px 0;
+  text-align: center;
+}
+.cardMAin {
+  margin-bottom: 20px;
+}
+
+.bigModalCard {
+  border-radius: 15px;
+  border: none;
+}
+
+.buttonNavigation {
+  width: 150px;
+}
+.cardMiniModal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.cardMiniModal3 {
+  display: flex;
+  align-items: center;
+}
+.country {
+  font-size: 19px;
+  font-weight: bold;
+  color: #263bb2;
+}
+.sum {
+  color: #257511;
+}
+.cardMiniModal2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgb(210, 210, 210);
+}
+.dateTitle {
+  margin-right: 40px;
+}
+.productNameTitle {
+  color: #606060;
+}
+.arrows{
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 30px;
+  padding-bottom: 10px;
+}
+.center{
+  text-align: center;
+}
+.big_card{
+  margin-top: 50px;
+}
+
+.yes{
+  padding: 0;
+  color: #1e9700;
+  font-size: 20px;
+  width: 10px;
+}
+
+.no{
+  padding: 0;
+  color: #970000;
+  font-size: 20px;
+}
+.nameCard2{
+  display: flex;
+  align-items: center;
+}
+
+.buttonBack{
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  color: #263bb2;
+  font-size: 20px;
+  margin-right: 30px;
+}
+
+.sendDataButton{
+  border-radius: 10px;
+  border: 2px solid #006cbe;
+  padding: 9px 20px;
+  margin-left: 10px;
+  color:#006cbe;
+  font-weight: bold;
+  font-size: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sendDataButton:hover{
+ background-color: #006cbe; 
+ color: white;
 }

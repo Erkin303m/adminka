@@ -58,12 +58,12 @@ export default function LoginPage() {
         console.log('login', ress);
         // loginToScreen(ress.data.access);
 
-        if (get(ress, 'data.data.role', '') === 'director' || get(ress, 'data.data.role', '') === 'dispatcher') {
+        if (get(ress, 'data.data.role', '') === 'director') {
           navigation('/dashboard/app');
           localStorage.setItem('userData', JSON.stringify(ress.data));
           window.location.reload(true);
-        } else if (get(ress, 'data.data.role', '') === 'manager') {
-          navigation('/dashboard/user');
+        }else if (get(ress, 'data.data.role', '') === 'manager' || get(ress, 'data.data.role', '') === 'dispatcher') {
+          navigation('/dashboard/products');
           localStorage.setItem('userData', JSON.stringify(ress.data));
           window.location.reload(true);
         } else {
