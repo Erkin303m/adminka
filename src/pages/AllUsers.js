@@ -50,6 +50,7 @@ export default function UserPage() {
       .get(`http://185.217.131.179:8888/api/v1/company/staff-create/?order_owner=order_owner`, config)
       .then((ress) => {
         setMainData2(get(ress, 'data.results', ''));
+        console.log('all users', get(ress, 'data.results', ''));
       })
       .catch((err) => {
         console.log('error zayavka', err);
@@ -65,7 +66,7 @@ export default function UserPage() {
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-          Общий список пользователей
+            Общий список пользователей
           </Typography>
         </Stack>
       </Container>
@@ -73,7 +74,7 @@ export default function UserPage() {
       <Container>
         <Card>
           <Typography variant="h6" className="mainCenterWord">
-          Пользователи
+            Пользователи
           </Typography>
           {/* <input type="text" placeholder="Search" className="input3" onChange={(v) => search(v.target.value)} /> */}
 
@@ -84,10 +85,10 @@ export default function UserPage() {
                 <TableBody>
                   {mainData2.map((row, i) => {
                     return (
-                      <TableRow hover key={i} tabIndex={-1} s>
+                      <TableRow hover key={i} tabIndex={-1} >
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Typography variant="subtitle2" className='zayavkaName' >
+                            <Typography variant="subtitle2" className="zayavkaName">
                               {row.id}
                             </Typography>
                           </Stack>
@@ -97,8 +98,6 @@ export default function UserPage() {
 
                         <TableCell align="left">{row.last_name}</TableCell>
                         <TableCell align="left">{row.phone_number}</TableCell>
-
-                     
                       </TableRow>
                     );
                   })}

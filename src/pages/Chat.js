@@ -55,7 +55,6 @@ export default function UserPage() {
   const [value, setValue] = useState(0);
 
   const cat = JSON.parse(localStorage.getItem('userData'));
-  console.log(cat);
   const socket = new Socket(`ws://185.217.131.179:8004/chat/?token=${get(cat, 'access', '')}`);
 
   const handleRequestSort = (event, property) => {
@@ -165,7 +164,6 @@ export default function UserPage() {
                 <Table>
                   <UserListHead
                     order={order}
-                    orderBy={orderBy}
                     headLabel={TABLE_HEAD}
                     rowCount={USERLIST.length}
                     numSelected={selected.length}
@@ -318,8 +316,9 @@ export default function UserPage() {
           </Card>
         ) : null}
 
+        <h1>Люди, которые писали раньше</h1>
+
         <Card>
-          <h1>Oldin yozishgan odamlar</h1>
           <input type="text" placeholder="Search Rooms" className="input3" onChange={(v) => search(v.target.value)} />
 
           <Scrollbar>
