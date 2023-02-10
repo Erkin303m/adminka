@@ -7,21 +7,15 @@ import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { BiArrowBack } from 'react-icons/bi';
 import { CiPaperplane } from 'react-icons/ci';
+import Swal from 'sweetalert2';
 
 export default function MainChat() {
   const location = useLocation();
   const navigation = useNavigate();
-  // console.log('Tanlangan User', get(location, 'state.item', 0));
-  // console.log('isWrited', get(location, 'state.isWrited', 0));
 
   const [myMessage, setMyMessage] = useState([]);
-  const [isWrited, setIsWrited] = useState(get(location, 'state.isWrited', 0));
   const [userId, setUserId] = useState(get(location, 'state.item', 0));
-  const [changingMessage, setChangingMessage] = useState('');
-  const [newUserId, setNewUserId] = useState(get(location, 'state.item.user', 0));
   const [mainID, setMainId] = useState(0);
-
-  const [once, setOnce] = useState(0);
 
   const cat = JSON.parse(localStorage.getItem('userData'));
 
@@ -34,26 +28,15 @@ export default function MainChat() {
       setMainId(get(location, 'state.item.users[1]._id', 0));
     }
     socket.onopen = () => {
-      if (isWrited === 1) {
-        socket.send(
-          JSON.stringify({
-            action: 'get_messages_by_room',
-            pk: userId.roomId,
-            request_id: 110055,
-            page: 1,
-            page_size: 30,
-          })
-        );
-      } else {
-        socket.send(
-          JSON.stringify({
-            action: 'create_room',
-            request_id: Math.random() * 1000000000,
-            members: [newUserId],
-            is_gruop: false,
-          })
-        );
-      }
+      socket.send(
+        JSON.stringify({
+          action: 'get_messages_by_room',
+          pk: userId.roomId,
+          request_id: 110055,
+          page: 1,
+          page_size: 30,
+        })
+      );
     };
     socket.onmessage = (data) => {
       const someData = JSON.parse(data.data);
@@ -68,17 +51,10 @@ export default function MainChat() {
           },
         ]);
       }
-      //  else if (get(someData, 'action', '') === '_delete_message') {
-      //   deleting()
-      // }
-      console.log('Xabar keldi', someData);
-      get(someData, 'action', '');
     };
   }, []);
 
-  console.log('mainID', mainID);
   const handleKeyDown = (event) => {
-    setOnce(1);
     if (event.key === 'Enter') {
       socket.send(
         JSON.stringify({
@@ -105,6 +81,22 @@ export default function MainChat() {
       event.target.value = '';
     }
   };
+
+  const isDeleting = (i) => {
+    Swal.fire({
+      title: 'Do you want to save the changes?',
+      showDenyButton: true,
+      confirmButtonText: 'Yes',
+      denyButtonText: `No`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleting(i);
+      } else if (result.isDenied) {
+        Swal.fire('Message is not deleted', '', 'info');
+      }
+    });
+  };
+
   const deleting = (i) => {
     socket.send(
       JSON.stringify({
@@ -114,11 +106,6 @@ export default function MainChat() {
         message_id: i,
       })
     );
-
-    // const a = [...myMessage];
-    // a.splice(i, 1);
-    // // setMyMessage(a);
-    // console.log("delet qilingan array",a.splice(i, 1))
   };
 
   return (
@@ -155,7 +142,7 @@ export default function MainChat() {
                       get(v, 'username', '') !== get(cat, 'data.phone_number', 0) ? 'cardMassage1' : 'cardMassage2'
                     }
                     key={i}
-                    onDoubleClick={() => deleting(i)}
+                    onDoubleClick={() => isDeleting(get(v, '_id', ''))}
                   >
                     <div
                       className={

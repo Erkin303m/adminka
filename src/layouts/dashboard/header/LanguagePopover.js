@@ -8,6 +8,11 @@ import './style.css';
 
 const LANGS = [
   {
+    value: 'us',
+    label: 'English',
+    url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Flag_of_Great_Britain_%281707%E2%80%931800%29.svg/2560px-Flag_of_Great_Britain_%281707%E2%80%931800%29.svg.png',
+  },
+  {
     value: 'ru',
     label: 'Русский',
     url: 'https://upload.wikimedia.org/wikipedia/en/thumb/f/f3/Flag_of_Russia.svg/800px-Flag_of_Russia.svg.png',
@@ -64,9 +69,9 @@ export default function LanguagePopover() {
         }}
       >
         <Stack spacing={0.75}>
-          {LANGS.map((option) => (
+          {LANGS.map((option,i) => (
             <MenuItem key={option.value} selected={option.value === LANGS[0].value} onClick={() => handleClose()}>
-              <img src={LANGS[0].url} alt={LANGS[0].label} className="imgFlag2" />
+              <img src={LANGS[i].url} alt={LANGS[i].label} className="imgFlag2" />
 
               {option.label}
             </MenuItem>

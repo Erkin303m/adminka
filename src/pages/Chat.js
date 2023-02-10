@@ -87,8 +87,13 @@ export default function UserPage() {
 
     socket.onmessage = (data) => {
       const someData = JSON.parse(data.data);
-      console.log('Oldin kim bilan yozishgan', get(someData, 'data', []));
-      setMainData3((pr) => [...pr, ...get(someData, 'data', [])]);
+      console.log('Oldin kim bilan yozishgan', someData);
+      if (get(someData, 'action') === 'rooms') {
+        setMainData3((pr) => [...pr, ...get(someData, 'data', [])]);
+      } else if (get(someData, 'action', '') === '_create_room') {
+        console.log('1111111111');
+        setMainData3((pr) => [...pr, get(someData, 'data', [])]);
+      }
     };
   }, [oneTouch]);
 
@@ -220,7 +225,7 @@ export default function UserPage() {
                           <TableCell align="left"> {get(row, 'user', '')}</TableCell>
 
                           <TableCell align="left">
-                            <Button onClick={() => createRoom(row.user)}>Начинать</Button>
+                            <Button onClick={() => createRoom(row.user)}>Create Room</Button>
                           </TableCell>
                         </TableRow>
                       );
@@ -295,7 +300,7 @@ export default function UserPage() {
                           <TableCell align="left">{row.user}</TableCell>
 
                           <TableCell align="left">
-                            <Button onClick={() => createRoom(row.user)}>Начинать</Button>
+                            <Button onClick={() => createRoom(row.user)}>Create Room</Button>
                           </TableCell>
                         </TableRow>
                       );
@@ -317,11 +322,7 @@ export default function UserPage() {
                             }}
                           >
                             <Typography variant="h6" paragraph>
-                              Не найден
-                            </Typography>
-
-                            <Typography variant="body2">
-                              Попробуйте проверить на опечатки или использовать полные слова.
+                              Not found
                             </Typography>
                           </Paper>
                         </TableCell>
@@ -362,7 +363,7 @@ export default function UserPage() {
                               navigation('/dashboard/mainChat', { state: { item: row, isWrited: 1 } });
                             }}
                           >
-                            Продолжать
+                            Chat
                           </Button>
                         </TableCell>
                       </TableRow>
