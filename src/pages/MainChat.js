@@ -19,16 +19,20 @@ export default function MainChat() {
   const [userId, setUserId] = useState(get(location, 'state.item', 0));
   const [changingMessage, setChangingMessage] = useState('');
   const [newUserId, setNewUserId] = useState(get(location, 'state.item.user', 0));
+  const [mainID, setMainId] = useState(0);
 
   const [once, setOnce] = useState(0);
 
   const cat = JSON.parse(localStorage.getItem('userData'));
 
-  console.log(newUserId, get(userId, 'lastMessage.senderId', 'id yoq'));
-
   const socket = new Socket(`ws://185.217.131.179:8004/chat/?token=${get(cat, 'access', '')}`);
 
   useEffect(() => {
+    if (get(location, 'state.item.users[0].phone_number', 0) !== get(cat, 'data.phone_number', 0)) {
+      setMainId(get(location, 'state.item.users[0]._id', 0));
+    } else {
+      setMainId(get(location, 'state.item.users[1]._id', 0));
+    }
     socket.onopen = () => {
       if (isWrited === 1) {
         socket.send(
@@ -64,35 +68,15 @@ export default function MainChat() {
           },
         ]);
       }
+      //  else if (get(someData, 'action', '') === '_delete_message') {
+      //   deleting()
+      // }
       console.log('Xabar keldi', someData);
       get(someData, 'action', '');
     };
   }, []);
 
-  const Allmesages = () => {
-    socket.send(
-      JSON.stringify({
-        action: 'get_messages_by_room',
-        pk: 1,
-        request_id: 1100,
-        page: 1,
-        page_size: 30,
-      })
-    );
-  };
-
-  // const createRoom = () => {
-  //   console.log(userId.user);
-  //   socket.send(
-  //     JSON.stringify({
-  //       action: 'create_room',
-  //       request_id: 88,
-  //       members: [userId.user],
-  //       is_gruop: false,
-  //     })
-  //   );
-  // };
-
+  console.log('mainID', mainID);
   const handleKeyDown = (event) => {
     setOnce(1);
     if (event.key === 'Enter') {
@@ -101,7 +85,7 @@ export default function MainChat() {
           action: 'send_message',
           pk: userId.roomId,
           request_id: Math.random() * 10000,
-          senderId: isWrited === 1 ? userId.lastMessage.senderId : newUserId,
+          senderId: mainID,
           username: 'Вы',
           avatar: '',
           content: event.target.value,
@@ -120,6 +104,21 @@ export default function MainChat() {
       );
       event.target.value = '';
     }
+  };
+  const deleting = (i) => {
+    socket.send(
+      JSON.stringify({
+        action: 'delete_message',
+        pk: userId.roomId,
+        request_id: 1675870270466,
+        message_id: i,
+      })
+    );
+
+    // const a = [...myMessage];
+    // a.splice(i, 1);
+    // // setMyMessage(a);
+    // console.log("delet qilingan array",a.splice(i, 1))
   };
 
   return (
@@ -152,21 +151,18 @@ export default function MainChat() {
               {myMessage.map((v, i) => {
                 return (
                   <div
-                    onFocus={() => {
-                      // myMessage.at(-1)===i+1 ? return true : return false
-                      return true;
-                    }}
                     className={
                       get(v, 'username', '') !== get(cat, 'data.phone_number', 0) ? 'cardMassage1' : 'cardMassage2'
                     }
                     key={i}
+                    onDoubleClick={() => deleting(i)}
                   >
                     <div
                       className={
                         get(v, 'username', '') !== get(cat, 'data.phone_number', 0) ? 'colorCard1' : 'colorCard2'
                       }
                     >
-                      <p>{get(v, 'content', '2')}</p>
+                      <p>{get(v, 'content', '')}</p>
                     </div>
                   </div>
                 );
@@ -184,7 +180,7 @@ export default function MainChat() {
               // onChange={(e) => setChangingMessage(e.target.value)}
               onKeyDown={(e) => handleKeyDown(e)}
             />
-            <button onClick={() => Allmesages(changingMessage)} className="sendDataButton">
+            <button onClick={() => console.log('send')} className="sendDataButton">
               <CiPaperplane />
             </button>
           </div>

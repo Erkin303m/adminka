@@ -3,10 +3,10 @@ import { Navigate, useRoutes } from 'react-router-dom';
 import DashboardLayout from './layouts/dashboard';
 //
 import BlogPage from './pages/BlogPage';
-import Zayavka2 from './pages/Zayavka2';
+import Zayavka2 from './pages/Zapros';
 import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
-import Zapros from './pages/Zapros2';
+import Zapros from './pages/Zayavka';
 import Main from './pages/Main';
 import Chat from './pages/Chat';
 import Xodim from './pages/Hodim';

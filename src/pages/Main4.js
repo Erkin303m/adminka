@@ -47,7 +47,6 @@ export default function UserPage() {
   const [mainData2, setMainData2] = useState([]);
   const [mainData, setMainData] = useState([]);
   const [driverIds, setDriverIds] = useState([]);
-  const [truckTypeData, setTruckTypeData] = useState([]);
   const [number1, setNumber1] = useState(0);
   const [number2, setNumber2] = useState(0);
   const [value, setValue] = useState(0);
@@ -80,7 +79,6 @@ export default function UserPage() {
     getOrderOwner(0);
     getTruck(0);
     getDriver();
-    getTruckType();
   }, []);
 
   const cat = JSON.parse(localStorage.getItem('userData'));
@@ -131,7 +129,7 @@ export default function UserPage() {
     };
     await axios
       .post(
-        `http://185.217.131.179:8888/api/v1/company/staff-create/`,
+        `http://185.217.131.179:8888/api/v1/company/dashboard/director/`,
         {
           first_name: username,
           last_name: lastName,
@@ -141,14 +139,14 @@ export default function UserPage() {
           avatar,
           experience,
           phone_number: phoneNumber,
-          password1,
-          password2,
-          code,
+          password_1:password1,
+          password_2:password2,
           role: 'order_owner',
         },
         config
       )
       .then((ress) => {
+        console.log(ress)
         swal({
           title: 'владельцев заказов успешно добавлен!',
           text: 'Ознакомьтесь с добавленным товаром в разделе Заявки',
@@ -185,23 +183,6 @@ export default function UserPage() {
       });
   };
 
-  const getTruckType = async () => {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${get(cat, 'access', '')}`,
-      },
-    };
-
-    await axios
-      .get(`http://185.217.131.179:8888/api/v1/company/truck/create/`, config)
-      .then((ress) => {
-        setTruckTypeData(get(ress, 'data.results', ''));
-        console.log('setTruckTypeData id', get(ress, 'data.results', ''));
-      })
-      .catch((err) => {
-        console.log('error zayavka', err);
-      });
-  };
 
   const createTruck = async () => {
     const config = {
@@ -221,6 +202,7 @@ export default function UserPage() {
           status: 'main',
         },
         config
+        
       )
       .then((ress) => {
         console.log('success', ress);
@@ -253,7 +235,7 @@ export default function UserPage() {
           <Typography variant="h4" gutterBottom>
             Главная страница
           </Typography>
-          <div className="cardFilter">
+          <Card className="cardFilter">
             <BottomNavigation
               showLabels
               value={value}
@@ -274,7 +256,7 @@ export default function UserPage() {
               <BottomNavigationAction label="Add" icon={<AiOutlinePlusCircle />} />
               <BottomNavigationAction label="List" icon={<BsList />} />
             </BottomNavigation>
-          </div>
+          </Card>
         </Stack>
       </Container>
 
@@ -367,10 +349,6 @@ export default function UserPage() {
                 className="input2"
                 onChange={(v) => setPassword2(v.target.value)}
               />
-            </div>
-
-            <div className="card3">
-              <input type="number" placeholder="Code" className="input2" onChange={(v) => setCode(v.target.value)} />
             </div>
 
             <div className="card3">{''}</div>

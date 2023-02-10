@@ -1,271 +1,611 @@
 import { Helmet } from 'react-helmet-async';
-import { filter } from 'lodash';
-import { sentenceCase } from 'change-case';
-import { useState } from 'react';
-// @mui
-import {
-  Card,
-  Table,
-  Stack,
-  Paper,
-  Button,
-  Popover,
-  TableRow,
-  MenuItem,
-  TableBody,
-  TableCell,
-  Container,
-  Typography,
-  IconButton,
-  TableContainer,
-  TablePagination,
-} from '@mui/material';
-// components
+import { useEffect, useState } from 'react';
+import { Stack, Button, Container, Typography } from '@mui/material';
+import axios from 'axios';
+import { get } from 'lodash';
+import swal from 'sweetalert';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { AiOutlineArrowRight, AiOutlineShoppingCart, AiOutlineDropbox, AiOutlineArrowLeft } from 'react-icons/ai';
+import { BiMoney, BiArrowBack } from 'react-icons/bi';
+
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
 import Label from '../components/label';
 import Iconify from '../components/iconify';
-import Scrollbar from '../components/scrollbar';
-// sections
-import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
-// mock
-import USERLIST from '../_mock/user';
 
-// ----------------------------------------------------------------------
-
-const TABLE_HEAD = [
-  { id: 'name', label: 'Название файла', alignRight: false },
-  { id: 'company', label: 'Номер договора', alignRight: false },
-  { id: 'role', label: 'Дата заключения ', alignRight: false },
-  { id: 'status', label: 'Статус', alignRight: false },
-  { id: '' },
+const TABLE_HEAD2 = [
+  { id: 'name', label: 'Имя', alignRight: false },
+  { id: 'company', label: 'Информация о заказе', alignRight: false },
+  { id: 'drop', label: 'Точка доставки', alignRight: false },
+  { id: 'date', label: 'Дата', alignRight: false },
+  { id: 'status', label: 'Status', alignRight: false },
 ];
-
-// ----------------------------------------------------------------------
-
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function applySortFilter(array, comparator, query) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  if (query) {
-    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
-  }
-  return stabilizedThis.map((el) => el[0]);
-}
-
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 export default function UserPage() {
-  const [open, setOpen] = useState(null);
+  const location = useLocation();
+  const navigation = useNavigate();
+  const cat = JSON.parse(localStorage.getItem('userData'));
 
-  const [page, setPage] = useState(0);
+  const [driver, setDriver] = useState(0);
+  const [truck, setTruck] = useState(0);
+  const [drivers, setDrivers] = useState([]);
+  const [manager, setManager] = useState(get(cat, 'data.id', 0));
+  const [message, setMessage] = useState('');
+  const [managerdata, setManagerdata] = useState([]);
+  const [orderID, setOrderID] = useState(get(location, 'state.id', 0));
 
-  const [order, setOrder] = useState('asc');
+  // **
+  const [open, setOpen] = useState(false);
+  const [dataModal, setDataModal] = useState({});
 
-  const [selected, setSelected] = useState([]);
+  // **
 
-  const [orderBy, setOrderBy] = useState('name');
+  console.log(cat);
 
-  const [filterName, setFilterName] = useState('');
+  // create order states
+  const [userName, setUserName] = useState('');
+  const [firstPayment, setFirstPayment] = useState('');
+  const [waiting, setWaiting] = useState('');
+  const [drop, setDrop] = useState('');
+  const [owner, setOwner] = useState('');
+  const [massa, setMassa] = useState('');
+  const [info, setInfo] = useState('');
+  const [status, setStatus] = useState('');
+  const [country, setCuntry] = useState('');
+  const [city, setCity] = useState('');
+  const [packages, setPackages] = useState('');
+  const [cash, setCash] = useState('');
+  const [fullPayment, setfullPayment] = useState('');
+  const [countrySending, setCountrySending] = useState('');
+  const [countryPending, setCountryPending] = useState('');
+  const [citySending, setCitySending] = useState('');
+  const [cityPending, setCityPending] = useState('');
+  const [customs, setCustoms] = useState('');
 
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  useEffect(() => {
+    // getDriver();
+    getDriver2();
+    getManager();
+    getTruck();
+  }, []);
 
-  const handleOpenMenu = (event) => {
-    setOpen(event.currentTarget);
+  const sendData = async () => {
+    console.log(truck, manager);
+    const config = {
+      headers: {
+        Authorization: `Bearer ${get(cat, 'access', '')}`,
+      },
+    };
+    await axios
+      .post(
+        `http://185.217.131.179:8888/api/v1/company/dashboard/manager/${orderID}/add_truck_to_order/`,
+        {
+          truck_type: truck,
+          manager,
+        },
+        config
+      )
+      .then((ress) => {
+        console.log('success', ress);
+        swal({
+          title: 'Продукт успешно добавлен!',
+          text: 'Ознакомьтесь с добавленным товаром в разделе Заявки',
+          icon: 'success',
+          dangerMode: false,
+          timer: 3000,
+        });
+      })
+      .catch((err) => {
+        console.log('error', err);
+        swal({
+          title: 'Информация введена неверно, проверьте интернет!',
+          icon: 'error',
+          dangerMode: true,
+          timer: 3000,
+        });
+      });
   };
 
-  const handleCloseMenu = () => {
-    setOpen(null);
+  const getTruck = async (id) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${get(cat, 'access', '')}`,
+      },
+    };
+    await axios
+      .get(`http://185.217.131.179:8888/api/v1/company/truck/create/?driver=${id}`, config)
+      .then((ress) => {
+        console.log('success getTruck', ress.data);
+        setDriver(get(ress, 'data.results[0].id', 0));
+      })
+      .catch((err) => {
+        console.log('error', err);
+      });
   };
 
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
+  const changeDriverLoaction = async () => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${get(cat, 'access', '')}`,
+      },
+    };
+    await axios
+      .post(
+        `http://185.217.131.179:8888/api/v1/company/dashboard/manager/${driver}/update_truck_location/`,
+        {
+          truck_location: message,
+        },
+        config
+      )
+      .then((ress) => {
+        console.log('success', ress);
+        swal({
+          title: 'Продукт успешно добавлен!',
+          text: 'Ознакомьтесь с добавленным товаром в разделе Заявки',
+          icon: 'success',
+          dangerMode: false,
+          timer: 3000,
+        });
+      })
+      .catch((err) => {
+        console.log('error', err);
+        swal({
+          title: 'Информация введена неверно, проверьте интернет!',
+          icon: 'error',
+          dangerMode: true,
+          timer: 3000,
+        });
+      });
   };
 
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
-      setSelected(newSelecteds);
-      return;
+  const getDriver = async () => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${get(cat, 'access', '')}`,
+      },
+    };
+
+    await axios
+      .get(`http://185.217.131.179:8888/api/v1/company/staff-create/?driver=driver`, config)
+      .then((ress) => {
+        setDrivers(get(ress, 'data.results'));
+        console.log('getDriver', get(ress, 'data.results'));
+      })
+      .catch((err) => {
+        console.log('error zayavka', err);
+      });
+  };
+
+  const createOrder = async () => {
+    const fCustoms = customs.split('');
+    const ff = [];
+    for (let i = 0; i < fCustoms.length; i += 1) {
+      ff.push(parseInt(fCustoms[i], 10));
     }
-    setSelected([]);
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${get(cat, 'access', '')}`,
+      },
+    };
+    await axios
+      .post(
+        `http://185.217.131.179:8888/api/v1/company/order/`,
+        {
+          name: userName,
+          packageMethod: packages,
+          paymentMethod: cash,
+          first_payment: firstPayment,
+          pending_of_place: waiting,
+          drop_of_place: drop,
+          order_owner: owner,
+          full_payment: fullPayment,
+          order_weight: massa,
+          order_info: info,
+          status,
+          customs: ff,
+          country,
+          city,
+          country_sending: countrySending,
+          country_pending: countryPending,
+          city_sending: citySending,
+          city_pending: cityPending,
+        },
+        config
+      )
+      .then((ress) => {
+        console.log('success', ress);
+        swal({
+          title: 'Продукт успешно добавлен!',
+          text: 'Ознакомьтесь с добавленным товаром в разделе Заявки',
+          icon: 'success',
+          dangerMode: false,
+          timer: 3000,
+        });
+      })
+      .catch((err) => {
+        console.log('error', err);
+        swal({
+          title: 'Информация введена неверно, проверьте интернет!',
+          icon: 'error',
+          dangerMode: true,
+          timer: 3000,
+        });
+      });
+  };
+  const getManager = async () => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${get(cat, 'access', '')}`,
+      },
+    };
+
+    await axios
+      .get(`http://185.217.131.179:8888/api/v1/company/staff-create/?manager=manager`, config)
+      .then((ress) => {
+        setManagerdata(get(ress, 'data.results', ''));
+      })
+      .catch((err) => {
+        console.log('error zayavka', err);
+      });
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+  const handleClose = () => setOpen(false);
+
+  const getDriver2 = async () => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${get(cat, 'access', '')}`,
+      },
+    };
+
+    await axios
+      .get(`http://185.217.131.179:8888/api/v1/company/truck/create/?status=sending`, config)
+      .then((ress) => {
+        setDrivers(get(ress, 'data.results'));
+        console.log('bosh turgan trucklar', get(ress, 'data.results'));
+      })
+      .catch((err) => {
+        console.log('error zayavka', err);
+      });
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setPage(0);
-    setRowsPerPage(parseInt(event.target.value, 10));
-  };
-
-  const handleFilterByName = (event) => {
-    setPage(0);
-    setFilterName(event.target.value);
-  };
-
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
-
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
-
-  const isNotFound = !filteredUsers.length && !!filterName;
+  console.log(driver);
 
   return (
     <>
       <Helmet>
-        <title> договоры</title>
+        <title>Заявка</title>
       </Helmet>
 
-      <Container>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-          <Typography variant="h4" gutterBottom>
-            bo'sh screen
-          </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-            Новый пользователь
-          </Button>
-        </Stack>
+      <div>
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style} className="bigModalCard">
+            <div className="cardMiniModal3">
+              <p className="dateTitle">{get(dataModal, 'created_at', '').slice(0, 10)}</p>
+              <Label
+                color={
+                  (get(dataModal, 'status', '') === 'sending' && 'primary') ||
+                  (get(dataModal, 'status', '') === 'way' && 'warning') ||
+                  (get(dataModal, 'status', '') === 'arrived' && 'success') ||
+                  'error'
+                }
+              >
+                {get(dataModal, 'status', '')}
+              </Label>
+            </div>
+            <div className="cardMiniModal">
+              <p className="country">{get(dataModal, 'city_pending', '')}</p>
+              <AiOutlineArrowRight />
+              <p className="country">{get(dataModal, 'city_sending', '')}</p>
+            </div>
+            <p className="sum">
+              <BiMoney /> {get(dataModal, 'full_payment', '')} USD
+            </p>
 
-        <Card>
-          <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
-
-          <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
-              <Table>
-                <UserListHead
-                  order={order}
-                  orderBy={orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
-                  numSelected={selected.length}
-                  onRequestSort={handleRequestSort}
-                  onSelectAllClick={handleSelectAllClick}
+            <div className="cardMiniModal2">
+              <p className="productNameTitle">
+                <AiOutlineShoppingCart /> {get(dataModal, 'name', '')}
+              </p>
+              <p className="productNameTitle">
+                <AiOutlineDropbox /> {get(dataModal, 'packageMethod', '')}
+              </p>
+            </div>
+            <p className="productNameTitle">{get(dataModal, 'customs[0].name', '')}</p>
+            <div className="card2">
+              <div className="card3">
+                <input
+                  type="text"
+                  placeholder="Drivers id"
+                  list="data"
+                  className="input222"
+                  onChange={(v) => setDriver(v.target.value)}
                 />
-                <TableBody>
-                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, i) => {
-                    const { id, name, role, status, company } = row;
-                    const selectedUser = selected.indexOf(name) !== -1;
-
-                    return (
-                      <TableRow hover key={id} tabIndex={-1} selected={selectedUser}>
-                        <TableCell padding="checkbox">{i + 1}</TableCell>
-
-                        <TableCell component="th" scope="row" padding="none">
-                          <Stack direction="row" alignItems="center" spacing={2}>
-                            <Typography variant="subtitle2" noWrap>
-                              {name}
-                            </Typography>
-                          </Stack>
-                        </TableCell>
-
-                        <TableCell align="left">{company}</TableCell>
-
-                        <TableCell align="left">{role}</TableCell>
-
-                        <TableCell align="left">
-                          <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
-                        </TableCell>
-
-                        <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
-                            <Iconify icon={'eva:more-vertical-fill'} />
-                          </IconButton>
-                        </TableCell>
-                      </TableRow>
-                    );
+                <datalist id="data">
+                  {drivers.map((v, i) => {
+                    return <option key={i} value={get(v, 'id', 0)} />;
                   })}
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )}
-                </TableBody>
+                </datalist>
+              </div>
+              <div className="card3">
+                <input
+                  type="text"
+                  placeholder="Location"
+                  className="input222"
+                  onChange={(v) => setMessage(v.target.value)}
+                />
+              </div>
+            </div>
+            <Container>
+              <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+                <Typography variant="h4" gutterBottom>
+                  {' '}
+                </Typography>
+                <Button
+                  variant="contained"
+                  startIcon={<Iconify icon="eva:plus-fill" />}
+                  onClick={() => changeDriverLoaction()}
+                >
+                  Новый адрес
+                </Button>
+              </Stack>
+            </Container>
+          </Box>
+        </Modal>
+      </div>
+      {/* pasdagi inputlar */}
 
-                {isNotFound && (
-                  <TableBody>
-                    <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                        <Paper
-                          sx={{
-                            textAlign: 'center',
-                          }}
-                        >
-                          <Typography variant="h6" paragraph>
-                            Not found
-                          </Typography>
+      {get(cat, 'data.role', '') === 'manager' || get(cat, 'data.role', '') === 'director' ? (
+        <>
+          <Container>
+            <button onClick={() => navigation('/dashboard/products')} className="buttonBack">
+              <BiArrowBack />
+            </button>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+              <div>
+                <Typography variant="h4" gutterBottom>
+                  Заявка
+                </Typography>
+                <Typography variant="p" gutterBottom>
+                  Теперь вы можете прикрепить один продукт к грузовику.
+                </Typography>
+              </div>
+            </Stack>
+          </Container>
 
-                          <Typography variant="body2">
-                            No results found for &nbsp;
-                            <strong>&quot;{filterName}&quot;</strong>.
-                            <br /> Try checking for typos or using complete words.
-                          </Typography>
-                        </Paper>
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                )}
-              </Table>
-            </TableContainer>
-          </Scrollbar>
+          <div className="card2">
+            <div className="card3">
+              <input
+                type="number"
+                placeholder="Order ID"
+                className="input2"
+                onChange={(v) => setOrderID(v.target.value)}
+                defaultValue={orderID}
+              />
+            </div>
 
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={USERLIST.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </Card>
-      </Container>
+            <div className="card3">
+              <input
+                type="number"
+                placeholder="Truck id"
+                list="data"
+                className="input2"
+                onChange={(v) => setTruck(v.target.value)}
+              />
+              <datalist id="data">
+                {drivers.map((v, i) => {
+                  return <option key={i} value={get(v, 'id', 0)} />;
+                })}
+              </datalist>
+            </div>
 
-      <Popover
-        open={Boolean(open)}
-        anchorEl={open}
-        onClose={handleCloseMenu}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-          sx: {
-            p: 1,
-            width: 140,
-            '& .MuiMenuItem-root': {
-              px: 1,
-              typography: 'body2',
-              borderRadius: 0.75,
-            },
-          },
-        }}
-      >
-        <MenuItem>
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-          Edit
-        </MenuItem>
+            <div className="card3">
+              <input
+                type="number"
+                placeholder="Manager"
+                defaultValue={manager}
+                className="input2"
+                onChange={(v) => setManager(v.target.value)}
+              />
+            </div>
+          </div>
+          <Container>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+              <Typography variant="h4" gutterBottom>
+                {' '}
+              </Typography>
+              <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => sendData()}>
+                Новый Запрос
+              </Button>
+            </Stack>
+          </Container>
+        </>
+      ) : (
+        <>
+          <div className="card2">
+            <div className="card3">
+              <input type="text" placeholder="Имя" className="input2" onChange={(v) => setUserName(v.target.value)} />
+            </div>
+            <div className="card3">
+              <input
+                type="text"
+                placeholder="Метод упаковки"
+                className="input2"
+                onChange={(v) => setPackages(v.target.value)}
+              />
+            </div>
 
-        <MenuItem sx={{ color: 'error.main' }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-          Delete
-        </MenuItem>
-      </Popover>
+            <div className="card3">
+              <input
+                type="number"
+                placeholder="Первый взнос"
+                className="input2"
+                onChange={(v) => setFirstPayment(v.target.value)}
+              />
+            </div>
+            <div className="card3">
+              <input
+                type="text"
+                placeholder="В ожидании места"
+                className="input2"
+                onChange={(v) => setWaiting(v.target.value)}
+              />
+            </div>
+
+            <div className="card3">
+              <input
+                type="text"
+                placeholder="Падение места"
+                className="input2"
+                onChange={(v) => setDrop(v.target.value)}
+              />
+            </div>
+            <div className="card3">
+              <input
+                type="number"
+                placeholder="Владелец заказа"
+                className="input2"
+                onChange={(v) => setOwner(v.target.value)}
+              />
+            </div>
+
+            <div className="card3">
+              <input
+                type="number"
+                placeholder="Вес заказа"
+                className="input2"
+                onChange={(v) => setMassa(v.target.value)}
+              />
+            </div>
+            <div className="card3">
+              <input
+                type="text"
+                placeholder="Информация о заказе"
+                className="input2"
+                onChange={(v) => setInfo(v.target.value)}
+              />
+            </div>
+
+            <div className="card3">
+              <input
+                type="text"
+                placeholder="Status"
+                list="data4"
+                className="input2"
+                onChange={(v) => setStatus(v.target.value)}
+              />
+              <datalist id="data4">
+                <option value="sending" />
+                <option value="arrived" />
+                <option value="way" />
+                <option value="declined" />
+              </datalist>
+            </div>
+
+            <div className="card3">
+              <input
+                type="number"
+                placeholder="Customs"
+                className="input2"
+                onChange={(v) => setCustoms(v.target.value)}
+              />
+            </div>
+
+            <div className="card3">
+              <input type="text" placeholder="Страна" className="input2" onChange={(v) => setCuntry(v.target.value)} />
+            </div>
+
+            <div className="card3">
+              <input type="text" placeholder="Город" className="input2" onChange={(v) => setCity(v.target.value)} />
+            </div>
+
+            <div className="card3">
+              <input
+                type="text"
+                placeholder="Payment"
+                list="data3"
+                className="input2"
+                onChange={(v) => setCash(v.target.value)}
+              />
+              <datalist id="data3">
+                <option value="cash" />
+                <option value="card" />
+              </datalist>
+            </div>
+
+            <div className="card3">
+              <input
+                type="number"
+                placeholder="Полная оплата"
+                className="input2"
+                onChange={(v) => setfullPayment(v.target.value)}
+              />
+            </div>
+
+            <div className="card3">
+              <input
+                type="text"
+                placeholder="Страна отправки"
+                className="input2"
+                onChange={(v) => setCountrySending(v.target.value)}
+              />
+            </div>
+
+            <div className="card3">
+              <input
+                type="text"
+                placeholder="Страна ожидании"
+                className="input2"
+                onChange={(v) => setCountryPending(v.target.value)}
+              />
+            </div>
+
+            <div className="card3">
+              <input
+                type="text"
+                placeholder="Город отправки"
+                className="input2"
+                onChange={(v) => setCitySending(v.target.value)}
+              />
+            </div>
+
+            <div className="card3">
+              <input
+                type="text"
+                placeholder="Город ожидании"
+                className="input2"
+                onChange={(v) => setCityPending(v.target.value)}
+              />
+            </div>
+          </div>
+
+          <Container>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+              <Typography variant="h4" gutterBottom>
+                {' '}
+              </Typography>
+              <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => createOrder()}>
+                Новый заказ
+              </Button>
+            </Stack>
+          </Container>
+        </>
+      )}
     </>
   );
 }

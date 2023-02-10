@@ -46,8 +46,8 @@ const TABLE_HEAD = [
 
 const TABLE_HEAD2 = [
   { id: 'name', label: 'Имя', alignRight: false },
-  { id: 'company', label: 'Информация о заказе', alignRight: false },
-  { id: 'drop', label: 'Точка доставки', alignRight: false },
+  { id: 'company', label: 'Driver', alignRight: false },
+  { id: 'drop', label: 'Location', alignRight: false },
   { id: 'date', label: 'Дата', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
 ];
@@ -69,7 +69,10 @@ export default function UserPage() {
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState('name');
   const [number1, setNumber1] = useState(0);
+  const [number2, setNumber2] = useState(0);
   const [message, setMessage] = useState('');
+  const [orderOwnerData, setOrderOwnerData] = useState([]);
+  const [truckData, setTruckData] = useState([]);
 
   const [driver, setDriver] = useState('');
   const [drivers, setDrivers] = useState([]);
@@ -92,9 +95,6 @@ export default function UserPage() {
   const emptyRows = 1 > 0 ? Math.max(0, (1 + 0) * 5 - USERLIST.length) : 0;
 
   const [mainData, setMainData] = useState([]);
-  const [mainData2, setMainData2] = useState([]);
-  const [mainData3, setMainData3] = useState([]);
-  const [mainData4, setMainData4] = useState([]);
 
   const [value, setValue] = useState(0);
 
@@ -102,81 +102,41 @@ export default function UserPage() {
   const cat = JSON.parse(localStorage.getItem('userData'));
 
   useEffect(() => {
-    getSending(0);
-    getWay(0);
-    getArrived(0);
-    getDeclined(0);
+    getOrderOwner(0);
+    getTruck(0);
     getDriver();
   }, []);
 
   // *****
-  const getSending = async (num) => {
+
+  const getOrderOwner = async (num) => {
     const config = {
       headers: {
         Authorization: `Bearer ${get(cat, 'access', '')}`,
       },
     };
-    // .get(`http://185.217.131.179:8888/api/v1/company/order/?limit=10&offset=20`, config)
-    // order/?status=declined=> alohida olib kelish uchun
     await axios
       .get(`http://185.217.131.179:8888/api/v1/company/order/?status=sending&limit=6&offset=${num}`, config)
       .then((ress) => {
-        setMainData(get(ress, 'data.results', ''));
-        console.log(ress.data);
+        setOrderOwnerData(get(ress, 'data.results', ''));
+        console.log('OrderOwnerData', ress.data);
       })
       .catch((err) => {
         console.log('error zayavka', err);
       });
   };
 
-  const getWay = async (num) => {
+  const getTruck = async (num) => {
     const config = {
       headers: {
         Authorization: `Bearer ${get(cat, 'access', '')}`,
       },
     };
-
     await axios
-      .get(`http://185.217.131.179:8888/api/v1/company/order/?status=way&limit=6&offset=${num}`, config)
+      .get(`http://185.217.131.179:8888/api/v1/company/truck/create/?status=sending&limit=6&offset=${num}`, config)
       .then((ress) => {
-        setMainData2(get(ress, 'data.results', ''));
-        console.log(ress.data);
-      })
-      .catch((err) => {
-        console.log('error zayavka', err);
-      });
-  };
-
-  const getArrived = async (num) => {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${get(cat, 'access', '')}`,
-      },
-    };
-
-    await axios
-      .get(`http://185.217.131.179:8888/api/v1/company/order/?status=arrived&limit=6&offset=${num}`, config)
-      .then((ress) => {
-        setMainData3(get(ress, 'data.results', ''));
-        console.log(ress.data);
-      })
-      .catch((err) => {
-        console.log('error zayavka', err);
-      });
-  };
-
-  const getDeclined = async (num) => {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${get(cat, 'access', '')}`,
-      },
-    };
-
-    await axios
-      .get(`http://185.217.131.179:8888/api/v1/company/order/?status=declined&limit=6&offset=${num}`, config)
-      .then((ress) => {
-        setMainData4(get(ress, 'data.results', ''));
-        console.log(ress.data);
+        setTruckData(get(ress, 'data.results', ''));
+        console.log('TruckData', ress.data);
       })
       .catch((err) => {
         console.log('error zayavka', err);
@@ -272,12 +232,58 @@ export default function UserPage() {
       });
   };
 
-  const yes = (row, i) => {
-    console.log(row, i);
+  const yes = async (row, i) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${get(cat, 'access', '')}`,
+      },
+    };
+    const id = get(row, 'id', 0);
+    await axios
+      .post(
+        `http://185.217.131.179:8888/api/v1/company/dashboard/manager/${id}/status_change/`,
+        {
+          status: 'main',
+        },
+        config
+      )
+      .then((ress) => {
+        console.log('success changin status', ress);
+        // setMainData(get(ress, 'data.results', ''));
+        const a = [...mainData];
+        a[i].status = 'main';
+        setMainData(a);
+      })
+      .catch((err) => {
+        console.log('error zayavka', err);
+      });
   };
 
-  const no = (row, i) => {
-    console.log(row, i);
+  const no = async (row, i) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${get(cat, 'access', '')}`,
+      },
+    };
+    const id = get(row, 'id', 0);
+    await axios
+      .post(
+        `http://185.217.131.179:8888/api/v1/company/dashboard/manager/${id}/status_change/`,
+        {
+          status: 'declined',
+        },
+        config
+      )
+      .then((ress) => {
+        console.log('success changin status', ress);
+        // setMainData(get(ress, 'data.results', ''));
+        const a = [...mainData];
+        a[i].status = 'declined';
+        setMainData(a);
+      })
+      .catch((err) => {
+        console.log('error', err);
+      });
   };
 
   const [open, setOpen] = useState(false);
@@ -291,34 +297,33 @@ export default function UserPage() {
   return (
     <>
       <Helmet>
-        <title> Запрос</title>
+        <title> Request</title>
       </Helmet>
 
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Запрос
+          Request
           </Typography>
-
-          <BottomNavigation
-            showLabels
-            value={value}
-            onChange={(event, newValue) => {
-              setValue(newValue);
-            }}
-          >
-            <BottomNavigationAction label="Ожидающий" />
-            <BottomNavigationAction label="В пути" />
-            <BottomNavigationAction label="Приехал" />
-            <BottomNavigationAction label="Отклоненный" />
-          </BottomNavigation>
+          <Card className="padding">
+            <BottomNavigation
+              showLabels
+              value={value}
+              onChange={(event, newValue) => {
+                setValue(newValue);
+              }}
+            >
+              <BottomNavigationAction label="Order owner" />
+              <BottomNavigationAction label="Truck" />
+            </BottomNavigation>
+          </Card>
         </Stack>
 
         {/* Sending */}
         {value === 0 ? (
           <Card>
-            <h1 className="center">Ожидающий</h1>
-            <input type="text" placeholder="Поиск" className="input3" onChange={(v) => search(v.target.value)} />
+            <h1 className="center">Waiting</h1>
+            {/* <input type="text" placeholder="Поиск" className="input3" onChange={(v) => search(v.target.value)} /> */}
             <Scrollbar>
               <TableContainer sx={{ minWidth: 800 }}>
                 <Table>
@@ -331,7 +336,7 @@ export default function UserPage() {
                     onSelectAllClick={handleSelectAllClick}
                   />
                   <TableBody>
-                    {mainData.map((row, i) => {
+                    {orderOwnerData.map((row, i) => {
                       return (
                         <TableRow hover key={i} tabIndex={-1} onDoubleClick={() => handleOpen(row)}>
                           <TableCell component="th" scope="row" padding="none" className="nameProduct">
@@ -373,9 +378,15 @@ export default function UserPage() {
                                 }
                                 onChange={(item) => changinStatus(item.target.value, i, row)}
                               >
-                                <option value="sending">Ожидающий</option>
-                                <option value="way">В пути</option>
-                                <option value="arrived">Приехал</option>
+                                <option disabled value="sending">
+                                  Ожидающий
+                                </option>
+                                <option disabled value="way">
+                                  В пути
+                                </option>
+                                <option disabled value="arrived">
+                                  Приехал
+                                </option>
                                 {row.status === 'declined' ? (
                                   <option disabled value="declined">
                                     Отклоненный
@@ -387,18 +398,12 @@ export default function UserPage() {
                             )}
                           </TableCell>
                           <TableCell align="left">
-                            {row.status === 'sending' ? (
-                              <Button
-                                variant="contained"
-                                onClick={() => navigation('/dashboard/user', { state: { id: row.id } })}
-                              >
-                                Связь
-                              </Button>
-                            ) : (
-                              <Button variant="contained" disabled>
-                                Связь
-                              </Button>
-                            )}
+                            <Button
+                              variant="contained"
+                              onClick={() => navigation('/dashboard/blog', { state: { id: row.id } })}
+                            >
+                              Связь
+                            </Button>
                           </TableCell>
 
                           <TableCell align="left">
@@ -419,7 +424,7 @@ export default function UserPage() {
                     )}
                   </TableBody>
 
-                  {mainData.length <= 0 && (
+                  {orderOwnerData.length <= 0 && (
                     <TableBody>
                       <TableRow>
                         <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -449,7 +454,7 @@ export default function UserPage() {
                   if (number1 > 0) {
                     const a = number1 - 6;
                     setNumber1((pr) => pr - 6);
-                    getSending(a);
+                    getOrderOwner(a);
                   }
                 }}
               >
@@ -459,7 +464,7 @@ export default function UserPage() {
                 onClick={() => {
                   const a = number1 + 6;
                   setNumber1((pr) => pr + 6);
-                  getSending(a);
+                  getOrderOwner(a);
                 }}
               >
                 <AiOutlineArrowRight />
@@ -467,12 +472,10 @@ export default function UserPage() {
             </div>
           </Card>
         ) : null}
-
-        {/* Way */}
 
         {value === 1 ? (
-          <Card className="big_card">
-            <h1 className="center">В пути</h1>
+          <Card>
+            <h1 className="center">Ожидающий</h1>
             <input type="text" placeholder="Поиск" className="input3" onChange={(v) => search(v.target.value)} />
             <Scrollbar>
               <TableContainer sx={{ minWidth: 800 }}>
@@ -486,7 +489,7 @@ export default function UserPage() {
                     onSelectAllClick={handleSelectAllClick}
                   />
                   <TableBody>
-                    {mainData2.map((row, i) => {
+                    {truckData.map((row, i) => {
                       return (
                         <TableRow hover key={i} tabIndex={-1} onDoubleClick={() => handleOpen(row)}>
                           <TableCell component="th" scope="row" padding="none" className="nameProduct">
@@ -496,38 +499,61 @@ export default function UserPage() {
                           </TableCell>
 
                           <TableCell align="left" className="nameProduct">
-                            {row.order_info}
+                            {row.driver.first_name}
                           </TableCell>
 
-                          <TableCell align="left">{row.drop_of_place}</TableCell>
+                          <TableCell align="left">{row.truck_location}</TableCell>
 
                           <TableCell align="left">{row.created_at.slice(0, 10)}</TableCell>
 
                           <TableCell align="left">
-                            <select
-                              name="cars2"
-                              id="cars2"
-                              defaultValue={row.status}
-                              className={
-                                (row.status === 'sending' && 'primary') ||
-                                (row.status === 'way' && 'warning') ||
-                                (row.status === 'arrived' && 'success') ||
-                                'error'
-                              }
-                              onChange={(item) => changinStatus(item.target.value, i, row)}
-                            >
-                              <option value="sending">Ожидающий</option>
-                              <option value="way">В пути</option>
-                              <option value="arrived">Приехал</option>
-                              {row.status === 'declined' ? (
-                                <option disabled value="declined">
-                                  Отклоненный
-                                </option>
-                              ) : (
-                                <option value="declined">Отклоненный</option>
-                              )}
-                            </select>
+                            {get(cat, 'data.role', '') === 'dispatcher' ? (
+                              <Label
+                                color={
+                                  (row.status === 'sending' && 'primary') ||
+                                  (row.status === 'way' && 'warning') ||
+                                  (row.status === 'arrived' && 'success') ||
+                                  'error'
+                                }
+                              >
+                                {sentenceCase(row.status)}
+                              </Label>
+                            ) : (
+                              <select
+                                name="cars"
+                                id="cars"
+                                disabled
+                                defaultValue={row.status}
+                                className={
+                                  (row.status === 'sending' && 'primary') ||
+                                  (row.status === 'way' && 'warning') ||
+                                  (row.status === 'arrived' && 'success') ||
+                                  'error'
+                                }
+                                onChange={(item) => changinStatus(item.target.value, i, row)}
+                              >
+                                <option value="sending">Ожидающий</option>
+                                <option value="way">В пути</option>
+                                <option value="arrived">Приехал</option>
+                                {row.status === 'declined' ? (
+                                  <option disabled value="declined">
+                                    Отклоненный
+                                  </option>
+                                ) : (
+                                  <option value="declined">Отклоненный</option>
+                                )}
+                              </select>
+                            )}
                           </TableCell>
+
+                          {/* <TableCell align="left">
+                            <Button className="yes" onClick={() => yes(row, i)}>
+                              <MdOutlineDone />
+                            </Button>
+                            <Button className="no" onClick={() => no(row, i)}>
+                              <RiDeleteBack2Line />
+                            </Button>
+                          </TableCell> */}
                         </TableRow>
                       );
                     })}
@@ -538,7 +564,7 @@ export default function UserPage() {
                     )}
                   </TableBody>
 
-                  {mainData.length <= 0 && (
+                  {truckData.length <= 0 && (
                     <TableBody>
                       <TableRow>
                         <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -565,10 +591,10 @@ export default function UserPage() {
             <div className="arrows">
               <Button
                 onClick={() => {
-                  if (number1 > 0) {
-                    const a = number1 - 6;
-                    setNumber1((pr) => pr - 6);
-                    getWay(a);
+                  if (number2 > 0) {
+                    const a = number2 - 6;
+                    setNumber2((pr) => pr - 6);
+                    getTruck(a);
                   }
                 }}
               >
@@ -576,240 +602,9 @@ export default function UserPage() {
               </Button>
               <Button
                 onClick={() => {
-                  const a = number1 + 6;
-                  setNumber1((pr) => pr + 6);
-                  getWay(a);
-                }}
-              >
-                <AiOutlineArrowRight />
-              </Button>
-            </div>
-          </Card>
-        ) : null}
-
-        {/* Arrived */}
-
-        {value === 2 ? (
-          <Card className="big_card">
-            <h1 className="center">Приехал</h1>
-            <input type="text" placeholder="Поиск" className="input3" onChange={(v) => search(v.target.value)} />
-            <Scrollbar>
-              <TableContainer sx={{ minWidth: 800 }}>
-                <Table>
-                  <UserListHead
-                    order={order}
-                    headLabel={TABLE_HEAD2}
-                    rowCount={USERLIST.length}
-                    numSelected={selected.length}
-                    onRequestSort={handleRequestSort}
-                    onSelectAllClick={handleSelectAllClick}
-                  />
-                  <TableBody>
-                    {mainData3.map((row, i) => {
-                      return (
-                        <TableRow hover key={i} tabIndex={-1} onDoubleClick={() => handleOpen(row)}>
-                          <TableCell component="th" scope="row" padding="none" className="nameProduct">
-                            <Stack direction="row" alignItems="center" spacing={2}>
-                              <p className="zayavkaName">{row.name}</p>
-                            </Stack>
-                          </TableCell>
-
-                          <TableCell align="left" className="nameProduct">
-                            {row.order_info}
-                          </TableCell>
-
-                          <TableCell align="left">{row.drop_of_place}</TableCell>
-
-                          <TableCell align="left">{row.created_at.slice(0, 10)}</TableCell>
-
-                          <TableCell align="left">
-                            <select
-                              name="cars3"
-                              id="cars3"
-                              defaultValue={row.status}
-                              className={
-                                (row.status === 'sending' && 'primary') ||
-                                (row.status === 'way' && 'warning') ||
-                                (row.status === 'arrived' && 'success') ||
-                                'error'
-                              }
-                              onChange={(item) => changinStatus(item.target.value, i, row)}
-                            >
-                              <option value="sending">Ожидающий</option>
-                              <option value="way">В пути</option>
-                              <option value="arrived">Приехал</option>
-                              {row.status === 'declined' ? (
-                                <option disabled value="declined">
-                                  Отклоненный
-                                </option>
-                              ) : (
-                                <option value="declined">Отклоненный</option>
-                              )}
-                            </select>
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                    {emptyRows > 0 && (
-                      <TableRow style={{ height: 53 * emptyRows }}>
-                        <TableCell colSpan={6} />
-                      </TableRow>
-                    )}
-                  </TableBody>
-
-                  {mainData.length <= 0 && (
-                    <TableBody>
-                      <TableRow>
-                        <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                          <Paper
-                            sx={{
-                              textAlign: 'center',
-                            }}
-                          >
-                            <Typography variant="h6" paragraph>
-                              Не найден
-                            </Typography>
-
-                            <Typography variant="body2">
-                              Попробуйте проверить на опечатки или использовать полные слова.
-                            </Typography>
-                          </Paper>
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  )}
-                </Table>
-              </TableContainer>
-            </Scrollbar>
-            <div className="arrows">
-              <Button
-                onClick={() => {
-                  if (number1 > 0) {
-                    const a = number1 - 6;
-                    setNumber1((pr) => pr - 6);
-                    getArrived(a);
-                  }
-                }}
-              >
-                <AiOutlineArrowLeft />
-              </Button>
-              <Button
-                onClick={() => {
-                  const a = number1 + 6;
-                  setNumber1((pr) => pr + 6);
-                  getArrived(a);
-                }}
-              >
-                <AiOutlineArrowRight />
-              </Button>
-            </div>
-          </Card>
-        ) : null}
-
-        {/* Declined */}
-
-        {value === 3 ? (
-          <Card className="big_card">
-            <h1 className="center">Отклоненный</h1>
-            <input type="text" placeholder="Поиск" className="input3" onChange={(v) => search(v.target.value)} />
-            <Scrollbar>
-              <TableContainer sx={{ minWidth: 800 }}>
-                <Table>
-                  <UserListHead
-                    order={order}
-                    headLabel={TABLE_HEAD2}
-                    rowCount={USERLIST.length}
-                    numSelected={selected.length}
-                    onRequestSort={handleRequestSort}
-                    onSelectAllClick={handleSelectAllClick}
-                  />
-                  <TableBody>
-                    {mainData4.map((row, i) => {
-                      return (
-                        <TableRow hover key={i} tabIndex={-1} onDoubleClick={() => handleOpen(row)}>
-                          <TableCell component="th" scope="row" padding="none" className="nameProduct">
-                            <Stack direction="row" alignItems="center" spacing={2}>
-                              <p className="zayavkaName">{row.name}</p>
-                            </Stack>
-                          </TableCell>
-
-                          <TableCell align="left" className="nameProduct">
-                            {row.order_info}
-                          </TableCell>
-
-                          <TableCell align="left">{row.drop_of_place}</TableCell>
-
-                          <TableCell align="left">{row.created_at.slice(0, 10)}</TableCell>
-
-                          <TableCell align="left">
-                            <select
-                              name="cars4"
-                              id="cars4"
-                              defaultValue={row.status}
-                              className={
-                                (row.status === 'sending' && 'primary') ||
-                                (row.status === 'way' && 'warning') ||
-                                (row.status === 'arrived' && 'success') ||
-                                'error'
-                              }
-                              onChange={(item) => changinStatus(item.target.value, i, row)}
-                            >
-                              <option disabled value="declined">
-                                Отклоненный
-                              </option>
-                            </select>
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                    {emptyRows > 0 && (
-                      <TableRow style={{ height: 53 * emptyRows }}>
-                        <TableCell colSpan={6} />
-                      </TableRow>
-                    )}
-                  </TableBody>
-
-                  {mainData.length <= 0 && (
-                    <TableBody>
-                      <TableRow>
-                        <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                          <Paper
-                            sx={{
-                              textAlign: 'center',
-                            }}
-                          >
-                            <Typography variant="h6" paragraph>
-                              Не найден
-                            </Typography>
-
-                            <Typography variant="body2">
-                              Попробуйте проверить на опечатки или использовать полные слова.
-                            </Typography>
-                          </Paper>
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  )}
-                </Table>
-              </TableContainer>
-            </Scrollbar>
-            <div className="arrows">
-              <Button
-                onClick={() => {
-                  if (number1 > 0) {
-                    const a = number1 - 6;
-                    setNumber1((pr) => pr - 6);
-                    getDeclined(a);
-                  }
-                }}
-              >
-                <AiOutlineArrowLeft />
-              </Button>
-              <Button
-                onClick={() => {
-                  const a = number1 + 6;
-                  setNumber1((pr) => pr + 6);
-                  getDeclined(a);
+                  const a = number2 + 6;
+                  setNumber2((pr) => pr + 6);
+                  getTruck(a);
                 }}
               >
                 <AiOutlineArrowRight />

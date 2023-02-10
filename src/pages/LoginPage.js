@@ -61,15 +61,15 @@ export default function LoginPage() {
         if (get(ress, 'data.data.role', '') === 'director') {
           navigation('/dashboard/app');
           localStorage.setItem('userData', JSON.stringify(ress.data));
-          window.location.reload(true);
-        }else if (get(ress, 'data.data.role', '') === 'manager' || get(ress, 'data.data.role', '') === 'dispatcher') {
+          // window.location.reload(true);
+        } else if (get(ress, 'data.data.role', '') === 'manager' || get(ress, 'data.data.role', '') === 'dispatcher') {
           navigation('/dashboard/products');
           localStorage.setItem('userData', JSON.stringify(ress.data));
-          window.location.reload(true);
+          // window.location.reload(true);
         } else {
           swal({
-            title: 'Afsuski sizda kirish huquqi yoq!',
-            text: 'Bu sayt faqatgina kirish huquqi bor foydalanuvchilar uchun',
+            title: "Sorry, you don't have access!",
+            text: 'This site is for authorized users only',
             icon: 'warning',
             dangerMode: false,
             timer: 3000,
@@ -82,8 +82,8 @@ export default function LoginPage() {
       .catch((err) => {
         console.log('sendData error', err);
         swal({
-          title: 'Login yoki parol xato!',
-          text: 'Tekshirib qaytadan tering',
+          title: 'Login or password error!',
+          text: 'Check and try again',
           icon: 'error',
           dangerMode: true,
           timer: 3000,
@@ -91,24 +91,10 @@ export default function LoginPage() {
       });
   };
 
-  // const loginToScreen = (token) => {
-  //   const config = {
-  //     headers: {
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //   };
-  //   axios
-  //     .get('http://185.217.131.179:8888/company/company/me/', config)
-  //     .then((response) => {
-  //       console.log(response);
-  //     })
-  //     .catch((err) => console.log('err:', err));
-  // };
-
   return (
     <>
       <Helmet>
-        <title> Войти</title>
+        <title> Login</title>
       </Helmet>
 
       <StyledRoot>
@@ -117,7 +103,7 @@ export default function LoginPage() {
         {mdUp && (
           <StyledSection>
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Привет, добро пожаловать
+              Hi welcome
             </Typography>
             <img src="/assets/illustrations/illustration_login.png" alt="login" />
           </StyledSection>
@@ -126,19 +112,19 @@ export default function LoginPage() {
         <Container maxWidth="sm">
           <StyledContent>
             <Typography variant="h4" gutterBottom>
-              Войти
+              Sign in
             </Typography>
 
             <Typography variant="body2" sx={{ mb: 5 }}>
-              Зарегистрируйтесь, если у вас нет учетной записи?
+              Sign up if you don't have an account?
             </Typography>
 
             <>
               <Stack spacing={3}>
-                <TextField name="email" label="Номер телефона" onChange={(v) => setLogin(v.target.value)} />
+                <TextField name="email" label="Phone number" onChange={(v) => setLogin(v.target.value)} />
                 <TextField
                   name="password"
-                  label="Пароль"
+                  label="Password"
                   onChange={(v) => setPassword(v.target.value)}
                   type={showPassword ? 'text' : 'password'}
                   InputProps={{
@@ -160,7 +146,7 @@ export default function LoginPage() {
                 onClick={() => sendData()}
                 className="salom"
               >
-                Войти
+                Sign in
               </LoadingButton>
             </>
           </StyledContent>

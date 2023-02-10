@@ -347,3 +347,7 @@ option:hover {
  background-color: #006cbe; 
  color: white;
 }
+
+.padding{
+  padding: 0 10px;
+}

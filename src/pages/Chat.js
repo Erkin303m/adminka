@@ -22,6 +22,8 @@ import { useNavigate } from 'react-router-dom';
 import { AiFillCar } from 'react-icons/ai';
 import { BsFillPersonFill, BsPeopleFill } from 'react-icons/bs';
 import { w3cwebsocket as Socket } from 'websocket';
+import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 import Label from '../components/label';
 import Iconify from '../components/iconify';
@@ -131,6 +133,42 @@ export default function UserPage() {
     setMainData(a);
   };
 
+  const createRoom = (i) => {
+    socket.send(
+      JSON.stringify({
+        action: 'create_room',
+        request_id: Math.random() * 1000000000,
+        members: [i],
+        is_gruop: false,
+      })
+    );
+  };
+
+  const isDeleting = (i) => {
+    Swal.fire({
+      title: 'Do you want to save the changes?',
+      showDenyButton: true,
+      confirmButtonText: 'Yes',
+      denyButtonText: `No`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteItem(i);
+      } else if (result.isDenied) {
+        Swal.fire('Room is not deleted', '', 'info');
+      }
+    });
+  };
+
+  const deleteItem = (i) => {
+    socket.send(
+      JSON.stringify({
+        action: 'delete_room',
+        pk: i,
+        request_id: 1675870311523,
+      })
+    );
+  };
+
   return (
     <>
       <Helmet>
@@ -173,7 +211,7 @@ export default function UserPage() {
                   <TableBody>
                     {mainData.map((row, i) => {
                       return (
-                        <TableRow hover key={i} tabIndex={-1} s>
+                        <TableRow hover key={i} tabIndex={-1}>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
                               <Typography variant="subtitle2" className="zayavkaName">
@@ -190,11 +228,7 @@ export default function UserPage() {
                           <TableCell align="left">{row.user}</TableCell>
 
                           <TableCell align="left">
-                            <Button
-                              onClick={() => navigation('/dashboard/mainChat', { state: { item: row, isWrited: 0 } })}
-                            >
-                              Начинать
-                            </Button>
+                            <Button onClick={() => createRoom(row.user)}>Начинать</Button>
                           </TableCell>
                         </TableRow>
                       );
@@ -256,7 +290,7 @@ export default function UserPage() {
                   <TableBody>
                     {mainData2.map((row, i) => {
                       return (
-                        <TableRow hover key={i} tabIndex={-1} s>
+                        <TableRow hover key={i} tabIndex={-1}>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
                               <Typography variant="subtitle2" className="zayavkaName">
@@ -273,11 +307,7 @@ export default function UserPage() {
                           <TableCell align="left">{row.user}</TableCell>
 
                           <TableCell align="left">
-                            <Button
-                              onClick={() => navigation('/dashboard/mainChat', { state: { item: row, isWrited: 0 } })}
-                            >
-                              Начинать
-                            </Button>
+                            <Button onClick={() => createRoom(row.user)}>Начинать</Button>
                           </TableCell>
                         </TableRow>
                       );
@@ -335,7 +365,7 @@ export default function UserPage() {
                 <TableBody>
                   {mainData3.map((row, i) => {
                     return (
-                      <TableRow hover key={i} tabIndex={-1} s>
+                      <TableRow hover key={i} tabIndex={-1} onDoubleClick={() => isDeleting(row.roomId)}>
                         <TableCell align="left">{row.roomId}</TableCell>
                         <TableCell align="left">{row.roomName}</TableCell>
                         <TableCell align="left">
