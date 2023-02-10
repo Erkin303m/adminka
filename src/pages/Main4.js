@@ -290,7 +290,7 @@ export default function UserPage() {
       },
     };
     await axios
-      .put(
+      .patch(
         `http://185.217.131.179:8888/api/v1/company/truck/${id}`,
         {
           name: '',
