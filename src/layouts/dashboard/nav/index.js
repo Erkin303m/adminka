@@ -71,7 +71,7 @@ export default function Nav({ openNav, onCloseNav }) {
             {
               title: 'Main page',
               path: '/dashboard/main4',
-              icon: icon2('chat'),
+              icon: icon2('home'),
             },
             {
               title: 'Chat',

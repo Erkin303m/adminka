@@ -72,7 +72,6 @@ export default function LanguagePopover() {
           {LANGS.map((option,i) => (
             <MenuItem key={option.value} selected={option.value === LANGS[0].value} onClick={() => handleClose()}>
               <img src={LANGS[i].url} alt={LANGS[i].label} className="imgFlag2" />
-
               {option.label}
             </MenuItem>
           ))}
