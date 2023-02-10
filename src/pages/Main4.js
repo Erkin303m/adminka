@@ -57,6 +57,9 @@ export default function UserPage() {
   const [value, setValue] = useState(0);
   const [value2, setValue2] = useState(0);
 
+  const [truckEdit, setTruckEdit] = useState(0);
+  const [truckEditinID, setTruckEditinID] = useState(0);
+
   // order_owner add states
   const [username, setUserName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -190,37 +193,73 @@ export default function UserPage() {
         Authorization: `Bearer ${get(cat, 'access', '')}`,
       },
     };
-    await axios
-      .post(
-        `http://185.217.131.179:8888/api/v1/company/truck/create/`,
-        {
-          name,
-          power_truck: powerTruck,
-          driver,
-          truck_location: truckLocation,
-          truck_type: truckType,
-          status: 'main',
-        },
-        config
-      )
-      .then((ress) => {
-        swal({
-          title: 'Truck added successfully!',
-          // text: 'Ознакомьтесь с добавленным Truck',
-          icon: 'success',
-          dangerMode: false,
-          timer: 3000,
+
+    if (truckEdit === 0) {
+      await axios
+        .post(
+          `http://185.217.131.179:8888/api/v1/company/truck/create/`,
+          {
+            name,
+            power_truck: powerTruck,
+            driver,
+            truck_location: truckLocation,
+            truck_type: truckType,
+            status: 'main',
+          },
+          config
+        )
+        .then((ress) => {
+          swal({
+            title: 'Truck added successfully!',
+            // text: 'Ознакомьтесь с добавленным Truck',
+            icon: 'success',
+            dangerMode: false,
+            timer: 3000,
+          });
+        })
+        .catch((err) => {
+          console.log('error', err);
+          swal({
+            title: 'Information entered incorrectly, check the Internet!',
+            icon: 'error',
+            dangerMode: true,
+            timer: 3000,
+          });
         });
-      })
-      .catch((err) => {
-        console.log('error', err);
-        swal({
-          title: 'Information entered incorrectly, check the Internet!',
-          icon: 'error',
-          dangerMode: true,
-          timer: 3000,
+    } else {
+      await axios
+        .put(
+          `http://185.217.131.179:8888/api/v1/company/truck/${truckEditinID}/`,
+          {
+            name,
+            power_truck: powerTruck,
+            driver,
+            truck_location: truckLocation,
+            truck_type: truckType,
+            status: 'main',
+          },
+          config
+        )
+        .then((ress) => {
+          swal({
+            title: 'Truck edited successfully!',
+            icon: 'success',
+            dangerMode: false,
+            timer: 3000,
+          });
+        })
+        .catch((err) => {
+          console.log('error', err);
+          swal({
+            title: 'Not edited!',
+            icon: 'error',
+            dangerMode: true,
+            timer: 3000,
+          });
         });
-      });
+    }
+
+    setTruckEdit(0);
   };
 
   const deletingTruck = async (id) => {
@@ -231,13 +270,66 @@ export default function UserPage() {
     };
     await axios
       .delete(`http://185.217.131.179:8888/api/v1/company/truck/${id}`, config)
-      .then((ress) => {})
+      .then(() => {
+        swal({
+          title: 'Deleted successfully!',
+          icon: 'success',
+          dangerMode: false,
+          timer: 3000,
+        });
+      })
       .catch((err) => {
         console.log('error zayavka', err);
       });
   };
 
-  const editingTruck = (row) => {};
+  const editingTruck = async (id) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${get(cat, 'access', '')}`,
+      },
+    };
+    await axios
+      .put(
+        `http://185.217.131.179:8888/api/v1/company/truck/${id}`,
+        {
+          name: '',
+          power_truck: '',
+          driver: null,
+          avg_price: null,
+          truck_location: '',
+          truck_type: null,
+          status: null,
+        },
+        config
+      )
+      .then(() => {
+        swal({
+          title: 'Deleted successfully!',
+          icon: 'success',
+          dangerMode: false,
+          timer: 3000,
+        });
+      })
+      .catch((err) => {
+        console.log('error zayavka', err);
+      });
+  };
+
+  const isEdit = (row) => {
+    setTruckEditinID(get(row, 'id', 0));
+    setTruckEdit(1);
+    setValue(1);
+    setValue2(0);
+
+    setName(get(row, 'name', ''));
+    setPowerTruck(get(row, 'power_truck', ''));
+    setDriver(get(row, 'driver.id', ''));
+    setTruckLocation(get(row, 'truck_location', ''));
+    setTruckType(get(row, 'truck_type', ''));
+  };
+
+  console.log(mainData);
   return (
     <>
       <Helmet>
@@ -391,12 +483,19 @@ export default function UserPage() {
           </Card>
           <div className="card2">
             <div className="card3">
-              <input type="text" placeholder="Name" className="input2" onChange={(v) => setName(v.target.value)} />
+              <input
+                type="text"
+                placeholder="Name"
+                className="input2"
+                defaultValue={name}
+                onChange={(v) => setName(v.target.value)}
+              />
             </div>
             <div className="card3">
               <input
                 type="number"
                 placeholder="Load capacity"
+                defaultValue={powerTruck}
                 className="input2"
                 onChange={(v) => setPowerTruck(v.target.value)}
               />
@@ -407,6 +506,7 @@ export default function UserPage() {
                 type="number"
                 placeholder="Driver ID"
                 list="data4"
+                defaultValue={driver}
                 className="input2"
                 onChange={(v) => setDriver(v.target.value)}
               />
@@ -430,6 +530,7 @@ export default function UserPage() {
               <input
                 type="text"
                 placeholder="Truck location"
+                defaultValue={truckLocation}
                 className="input2"
                 onChange={(v) => setTruckLocation(v.target.value)}
               />
@@ -439,6 +540,7 @@ export default function UserPage() {
               <input
                 type="text"
                 placeholder="Truck type"
+                defaultValue={truckType}
                 className="input2"
                 onChange={(v) => setTruckType(v.target.value)}
               />
@@ -508,7 +610,7 @@ export default function UserPage() {
                           </Button>
                         </TableCell>
                         <TableCell align="left">
-                          <Button className="edit" onClick={() => editingTruck(row)}>
+                          <Button className="edit" onClick={() => isEdit(row)}>
                             <AiOutlineEdit />
                           </Button>
                         </TableCell>
