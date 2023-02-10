@@ -22,7 +22,6 @@ import { useNavigate } from 'react-router-dom';
 import { AiFillCar } from 'react-icons/ai';
 import { BsFillPersonFill, BsPeopleFill } from 'react-icons/bs';
 import { w3cwebsocket as Socket } from 'websocket';
-import swal from 'sweetalert';
 import Swal from 'sweetalert2';
 
 import Label from '../components/label';
@@ -53,6 +52,7 @@ export default function UserPage() {
   const [mainData, setMainData] = useState([]);
   const [mainData2, setMainData2] = useState([]);
   const [mainData3, setMainData3] = useState([]);
+  const [oneTouch, setOneTouch] = useState(0);
 
   const [value, setValue] = useState(0);
 
@@ -82,15 +82,15 @@ export default function UserPage() {
     getDriver();
     getOrderOwner();
     socket.onopen = (data) => {
-      console.log('ulanish: ', data);
+      socket.close = () => {};
     };
+
     socket.onmessage = (data) => {
       const someData = JSON.parse(data.data);
-      console.log('Oldin kim bilan yozishgan', someData);
-      setMainData3(get(someData, 'data', []));
+      console.log('Oldin kim bilan yozishgan', get(someData, 'data', []));
+      setMainData3((pr) => [...pr, ...get(someData, 'data', [])]);
     };
-    // socket.close = () => {};
-  }, []);
+  }, [oneTouch]);
 
   const getDriver = async () => {
     const config = {
@@ -126,14 +126,8 @@ export default function UserPage() {
       });
   };
 
-  const search = (item) => {
-    const a = mainData.filter((s) => {
-      return s.name.toLowerCase().includes(item.toLowerCase());
-    });
-    setMainData(a);
-  };
-
   const createRoom = (i) => {
+    setOneTouch(1);
     socket.send(
       JSON.stringify({
         action: 'create_room',
@@ -359,14 +353,12 @@ export default function UserPage() {
                 <TableBody>
                   {mainData3.map((row, i) => {
                     return (
-                      <TableRow hover key={i} tabIndex={-1} onDoubleClick={() => isDeleting(row.roomId)}>
-                        <TableCell align="left">{row.roomId}</TableCell>
-                        <TableCell align="left">{row.roomName}</TableCell>
+                      <TableRow hover key={i} tabIndex={-1} onDoubleClick={() => isDeleting(get(row, 'roomId', ''))}>
+                        <TableCell align="left">{get(row, 'roomId', '')}</TableCell>
+                        <TableCell align="left">{get(row, 'roomName', '')}</TableCell>
                         <TableCell align="left">
                           <Button
                             onClick={() => {
-                              // socket.onclose = () => {};
-
                               navigation('/dashboard/mainChat', { state: { item: row, isWrited: 1 } });
                             }}
                           >
@@ -383,7 +375,7 @@ export default function UserPage() {
                   )}
                 </TableBody>
 
-                {mainData2.length <= 0 && (
+                {mainData3.length <= 0 && (
                   <TableBody>
                     <TableRow>
                       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -393,11 +385,7 @@ export default function UserPage() {
                           }}
                         >
                           <Typography variant="h6" paragraph>
-                            Не найден
-                          </Typography>
-
-                          <Typography variant="body2">
-                            Попробуйте проверить на опечатки или использовать полные слова.
+                            Not Found
                           </Typography>
                         </Paper>
                       </TableCell>

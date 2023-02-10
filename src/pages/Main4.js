@@ -18,7 +18,14 @@ import {
 import axios from 'axios';
 import { get } from 'lodash';
 import { useNavigate } from 'react-router-dom';
-import { AiFillCar, AiOutlinePlusCircle, AiOutlineArrowRight, AiOutlineArrowLeft } from 'react-icons/ai';
+import {
+  AiFillCar,
+  AiOutlinePlusCircle,
+  AiOutlineArrowRight,
+  AiOutlineArrowLeft,
+  AiOutlineDelete,
+  AiOutlineEdit,
+} from 'react-icons/ai';
 
 import { BsFillPersonFill, BsList } from 'react-icons/bs';
 import swal from 'sweetalert';
@@ -34,6 +41,8 @@ const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
   { id: 'lastName', label: 'Truck location', alignRight: false },
   { id: 'number', label: 'Truck power', alignRight: false },
+  { id: 'edit', label: 'Edit', alignRight: false },
+  { id: 'delete', label: 'Delete', alignRight: false },
 ];
 
 const TABLE_HEAD2 = [
@@ -43,7 +52,6 @@ const TABLE_HEAD2 = [
   { id: 'number', label: 'Phone', alignRight: false },
 ];
 export default function UserPage() {
-  const navigation = useNavigate();
   const [mainData2, setMainData2] = useState([]);
   const [mainData, setMainData] = useState([]);
   const [driverIds, setDriverIds] = useState([]);
@@ -63,13 +71,11 @@ export default function UserPage() {
   const [phoneNumber, setPhoneNumber] = useState(0);
   const [password1, setPassword1] = useState('');
   const [password2, setPassword2] = useState('');
-  const [code, setCode] = useState('');
 
   // truck add states
   const [name, setName] = useState('');
   const [powerTruck, setPowerTruck] = useState('');
   const [driver, setDriver] = useState('');
-  const [avgPrice, setAvgPrice] = useState('');
   const [truckLocation, setTruckLocation] = useState('');
   const [truckType, setTruckType] = useState('');
 
@@ -149,8 +155,8 @@ export default function UserPage() {
       .then((ress) => {
         console.log(ress);
         swal({
-          title: 'владельцев заказов успешно добавлен!',
-          text: 'Ознакомьтесь с добавленным товаром в разделе Заявки',
+          title: 'Order owners added successfully!',
+          // text: 'Ознакомьтесь с добавленным товаром в разделе Заявки',
           icon: 'success',
           dangerMode: false,
           timer: 3000,
@@ -159,7 +165,7 @@ export default function UserPage() {
       .catch((err) => {
         console.log('error', err);
         swal({
-          title: 'Информация введена неверно, проверьте интернет!',
+          title: 'Information entered incorrectly, check the Internet!',
           icon: 'error',
           dangerMode: true,
           timer: 3000,
@@ -206,8 +212,8 @@ export default function UserPage() {
       .then((ress) => {
         console.log('success', ress);
         swal({
-          title: 'Truck успешно добавлен!',
-          text: 'Ознакомьтесь с добавленным Truck',
+          title: 'Truck added successfully!',
+          // text: 'Ознакомьтесь с добавленным Truck',
           icon: 'success',
           dangerMode: false,
           timer: 3000,
@@ -216,12 +222,32 @@ export default function UserPage() {
       .catch((err) => {
         console.log('error', err);
         swal({
-          title: 'Информация введена неверно, проверьте интернет!',
+          title: 'Information entered incorrectly, check the Internet!',
           icon: 'error',
           dangerMode: true,
           timer: 3000,
         });
       });
+  };
+
+  const deletingTruck = async (id) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${get(cat, 'access', '')}`,
+      },
+    };
+    await axios
+      .delete(`http://185.217.131.179:8888/api/v1/company/truck/${id}`, config)
+      .then((ress) => {
+        console.log('deletingTruck', get(ress, 'data', ''));
+      })
+      .catch((err) => {
+        console.log('error zayavka', err);
+      });
+  };
+
+  const editingTruck = (row) => {
+    
   };
   return (
     <>
@@ -487,6 +513,16 @@ export default function UserPage() {
 
                         <TableCell align="left">{row.truck_location}</TableCell>
                         <TableCell align="left">{row.power_truck}</TableCell>
+                        <TableCell align="left">
+                          <Button className="del" onClick={() => deletingTruck(row.id)}>
+                            <AiOutlineDelete />
+                          </Button>
+                        </TableCell>
+                        <TableCell align="left">
+                          <Button className="edit" onClick={() => editingTruck(row)}>
+                            <AiOutlineEdit />
+                          </Button>
+                        </TableCell>
                       </TableRow>
                     );
                   })}

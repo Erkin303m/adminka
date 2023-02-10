@@ -357,3 +357,15 @@ option:hover {
   padding: 30px 0 0 0;
   margin-top: 40px;
 }
+
+.del{
+  background-color: red;
+  color: white;
+  font-size: 20px;
+}
+
+.edit{
+  background-color: rgb(249, 249, 5);
+  color: black;
+  font-size: 20px;
+}

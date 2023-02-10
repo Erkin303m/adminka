@@ -416,7 +416,7 @@ export default function UserPage() {
                           <TableCell align="left">
                             <Button
                               variant="contained"
-                              onClick={() => navigation('/dashboard/blog', { state: { id: row.id } })}
+                              onClick={() => navigation('/dashboard/blog', { state: { id: row.id, truck: false } })}
                             >
                               Connect
                             </Button>
@@ -562,8 +562,9 @@ export default function UserPage() {
 
                           <TableCell align="left">
                             <Button
+                              disabled
                               variant="contained"
-                              onClick={() => navigation('/dashboard/blog', { state: { id: row.id } })}
+                              onClick={() => navigation('/dashboard/blog', { state: { id: row.id, truck: true } })}
                             >
                               Connect
                             </Button>

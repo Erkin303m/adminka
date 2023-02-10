@@ -27,7 +27,6 @@ export default function DashboardAppPage() {
       .get(`http://185.217.131.179:8888/api/v1/company/dashboard/director/`, config)
       .then((ress) => {
         setData(get(ress, 'data.statistics', []));
-        console.log('Main data', ress);
       })
       .catch((err) => {
         console.log('Main error', err);
@@ -56,7 +55,7 @@ export default function DashboardAppPage() {
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary
               title="Dispatchers"
-              total={get(data, 'dispetchers', 0) === 0 ? 1 : get(data, 'dispetchers', 0)}
+              total={get(data, 'dispetchers', 0)}
               color="success"
               icon={'material-symbols:phone-android-rounded'}
             />

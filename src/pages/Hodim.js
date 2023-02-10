@@ -27,6 +27,8 @@ const TABLE_HEAD = [
   { id: 'id', label: 'ID', alignRight: false },
   { id: 'company', label: 'Phone', alignRight: false },
   { id: 'drop', label: 'Role', alignRight: false },
+  { id: 'del', label: 'Del', alignRight: false },
+  // { id: 'edit', label: 'Edit', alignRight: false },
 ];
 
 export default function UserPage() {
@@ -116,14 +118,13 @@ export default function UserPage() {
       });
   };
 
-  const search = (item) => {
-    const a = mainData.filter((s) => {
-      return s.id.toLowerCase().includes(item.toLowerCase());
-    });
-    setMainData(a);
+  const del = (row) => {
+    console.log(row);
   };
 
-  console.log('tableData', tableData);
+  const edit = (row) => {
+    console.log(row);
+  };
   return (
     <>
       <Helmet>
@@ -154,6 +155,16 @@ export default function UserPage() {
                         <TableCell align="left">{get(row, 'phone_number', '')}</TableCell>
 
                         <TableCell align="left">{get(row, 'role', '')}</TableCell>
+                        <TableCell align="left">
+                          <Button variant="outlined" color="inherit" onClick={() => del(row)}>
+                            Del
+                          </Button>
+                        </TableCell>
+                        {/* <TableCell align="left">
+                          <Button variant="outlined" color="inherit" onClick={() => edit(row)}>
+                            Edit
+                          </Button>
+                        </TableCell> */}
                       </TableRow>
                     );
                   })}
@@ -164,102 +175,112 @@ export default function UserPage() {
         </Card>
       </Container>
 
-      <Card className='paddinTop'>
-      <div className="card2">
-        <div className="card3">
-          <input type="text" placeholder="Name" className="input2" onChange={(v) => setUserName(v.target.value)} />
-        </div>
-        <div className="card3">
-          <input type="text" placeholder="Last name" className="input2" onChange={(v) => setLastName(v.target.value)} />
-        </div>
+      <Card className="paddinTop">
+        <div className="card2">
+          <div className="card3">
+            <input type="text" placeholder="Name" className="input2" onChange={(v) => setUserName(v.target.value)} />
+          </div>
+          <div className="card3">
+            <input
+              type="text"
+              placeholder="Last name"
+              className="input2"
+              onChange={(v) => setLastName(v.target.value)}
+            />
+          </div>
 
-        <div className="card3">
-          <input
-            type="text"
-            placeholder="Middle name"
-            className="input2"
-            onChange={(v) => setMiddleName(v.target.value)}
-          />
-        </div>
+          <div className="card3">
+            <input
+              type="text"
+              placeholder="Middle name"
+              className="input2"
+              onChange={(v) => setMiddleName(v.target.value)}
+            />
+          </div>
 
-        <div className="card3">
-          <input type="date" placeholder="Date" className="input2" onChange={(v) => setBirthday(v.target.value)} />
-        </div>
+          <div className="card3">
+            <input type="date" placeholder="Date" className="input2" onChange={(v) => setBirthday(v.target.value)} />
+          </div>
 
-        <div className="card3">
-          <input
-            type="text"
-            placeholder="Gender"
-            list="data4"
-            className="input2"
-            onChange={(v) => setGender(v.target.value)}
-          />
-          <datalist id="data4">
-            <option value="male" />
-          </datalist>
-        </div>
+          <div className="card3">
+            <input
+              type="text"
+              placeholder="Gender"
+              list="data4"
+              className="input2"
+              onChange={(v) => setGender(v.target.value)}
+            />
+            <datalist id="data4">
+              <option value="male" />
+            </datalist>
+          </div>
 
-        <div className="card3">
-          <input type="file" placeholder="Avatar" className="input2" onChange={(v) => setAvatar(v.target.files[0])} />
-        </div>
+          <div className="card3">
+            <input type="file" placeholder="Avatar" className="input2" onChange={(v) => setAvatar(v.target.files[0])} />
+          </div>
 
-        <div className="card3">
-          <input
-            type="text"
-            placeholder="Experience"
-            className="input2"
-            onChange={(v) => setExperience(v.target.value)}
-          />
-        </div>
+          <div className="card3">
+            <input
+              type="text"
+              placeholder="Experience"
+              className="input2"
+              onChange={(v) => setExperience(v.target.value)}
+            />
+          </div>
 
-        <div className="card3">
-          <input
-            type="text"
-            placeholder="Role"
-            list="data"
-            className="input2"
-            onChange={(v) => setRole(v.target.value)}
-          />
-          <datalist id="data">
-            <option value="manager" />
-            <option value="dispatcher" />
-          </datalist>
-        </div>
+          <div className="card3">
+            <input
+              type="text"
+              placeholder="Role"
+              list="data"
+              className="input2"
+              onChange={(v) => setRole(v.target.value)}
+            />
+            <datalist id="data">
+              <option value="manager" />
+              <option value="dispatcher" />
+            </datalist>
+          </div>
 
-        <div className="card3">
-          <input
-            type="text"
-            placeholder="Password 1"
-            className="input2"
-            onChange={(v) => setPassword1(v.target.value)}
-          />
-        </div>
-        <div className="card3">
-          <input
-            type="text"
-            placeholder="Password 2"
-            className="input2"
-            onChange={(v) => setPassword2(v.target.value)}
-          />
-        </div>
+          <div className="card3">
+            <input
+              type="text"
+              placeholder="Password 1"
+              className="input2"
+              onChange={(v) => setPassword1(v.target.value)}
+            />
+          </div>
+          <div className="card3">
+            <input
+              type="text"
+              placeholder="Password 2"
+              className="input2"
+              onChange={(v) => setPassword2(v.target.value)}
+            />
+          </div>
 
-        <div className="card3">
-          <input type="text" placeholder="Phone number" className="input2" onChange={(v) => setPhone(v.target.value)} />
+          <div className="card3">
+            <input
+              type="text"
+              placeholder="Phone number"
+              className="input2"
+              onChange={(v) => setPhone(v.target.value)}
+            />
+          </div>
+          <div className="card3">
+            <h1> </h1>
+          </div>
         </div>
-        <div className="card3">
-          <h1> </h1>
-        </div>
-      </div>
-      <Container>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-          <Typography variant="h4" gutterBottom>
-            {' '}
-          </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => sendData()}>
-            New
-          </Button>
-        </Stack>
-      </Container>
+        <Container>
+          <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+            <Typography variant="h4" gutterBottom>
+              {' '}
+            </Typography>
+            <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => sendData()}>
+              New
+            </Button>
+          </Stack>
+        </Container>
       </Card>
     </>
   );

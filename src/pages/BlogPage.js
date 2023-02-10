@@ -43,14 +43,14 @@ export default function UserPage() {
   const [message, setMessage] = useState('');
   const [managerdata, setManagerdata] = useState([]);
   const [orderID, setOrderID] = useState(get(location, 'state.id', 0));
+  const [isTruck, setIsTruck] = useState(get(location, 'state.truck', ''));
+  const [order, setOrder] = useState([]);
 
   // **
   const [open, setOpen] = useState(false);
   const [dataModal, setDataModal] = useState({});
 
   // **
-
-  console.log(cat);
 
   // create order states
   const [userName, setUserName] = useState('');
@@ -77,6 +77,7 @@ export default function UserPage() {
     getDriver2();
     getManager();
     getTruck();
+    getOrder();
   }, []);
 
   const sendData = async () => {
@@ -86,6 +87,8 @@ export default function UserPage() {
         Authorization: `Bearer ${get(cat, 'access', '')}`,
       },
     };
+
+    // if(isTruck){}else{}
     await axios
       .post(
         `http://185.217.131.179:8888/api/v1/company/dashboard/manager/${orderID}/add_truck_to_order/`,
@@ -165,24 +168,6 @@ export default function UserPage() {
           dangerMode: true,
           timer: 3000,
         });
-      });
-  };
-
-  const getDriver = async () => {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${get(cat, 'access', '')}`,
-      },
-    };
-
-    await axios
-      .get(`http://185.217.131.179:8888/api/v1/company/staff-create/?driver=driver`, config)
-      .then((ress) => {
-        setDrivers(get(ress, 'data.results'));
-        console.log('getDriver', get(ress, 'data.results'));
-      })
-      .catch((err) => {
-        console.log('error zayavka', err);
       });
   };
 
@@ -280,12 +265,27 @@ export default function UserPage() {
       });
   };
 
-  console.log(driver);
+  const getOrder = async () => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${get(cat, 'access', '')}`,
+      },
+    };
+    await axios
+      .get(`http://185.217.131.179:8888/api/v1/company/order/?status=sendin`, config)
+      .then((ress) => {
+        setOrder(get(ress, 'data.results', ''));
+        console.log('getOrder', ress.data);
+      })
+      .catch((err) => {
+        console.log('error zayavka', err);
+      });
+  };
 
   return (
     <>
       <Helmet>
-        <title>Заявка</title>
+        <title>Application</title>
       </Helmet>
 
       <div>
@@ -361,7 +361,7 @@ export default function UserPage() {
                   startIcon={<Iconify icon="eva:plus-fill" />}
                   onClick={() => changeDriverLoaction()}
                 >
-                  Новый адрес
+                  New Location
                 </Button>
               </Stack>
             </Container>
@@ -370,7 +370,7 @@ export default function UserPage() {
       </div>
       {/* pasdagi inputlar */}
 
-      {get(cat, 'data.role', '') === 'manager' || get(cat, 'data.role', '') === 'director' ? (
+      {!isTruck ? (
         <>
           <Container>
             <button onClick={() => navigation('/dashboard/products')} className="buttonBack">
@@ -379,10 +379,10 @@ export default function UserPage() {
             <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
               <div>
                 <Typography variant="h4" gutterBottom>
-                  Заявка
+                  Application
                 </Typography>
                 <Typography variant="p" gutterBottom>
-                  Теперь вы можете прикрепить один продукт к грузовику.
+                  Now you can attach one product to the truck.
                 </Typography>
               </div>
             </Stack>
@@ -435,7 +435,71 @@ export default function UserPage() {
             </Stack>
           </Container>
         </>
-      ) : (
+      ) : null}
+
+      {isTruck ? (
+        <>
+          <Container>
+            <button onClick={() => navigation('/dashboard/products')} className="buttonBack">
+              <BiArrowBack />
+            </button>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+              <div>
+                <Typography variant="h4" gutterBottom>
+                  Application
+                </Typography>
+                <Typography variant="p" gutterBottom>
+                  Now you can attach one truck to a product.
+                </Typography>
+              </div>
+            </Stack>
+          </Container>
+
+          <div className="card2">
+            <div className="card3">
+              <input
+                type="number"
+                placeholder="Order ID"
+                className="input2"
+                onChange={(v) => setOrderID(v.target.value)}
+                defaultValue={orderID}
+              />
+            </div>
+
+            <select id="data" className="input222" onChange={(v) => setDriver(v.target.value)}>
+              {order.map((v, i) => {
+                return (
+                  <option key={i} value={get(v, 'id', 0)}>
+                    {get(v, 'name', 0)}
+                  </option>
+                );
+              })}
+            </select>
+
+            <div className="card3">
+              <input
+                type="number"
+                placeholder="Manager"
+                defaultValue={manager}
+                className="input2"
+                onChange={(v) => setManager(v.target.value)}
+              />
+            </div>
+          </div>
+          <Container>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+              <Typography variant="h4" gutterBottom>
+                {' '}
+              </Typography>
+              <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => sendData()}>
+                Новый Запрос
+              </Button>
+            </Stack>
+          </Container>
+        </>
+      ) : null}
+
+      {get(cat, 'data.role', '') === 'dispatcher' ? (
         <>
           <div className="card2">
             <div className="card3">
@@ -605,7 +669,7 @@ export default function UserPage() {
             </Stack>
           </Container>
         </>
-      )}
+      ) : null}
     </>
   );
 }
