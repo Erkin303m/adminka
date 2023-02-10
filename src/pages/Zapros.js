@@ -121,7 +121,6 @@ export default function UserPage() {
       .get(`http://185.217.131.179:8888/api/v1/company/order/?status=sending&limit=6&offset=${num}`, config)
       .then((ress) => {
         setOrderOwnerData(get(ress, 'data.results', ''));
-        console.log('OrderOwnerData', ress.data);
       })
       .catch((err) => {
         console.log('error zayavka', err);
@@ -138,20 +137,12 @@ export default function UserPage() {
       .get(`http://185.217.131.179:8888/api/v1/company/truck/create/?status=sending&limit=6&offset=${num}`, config)
       .then((ress) => {
         setTruckData(get(ress, 'data.results', ''));
-        console.log('TruckData', ress.data);
       })
       .catch((err) => {
         console.log('error zayavka', err);
       });
   };
   // *****
-
-  const search = (item) => {
-    const a = mainData.filter((s) => {
-      return s.name.toLowerCase().includes(item.toLowerCase());
-    });
-    setMainData(a);
-  };
 
   const changinStatus = async (item, i, row) => {
     const config = {
@@ -169,8 +160,6 @@ export default function UserPage() {
         config
       )
       .then((ress) => {
-        console.log('success changin status', ress);
-        // setMainData(get(ress, 'data.results', ''));
         const a = [...mainData];
         a[i].status = item;
         setMainData(a);
@@ -181,7 +170,6 @@ export default function UserPage() {
   };
 
   const changeDriverLoaction = async () => {
-    console.log(driver);
     const config = {
       headers: {
         Authorization: `Bearer ${get(cat, 'access', '')}`,
@@ -196,7 +184,6 @@ export default function UserPage() {
         config
       )
       .then((ress) => {
-        console.log('success', ress);
         swal({
           title: 'Продукт успешно добавлен!',
           text: 'Ознакомьтесь с добавленным товаром в разделе Заявки',
@@ -227,7 +214,6 @@ export default function UserPage() {
       .get(`http://185.217.131.179:8888/api/v1/company/staff-create/?driver=driver`, config)
       .then((ress) => {
         setDrivers(get(ress, 'data.results'));
-        console.log('getDriver', get(ress, 'data.results'));
       })
       .catch((err) => {
         console.log('error zayavka', err);
@@ -249,9 +235,7 @@ export default function UserPage() {
         },
         config
       )
-      .then((ress) => {
-        console.log('success changin status', ress);
-        // setMainData(get(ress, 'data.results', ''));
+      .then(() => {
         const a = [...mainData];
         a[i].status = 'main';
         setMainData(a);
@@ -283,9 +267,7 @@ export default function UserPage() {
         },
         config
       )
-      .then((ress) => {
-        console.log('success changin status', ress);
-        // setMainData(get(ress, 'data.results', ''));
+      .then(() => {
         const a = [...mainData];
         a[i].status = 'declined';
         setMainData(a);

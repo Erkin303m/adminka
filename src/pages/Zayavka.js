@@ -18,7 +18,6 @@ import {
 import axios from 'axios';
 import { get } from 'lodash';
 import swal from 'sweetalert';
-import { useLocation } from 'react-router-dom';
 import { AiOutlineArrowRight, AiOutlineShoppingCart, AiOutlineDropbox, AiOutlineArrowLeft } from 'react-icons/ai';
 import { BiMoney } from 'react-icons/bi';
 
@@ -45,6 +44,7 @@ const TABLE_HEAD3 = [
   { id: 'date', label: 'Date', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
 ];
+
 const style = {
   position: 'absolute',
   top: '50%',
@@ -56,15 +56,13 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+
 export default function UserPage() {
-  const location = useLocation();
+  const cat = JSON.parse(localStorage.getItem('userData'));
 
   const [driver, setDriver] = useState('');
   const [drivers, setDrivers] = useState([]);
-  const [manager, setManager] = useState('');
   const [message, setMessage] = useState('');
-  const [managerdata, setManagerdata] = useState([]);
-  const [orderID, setOrderID] = useState(get(location, 'state.id', 0));
   const [selected, setSelected] = useState([]);
 
   // **
@@ -79,35 +77,30 @@ export default function UserPage() {
   const [open, setOpen] = useState(false);
   const [dataModal, setDataModal] = useState({});
   const [number1, setNumber1] = useState(0);
-
   // **
 
-  const cat = JSON.parse(localStorage.getItem('userData'));
-  console.log(cat);
-
   // create order states
-  const [userName, setUserName] = useState('');
-  const [firstPayment, setFirstPayment] = useState('');
-  const [waiting, setWaiting] = useState('');
-  const [drop, setDrop] = useState('');
-  const [owner, setOwner] = useState('');
-  const [massa, setMassa] = useState('');
-  const [info, setInfo] = useState('');
-  const [status, setStatus] = useState('');
-  const [country, setCuntry] = useState('');
-  const [city, setCity] = useState('');
-  const [packages, setPackages] = useState('');
-  const [cash, setCash] = useState('');
-  const [fullPayment, setfullPayment] = useState('');
-  const [countrySending, setCountrySending] = useState('');
-  const [countryPending, setCountryPending] = useState('');
-  const [citySending, setCitySending] = useState('');
-  const [cityPending, setCityPending] = useState('');
-  const [customs, setCustoms] = useState('');
+  // const [userName, setUserName] = useState('');
+  // const [firstPayment, setFirstPayment] = useState('');
+  // const [waiting, setWaiting] = useState('');
+  // const [drop, setDrop] = useState('');
+  // const [owner, setOwner] = useState('');
+  // const [massa, setMassa] = useState('');
+  // const [info, setInfo] = useState('');
+  // const [status, setStatus] = useState('');
+  // const [country, setCuntry] = useState('');
+  // const [city, setCity] = useState('');
+  // const [packages, setPackages] = useState('');
+  // const [cash, setCash] = useState('');
+  // const [fullPayment, setfullPayment] = useState('');
+  // const [countrySending, setCountrySending] = useState('');
+  // const [countryPending, setCountryPending] = useState('');
+  // const [citySending, setCitySending] = useState('');
+  // const [cityPending, setCityPending] = useState('');
+  // const [customs, setCustoms] = useState('');
 
   useEffect(() => {
     getDriver();
-    getManager();
     getWay();
     getArrived();
     getDeclined();
@@ -116,60 +109,6 @@ export default function UserPage() {
     getArrivedTruck();
     getDeclinedTruck();
   }, []);
-
-  const sendData = async () => {
-    console.log(driver, manager);
-    const config = {
-      headers: {
-        Authorization: `Bearer ${get(cat, 'access', '')}`,
-      },
-    };
-    await axios
-      .post(
-        `http://185.217.131.179:8888/api/v1/company/dashboard/manager/${orderID}/add_truck_to_order/`,
-        {
-          driver,
-          manager,
-        },
-        config
-      )
-      .then((ress) => {
-        console.log('success', ress);
-        swal({
-          title: 'Продукт успешно добавлен!',
-          text: 'Ознакомьтесь с добавленным товаром в разделе Заявки',
-          icon: 'success',
-          dangerMode: false,
-          timer: 3000,
-        });
-      })
-      .catch((err) => {
-        console.log('error', err);
-        swal({
-          title: 'Информация введена неверно, проверьте интернет!',
-          icon: 'error',
-          dangerMode: true,
-          timer: 3000,
-        });
-      });
-  };
-
-  const getTruck = async (id) => {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${get(cat, 'access', '')}`,
-      },
-    };
-    await axios
-      .get(`http://185.217.131.179:8888/api/v1/company/truck/create/?driver=${id}`, config)
-      .then((ress) => {
-        console.log('success getTruck', ress.data);
-        setDriver(get(ress, 'data.results[0].id', 0));
-      })
-      .catch((err) => {
-        console.log('error', err);
-      });
-  };
 
   const changeDriverLoaction = async () => {
     const config = {
@@ -224,81 +163,8 @@ export default function UserPage() {
       });
   };
 
-  const createOrder = async () => {
-    const fCustoms = customs.split('');
-    const ff = [];
-    for (let i = 0; i < fCustoms.length; i += 1) {
-      ff.push(parseInt(fCustoms[i], 10));
-    }
-
-    const config = {
-      headers: {
-        Authorization: `Bearer ${get(cat, 'access', '')}`,
-      },
-    };
-    await axios
-      .post(
-        `http://185.217.131.179:8888/api/v1/company/order/`,
-        {
-          name: userName,
-          packageMethod: packages,
-          paymentMethod: cash,
-          first_payment: firstPayment,
-          pending_of_place: waiting,
-          drop_of_place: drop,
-          order_owner: owner,
-          full_payment: fullPayment,
-          order_weight: massa,
-          order_info: info,
-          status,
-          customs: ff,
-          country,
-          city,
-          country_sending: countrySending,
-          country_pending: countryPending,
-          city_sending: citySending,
-          city_pending: cityPending,
-        },
-        config
-      )
-      .then((ress) => {
-        console.log('success', ress);
-        swal({
-          title: 'Продукт успешно добавлен!',
-          text: 'Ознакомьтесь с добавленным товаром в разделе Заявки',
-          icon: 'success',
-          dangerMode: false,
-          timer: 3000,
-        });
-      })
-      .catch((err) => {
-        console.log('error', err);
-        swal({
-          title: 'Информация введена неверно, проверьте интернет!',
-          icon: 'error',
-          dangerMode: true,
-          timer: 3000,
-        });
-      });
-  };
-  const getManager = async () => {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${get(cat, 'access', '')}`,
-      },
-    };
-
-    await axios
-      .get(`http://185.217.131.179:8888/api/v1/company/staff-create/?manager=manager`, config)
-      .then((ress) => {
-        setManagerdata(get(ress, 'data.results', ''));
-      })
-      .catch((err) => {
-        console.log('error zayavka', err);
-      });
-  };
-
   // ****
+  // Orders
   const getWay = async (num) => {
     const config = {
       headers: {
@@ -355,7 +221,7 @@ export default function UserPage() {
   // ****
 
   // ****
-
+  // Trucks
   const [wayTruckData, setWayTruckData] = useState([]);
   const [arrivedTruckData, setArrivedTruckData] = useState([]);
   const [declinedData, setDeclinedData] = useState([]);
@@ -415,12 +281,6 @@ export default function UserPage() {
   // ****
   const emptyRows = 1 > 0 ? Math.max(0, (1 + 0) * 5 - USERLIST.length) : 0;
 
-  const search = (item) => {
-    const a = mainData.filter((s) => {
-      return s.name.toLowerCase().includes(item.toLowerCase());
-    });
-    setMainData(a);
-  };
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -439,6 +299,7 @@ export default function UserPage() {
     setDataModal(item);
   };
   const handleClose = () => setOpen(false);
+
   const changinStatus = async (item, i, row) => {
     const config = {
       headers: {
@@ -446,6 +307,7 @@ export default function UserPage() {
       },
     };
     const id = get(row, 'id', 0);
+    console.log(id);
     await axios
       .post(
         `http://185.217.131.179:8888/api/v1/company/dashboard/manager/${id}/status_change/`,
@@ -460,13 +322,60 @@ export default function UserPage() {
         const a = [...mainData];
         a[i].status = item;
         setMainData(a);
+        swal({
+          title: 'Success changed!',
+          icon: 'success',
+          dangerMode: false,
+          timer: 3000,
+        });
       })
       .catch((err) => {
         console.log('error zayavka', err);
+        swal({
+          title: 'Error!',
+          icon: 'error',
+          dangerMode: false,
+          timer: 3000,
+        });
       });
   };
 
-  console.log(value, value2);
+  const changinStatusTruck = async (item, i, row) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${get(cat, 'access', '')}`,
+      },
+    };
+    const id = get(row, 'id', 0);
+    console.log(id);
+    await axios
+      .patch(
+        `http://185.217.131.179:8888/api/v1/company/truck/${id}/`,
+        {
+          status: item,
+        },
+        config
+      )
+      .then((ress) => {
+        console.log('success changin status', ress);
+        swal({
+          title: 'Success changed!',
+          icon: 'success',
+          dangerMode: false,
+          timer: 3000,
+        });
+      })
+      .catch((err) => {
+        console.log('error zayavka', err);
+        swal({
+          title: 'Error!',
+          icon: 'error',
+          dangerMode: false,
+          timer: 3000,
+        });
+      });
+  };
+
   return (
     <>
       <Helmet>
@@ -893,7 +802,7 @@ export default function UserPage() {
                                 (row.status === 'arrived' && 'success') ||
                                 'error'
                               }
-                              onChange={(item) => changinStatus(item.target.value, i, row)}
+                              onChange={(item) => changinStatusTruck(item.target.value, i, row)}
                             >
                               <option value="way">Way</option>
                               <option value="arrived">Arrived</option>
@@ -1009,7 +918,7 @@ export default function UserPage() {
                                 (row.status === 'arrived' && 'success') ||
                                 'error'
                               }
-                              onChange={(item) => changinStatus(item.target.value, i, row)}
+                              onChange={(item) => changinStatusTruck(item.target.value, i, row)}
                             >
                               <option value="way">Way</option>
                               <option value="arrived">Arrived</option>
@@ -1123,7 +1032,7 @@ export default function UserPage() {
                                 (row.status === 'arrived' && 'success') ||
                                 'error'
                               }
-                              onChange={(item) => changinStatus(item.target.value, i, row)}
+                              onChange={(item) => changinStatusTruck(item.target.value, i, row)}
                             >
                               <option disabled value="declined">
                                 Declined

@@ -17,7 +17,6 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import { get } from 'lodash';
-import { useNavigate } from 'react-router-dom';
 import {
   AiFillCar,
   AiOutlinePlusCircle,
@@ -30,9 +29,7 @@ import {
 import { BsFillPersonFill, BsList } from 'react-icons/bs';
 import swal from 'sweetalert';
 import Iconify from '../components/iconify';
-
 import { UserListHead } from '../sections/@dashboard/user';
-
 import USERLIST from '../_mock/user';
 import Scrollbar from '../components/scrollbar';
 
@@ -120,7 +117,6 @@ export default function UserPage() {
       .get(`http://185.217.131.179:8888/api/v1/company/truck/create/?limit=6&offset=${num}`, config)
       .then((ress) => {
         setMainData(get(ress, 'data.results', ''));
-        console.log('getTruck list', get(ress, 'data', ''));
       })
       .catch((err) => {
         console.log('error zayavka', err);
@@ -128,7 +124,6 @@ export default function UserPage() {
   };
 
   const createOrderOwner = async () => {
-    console.log(phoneNumber);
     const config = {
       headers: {
         Authorization: `Bearer ${get(cat, 'access', '')}`,
@@ -153,7 +148,6 @@ export default function UserPage() {
         config
       )
       .then((ress) => {
-        console.log(ress);
         swal({
           title: 'Order owners added successfully!',
           // text: 'Ознакомьтесь с добавленным товаром в разделе Заявки',
@@ -210,7 +204,6 @@ export default function UserPage() {
         config
       )
       .then((ress) => {
-        console.log('success', ress);
         swal({
           title: 'Truck added successfully!',
           // text: 'Ознакомьтесь с добавленным Truck',
@@ -238,17 +231,13 @@ export default function UserPage() {
     };
     await axios
       .delete(`http://185.217.131.179:8888/api/v1/company/truck/${id}`, config)
-      .then((ress) => {
-        console.log('deletingTruck', get(ress, 'data', ''));
-      })
+      .then((ress) => {})
       .catch((err) => {
         console.log('error zayavka', err);
       });
   };
 
-  const editingTruck = (row) => {
-    
-  };
+  const editingTruck = (row) => {};
   return (
     <>
       <Helmet>

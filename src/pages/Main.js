@@ -1,11 +1,9 @@
 import { Helmet } from 'react-helmet-async';
-// @mui
 import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { get } from 'lodash';
-// sections
 import { AppCurrentVisits, AppConversionRates, AppWidgetSummary } from '../sections/@dashboard/app';
 
 export default function DashboardAppPage() {
