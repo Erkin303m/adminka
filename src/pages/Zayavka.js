@@ -31,18 +31,18 @@ import { UserListHead } from '../sections/@dashboard/user';
 import USERLIST from '../_mock/user';
 
 const TABLE_HEAD2 = [
-  { id: 'name', label: 'Имя', alignRight: false },
-  { id: 'company', label: 'Информация о заказе', alignRight: false },
-  { id: 'drop', label: 'Точка доставки', alignRight: false },
-  { id: 'date', label: 'Дата', alignRight: false },
+  { id: 'name', label: 'Name', alignRight: false },
+  { id: 'company', label: 'Information about order', alignRight: false },
+  { id: 'drop', label: 'Delivery point', alignRight: false },
+  { id: 'date', label: 'Date', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
 ];
 
 const TABLE_HEAD3 = [
-  { id: 'name', label: 'Имя', alignRight: false },
+  { id: 'name', label: 'Name', alignRight: false },
   { id: 'company', label: 'Driver', alignRight: false },
   { id: 'drop', label: 'Location', alignRight: false },
-  { id: 'date', label: 'Дата', alignRight: false },
+  { id: 'date', label: 'Date', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
 ];
 const style = {
@@ -470,12 +470,12 @@ export default function UserPage() {
   return (
     <>
       <Helmet>
-        <title> Заявка</title>
+        <title> Application</title>
       </Helmet>
       <Container>
         <Stack direction="row" alignItems="flex-start" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Zayavka
+            Application
           </Typography>
           <Card className="padding">
             <BottomNavigation
@@ -485,7 +485,7 @@ export default function UserPage() {
                 setValue2(newValue);
               }}
             >
-              <BottomNavigationAction label="Грузовладелец" className="buttonNavigation" />
+              <BottomNavigationAction label="Order owner" className="buttonNavigation" />
               <BottomNavigationAction label="Truck" />
             </BottomNavigation>
 
@@ -496,9 +496,9 @@ export default function UserPage() {
                 setValue(newValue);
               }}
             >
-              <BottomNavigationAction label="В пути" />
-              <BottomNavigationAction label="Приехал" />
-              <BottomNavigationAction label="Отклоненный" />
+              <BottomNavigationAction label="Way" />
+              <BottomNavigationAction label="Arrived" />
+              <BottomNavigationAction label="Declined" />
             </BottomNavigation>
           </Card>
         </Stack>
@@ -507,7 +507,7 @@ export default function UserPage() {
 
         {value === 0 && value2 === 0 ? (
           <Card className="big_card">
-            <h1 className="center">В пути</h1>
+            <h1 className="center">Way</h1>
             {/* <input type="text" placeholder="Поиск" className="input3" onChange={(v) => search(v.target.value)} /> */}
             <Scrollbar>
               <TableContainer sx={{ minWidth: 800 }}>
@@ -551,15 +551,14 @@ export default function UserPage() {
                               }
                               onChange={(item) => changinStatus(item.target.value, i, row)}
                             >
-                              <option value="sending">Ожидающий</option>
-                              <option value="way">В пути</option>
-                              <option value="arrived">Приехал</option>
+                              <option value="way">Way</option>
+                              <option value="arrived">Arrived</option>
                               {row.status === 'declined' ? (
                                 <option disabled value="declined">
-                                  Отклоненный
+                                  Declined
                                 </option>
                               ) : (
-                                <option value="declined">Отклоненный</option>
+                                <option value="declined">Declined</option>
                               )}
                             </select>
                           </TableCell>
@@ -583,12 +582,10 @@ export default function UserPage() {
                             }}
                           >
                             <Typography variant="h6" paragraph>
-                              Не найден
+                              Not found
                             </Typography>
 
-                            <Typography variant="body2">
-                              Попробуйте проверить на опечатки или использовать полные слова.
-                            </Typography>
+                            <Typography variant="body2">Try use full words.</Typography>
                           </Paper>
                         </TableCell>
                       </TableRow>
@@ -626,7 +623,7 @@ export default function UserPage() {
 
         {value === 1 && value2 === 0 ? (
           <Card className="big_card">
-            <h1 className="center">Приехал</h1>
+            <h1 className="center">Arrived</h1>
             {/* <input type="text" placeholder="Поиск" className="input3" onChange={(v) => search(v.target.value)} /> */}
             <Scrollbar>
               <TableContainer sx={{ minWidth: 800 }}>
@@ -670,15 +667,14 @@ export default function UserPage() {
                               }
                               onChange={(item) => changinStatus(item.target.value, i, row)}
                             >
-                              <option value="sending">Ожидающий</option>
-                              <option value="way">В пути</option>
-                              <option value="arrived">Приехал</option>
+                              <option value="way">Way</option>
+                              <option value="arrived">Arrived</option>
                               {row.status === 'declined' ? (
                                 <option disabled value="declined">
-                                  Отклоненный
+                                  Declined
                                 </option>
                               ) : (
-                                <option value="declined">Отклоненный</option>
+                                <option value="declined">Declined</option>
                               )}
                             </select>
                           </TableCell>
@@ -702,12 +698,10 @@ export default function UserPage() {
                             }}
                           >
                             <Typography variant="h6" paragraph>
-                              Не найден
+                              Not found
                             </Typography>
 
-                            <Typography variant="body2">
-                              Попробуйте проверить на опечатки или использовать полные слова.
-                            </Typography>
+                            <Typography variant="body2">Try use full words.</Typography>
                           </Paper>
                         </TableCell>
                       </TableRow>
@@ -745,7 +739,7 @@ export default function UserPage() {
 
         {value === 2 && value2 === 0 ? (
           <Card className="big_card">
-            <h1 className="center">Отклоненный</h1>
+            <h1 className="center">Declined</h1>
             {/* <input type="text" placeholder="Поиск" className="input3" onChange={(v) => search(v.target.value)} /> */}
             <Scrollbar>
               <TableContainer sx={{ minWidth: 800 }}>
@@ -761,7 +755,7 @@ export default function UserPage() {
                   <TableBody>
                     {declinedData.map((row, i) => {
                       return (
-                        <TableRow hover key={i} tabIndex={-1} onDoubleClick={() => handleOpen(row)}>
+                        <TableRow hover key={i} tabIndex={-1}>
                           <TableCell component="th" scope="row" padding="none" className="nameProduct">
                             <Stack direction="row" alignItems="center" spacing={2}>
                               <p className="zayavkaName">{row.name}</p>
@@ -790,7 +784,7 @@ export default function UserPage() {
                               onChange={(item) => changinStatus(item.target.value, i, row)}
                             >
                               <option disabled value="declined">
-                                Отклоненный
+                                Declined
                               </option>
                             </select>
                           </TableCell>
@@ -814,12 +808,10 @@ export default function UserPage() {
                             }}
                           >
                             <Typography variant="h6" paragraph>
-                              Не найден
+                              Not found
                             </Typography>
 
-                            <Typography variant="body2">
-                              Попробуйте проверить на опечатки или использовать полные слова.
-                            </Typography>
+                            <Typography variant="body2">Try use full words.</Typography>
                           </Paper>
                         </TableCell>
                       </TableRow>
@@ -859,7 +851,7 @@ export default function UserPage() {
 
         {value === 0 && value2 === 1 ? (
           <Card className="big_card">
-            <h1 className="center">В пути</h1>
+            <h1 className="center">Way</h1>
             {/* <input type="text" placeholder="Поиск" className="input3" onChange={(v) => search(v.target.value)} /> */}
             <Scrollbar>
               <TableContainer sx={{ minWidth: 800 }}>
@@ -903,15 +895,14 @@ export default function UserPage() {
                               }
                               onChange={(item) => changinStatus(item.target.value, i, row)}
                             >
-                              <option value="sending">Ожидающий</option>
-                              <option value="way">В пути</option>
-                              <option value="arrived">Приехал</option>
+                              <option value="way">Way</option>
+                              <option value="arrived">Arrived</option>
                               {row.status === 'declined' ? (
                                 <option disabled value="declined">
-                                  Отклоненный
+                                  Declined
                                 </option>
                               ) : (
-                                <option value="declined">Отклоненный</option>
+                                <option value="declined">Declined</option>
                               )}
                             </select>
                           </TableCell>
@@ -935,12 +926,10 @@ export default function UserPage() {
                             }}
                           >
                             <Typography variant="h6" paragraph>
-                              Не найден
+                              Not found
                             </Typography>
 
-                            <Typography variant="body2">
-                              Попробуйте проверить на опечатки или использовать полные слова.
-                            </Typography>
+                            <Typography variant="body2">Try use full words.</Typography>
                           </Paper>
                         </TableCell>
                       </TableRow>
@@ -978,7 +967,7 @@ export default function UserPage() {
 
         {value === 1 && value2 === 1 ? (
           <Card className="big_card">
-            <h1 className="center">Приехал</h1>
+            <h1 className="center">Arrived</h1>
             {/* <input type="text" placeholder="Поиск" className="input3" onChange={(v) => search(v.target.value)} /> */}
             <Scrollbar>
               <TableContainer sx={{ minWidth: 800 }}>
@@ -1022,15 +1011,14 @@ export default function UserPage() {
                               }
                               onChange={(item) => changinStatus(item.target.value, i, row)}
                             >
-                              <option value="sending">Ожидающий</option>
-                              <option value="way">В пути</option>
-                              <option value="arrived">Приехал</option>
+                              <option value="way">Way</option>
+                              <option value="arrived">Arrived</option>
                               {row.status === 'declined' ? (
                                 <option disabled value="declined">
-                                  Отклоненный
+                                  Declined
                                 </option>
                               ) : (
-                                <option value="declined">Отклоненный</option>
+                                <option value="declined">Declined</option>
                               )}
                             </select>
                           </TableCell>
@@ -1054,11 +1042,7 @@ export default function UserPage() {
                             }}
                           >
                             <Typography variant="h6" paragraph>
-                              Не найден
-                            </Typography>
-
-                            <Typography variant="body2">
-                              Попробуйте проверить на опечатки или использовать полные слова.
+                              Not Found
                             </Typography>
                           </Paper>
                         </TableCell>
@@ -1097,7 +1081,7 @@ export default function UserPage() {
 
         {value === 2 && value2 === 1 ? (
           <Card className="big_card">
-            <h1 className="center">Отклоненный</h1>
+            <h1 className="center">Declined</h1>
             {/* <input type="text" placeholder="Поиск" className="input3" onChange={(v) => search(v.target.value)} /> */}
             <Scrollbar>
               <TableContainer sx={{ minWidth: 800 }}>
@@ -1113,7 +1097,7 @@ export default function UserPage() {
                   <TableBody>
                     {mainData4.map((row, i) => {
                       return (
-                        <TableRow hover key={i} tabIndex={-1} onDoubleClick={() => handleOpen(row)}>
+                        <TableRow hover key={i} tabIndex={-1}>
                           <TableCell component="th" scope="row" padding="none" className="nameProduct">
                             <Stack direction="row" alignItems="center" spacing={2}>
                               <p className="zayavkaName">{row.name}</p>
@@ -1142,7 +1126,7 @@ export default function UserPage() {
                               onChange={(item) => changinStatus(item.target.value, i, row)}
                             >
                               <option disabled value="declined">
-                                Отклоненный
+                                Declined
                               </option>
                             </select>
                           </TableCell>
@@ -1166,11 +1150,7 @@ export default function UserPage() {
                             }}
                           >
                             <Typography variant="h6" paragraph>
-                              Не найден
-                            </Typography>
-
-                            <Typography variant="body2">
-                              Попробуйте проверить на опечатки или использовать полные слова.
+                              Not found
                             </Typography>
                           </Paper>
                         </TableCell>
@@ -1245,20 +1225,22 @@ export default function UserPage() {
               </div>
               <p className="productNameTitle">{get(dataModal, 'customs[0].name', '')}</p>
               <div className="card2">
-                <div className="card3">
-                  <input
-                    type="text"
-                    placeholder="Drivers id"
-                    list="data"
-                    className="input222"
-                    onChange={(v) => setDriver(v.target.value)}
-                  />
-                  <datalist id="data">
-                    {drivers.map((v, i) => {
-                      return <option key={i} value={get(v, 'id', 0)} />;
-                    })}
-                  </datalist>
-                </div>
+                <select
+                  name="cars"
+                  id="cars"
+                  onChange={(v) => setDriver(v.target.value)}
+                  placeholder="Drivers id"
+                  className="input222"
+                >
+                  {drivers.map((v, i) => {
+                    return (
+                      <option key={i} value={get(v, 'id', 0)}>
+                        {get(v, 'first_name', 0)} {get(v, 'last_name', 0)}
+                      </option>
+                    );
+                  })}
+                </select>
+
                 <div className="card3">
                   <input
                     type="text"
@@ -1278,14 +1260,13 @@ export default function UserPage() {
                     startIcon={<Iconify icon="eva:plus-fill" />}
                     onClick={() => changeDriverLoaction()}
                   >
-                    Новый адрес
+                    New address
                   </Button>
                 </Stack>
               </Container>
             </Box>
           </Modal>
         </div>
-        {/* pasdagi inputlar */}
       </Container>
     </>
   );

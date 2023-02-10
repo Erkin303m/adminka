@@ -35,21 +35,23 @@ import { UserListHead } from '../sections/@dashboard/user';
 import USERLIST from '../_mock/user';
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Имя', alignRight: false },
-  { id: 'company', label: 'Информация о заказе', alignRight: false },
-  { id: 'drop', label: 'Точка доставки', alignRight: false },
-  { id: 'date', label: 'Дата', alignRight: false },
+  { id: 'name', label: 'Name', alignRight: false },
+  { id: 'company', label: 'Information about order', alignRight: false },
+  { id: 'drop', label: 'Delivery point', alignRight: false },
+  { id: 'date', label: 'Date', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
-  { id: 'relation', label: 'Связь', alignRight: false },
-  { id: 'yesno', label: 'Да/Нет', alignRight: false },
+  { id: 'relation', label: 'Connection', alignRight: false },
+  { id: 'yesno', label: 'Yes/No', alignRight: false },
 ];
 
 const TABLE_HEAD2 = [
-  { id: 'name', label: 'Имя', alignRight: false },
+  { id: 'name', label: 'Name', alignRight: false },
   { id: 'company', label: 'Driver', alignRight: false },
   { id: 'drop', label: 'Location', alignRight: false },
-  { id: 'date', label: 'Дата', alignRight: false },
+  { id: 'date', label: 'Date', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
+  { id: 'relation', label: 'Connection', alignRight: false },
+  { id: 'yesno', label: 'Yes/No', alignRight: false },
 ];
 
 const style = {
@@ -253,6 +255,13 @@ export default function UserPage() {
         const a = [...mainData];
         a[i].status = 'main';
         setMainData(a);
+
+        swal({
+          title: 'Success!',
+          icon: 'success',
+          dangerMode: false,
+          timer: 3000,
+        });
       })
       .catch((err) => {
         console.log('error zayavka', err);
@@ -280,6 +289,13 @@ export default function UserPage() {
         const a = [...mainData];
         a[i].status = 'declined';
         setMainData(a);
+
+        swal({
+          title: 'Success!',
+          icon: 'success',
+          dangerMode: false,
+          timer: 3000,
+        });
       })
       .catch((err) => {
         console.log('error', err);
@@ -303,7 +319,7 @@ export default function UserPage() {
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-          Request
+            Request
           </Typography>
           <Card className="padding">
             <BottomNavigation
@@ -379,20 +395,20 @@ export default function UserPage() {
                                 onChange={(item) => changinStatus(item.target.value, i, row)}
                               >
                                 <option disabled value="sending">
-                                  Ожидающий
+                                  Sending
                                 </option>
                                 <option disabled value="way">
-                                  В пути
+                                  Way
                                 </option>
                                 <option disabled value="arrived">
-                                  Приехал
+                                  Arrived
                                 </option>
                                 {row.status === 'declined' ? (
                                   <option disabled value="declined">
-                                    Отклоненный
+                                    Declined
                                   </option>
                                 ) : (
-                                  <option value="declined">Отклоненный</option>
+                                  <option value="declined">Declined</option>
                                 )}
                               </select>
                             )}
@@ -402,7 +418,7 @@ export default function UserPage() {
                               variant="contained"
                               onClick={() => navigation('/dashboard/blog', { state: { id: row.id } })}
                             >
-                              Связь
+                              Connect
                             </Button>
                           </TableCell>
 
@@ -434,12 +450,10 @@ export default function UserPage() {
                             }}
                           >
                             <Typography variant="h6" paragraph>
-                              Не найден
+                              Not found
                             </Typography>
 
-                            <Typography variant="body2">
-                              Попробуйте проверить на опечатки или использовать полные слова.
-                            </Typography>
+                            <Typography variant="body2">Try use full words.</Typography>
                           </Paper>
                         </TableCell>
                       </TableRow>
@@ -475,8 +489,8 @@ export default function UserPage() {
 
         {value === 1 ? (
           <Card>
-            <h1 className="center">Ожидающий</h1>
-            <input type="text" placeholder="Поиск" className="input3" onChange={(v) => search(v.target.value)} />
+            <h1 className="center">Waiting</h1>
+            {/* <input type="text" placeholder="Поиск" className="input3" onChange={(v) => search(v.target.value)} /> */}
             <Scrollbar>
               <TableContainer sx={{ minWidth: 800 }}>
                 <Table>
@@ -491,7 +505,7 @@ export default function UserPage() {
                   <TableBody>
                     {truckData.map((row, i) => {
                       return (
-                        <TableRow hover key={i} tabIndex={-1} onDoubleClick={() => handleOpen(row)}>
+                        <TableRow hover key={i} tabIndex={-1}>
                           <TableCell component="th" scope="row" padding="none" className="nameProduct">
                             <Stack direction="row" alignItems="center" spacing={2}>
                               <p className="zayavkaName">{row.name}</p>
@@ -546,14 +560,23 @@ export default function UserPage() {
                             )}
                           </TableCell>
 
-                          {/* <TableCell align="left">
+                          <TableCell align="left">
+                            <Button
+                              variant="contained"
+                              onClick={() => navigation('/dashboard/blog', { state: { id: row.id } })}
+                            >
+                              Connect
+                            </Button>
+                          </TableCell>
+
+                          <TableCell align="left">
                             <Button className="yes" onClick={() => yes(row, i)}>
                               <MdOutlineDone />
                             </Button>
                             <Button className="no" onClick={() => no(row, i)}>
                               <RiDeleteBack2Line />
                             </Button>
-                          </TableCell> */}
+                          </TableCell>
                         </TableRow>
                       );
                     })}
@@ -574,12 +597,10 @@ export default function UserPage() {
                             }}
                           >
                             <Typography variant="h6" paragraph>
-                              Не найден
+                              Not found
                             </Typography>
 
-                            <Typography variant="body2">
-                              Попробуйте проверить на опечатки или использовать полные слова.
-                            </Typography>
+                            <Typography variant="body2">Try use full words.</Typography>
                           </Paper>
                         </TableCell>
                       </TableRow>
@@ -653,20 +674,21 @@ export default function UserPage() {
               </div>
               <p className="productNameTitle">{get(dataModal, 'customs[0].name', '')}</p>
               <div className="card2">
-                <div className="card3">
-                  <input
-                    type="text"
-                    placeholder="Drivers id"
-                    list="data"
-                    className="input222"
-                    onChange={(v) => setDriver(v.target.value)}
-                  />
-                  <datalist id="data">
-                    {drivers.map((v, i) => {
-                      return <option key={i} value={get(v, 'id', 0)} />;
-                    })}
-                  </datalist>
-                </div>
+                <select
+                  name="cars"
+                  id="cars"
+                  onChange={(v) => setDriver(v.target.value)}
+                  placeholder="Drivers id"
+                  className="input222"
+                >
+                  {drivers.map((v, i) => {
+                    return (
+                      <option key={i} value={get(v, 'id', 0)}>
+                        {get(v, 'first_name', 0)} {get(v, 'last_name', 0)}
+                      </option>
+                    );
+                  })}
+                </select>
                 <div className="card3">
                   <input
                     type="text"

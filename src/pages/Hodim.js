@@ -24,6 +24,7 @@ import Scrollbar from '../components/scrollbar';
 import Iconify from '../components/iconify';
 
 const TABLE_HEAD = [
+  { id: 'id', label: 'ID', alignRight: false },
   { id: 'company', label: 'Phone', alignRight: false },
   { id: 'drop', label: 'Role', alignRight: false },
 ];
@@ -126,42 +127,69 @@ export default function UserPage() {
   return (
     <>
       <Helmet>
-        <title> Сотрудники</title>
+        <title> Employees</title>
       </Helmet>
 
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Сотрудники
+            Employees
           </Typography>
         </Stack>
       </Container>
 
+      <Container>
+        <Card>
+          {/* <input type="text" placeholder="Search" className="input3" onChange={(v) => search(v.target.value)} /> */}
+
+          <Scrollbar>
+            <TableContainer>
+              <Table>
+                <UserListHead headLabel={TABLE_HEAD} rowCount={USERLIST.length} />
+                <TableBody>
+                  {tableData.map((row, i) => {
+                    return (
+                      <TableRow hover key={i} tabIndex={-1} s>
+                        <TableCell align="left">{get(row, 'id', '')}</TableCell>
+                        <TableCell align="left">{get(row, 'phone_number', '')}</TableCell>
+
+                        <TableCell align="left">{get(row, 'role', '')}</TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Scrollbar>
+        </Card>
+      </Container>
+
+      <Card className='paddinTop'>
       <div className="card2">
         <div className="card3">
-          <input type="text" placeholder="Имя" className="input2" onChange={(v) => setUserName(v.target.value)} />
+          <input type="text" placeholder="Name" className="input2" onChange={(v) => setUserName(v.target.value)} />
         </div>
         <div className="card3">
-          <input type="text" placeholder="last_name" className="input2" onChange={(v) => setLastName(v.target.value)} />
+          <input type="text" placeholder="Last name" className="input2" onChange={(v) => setLastName(v.target.value)} />
         </div>
 
         <div className="card3">
           <input
             type="text"
-            placeholder="middleName"
+            placeholder="Middle name"
             className="input2"
             onChange={(v) => setMiddleName(v.target.value)}
           />
         </div>
 
         <div className="card3">
-          <input type="date" placeholder="date" className="input2" onChange={(v) => setBirthday(v.target.value)} />
+          <input type="date" placeholder="Date" className="input2" onChange={(v) => setBirthday(v.target.value)} />
         </div>
 
         <div className="card3">
           <input
             type="text"
-            placeholder="gender"
+            placeholder="Gender"
             list="data4"
             className="input2"
             onChange={(v) => setGender(v.target.value)}
@@ -172,13 +200,13 @@ export default function UserPage() {
         </div>
 
         <div className="card3">
-          <input type="file" placeholder="avatar" className="input2" onChange={(v) => setAvatar(v.target.files[0])} />
+          <input type="file" placeholder="Avatar" className="input2" onChange={(v) => setAvatar(v.target.files[0])} />
         </div>
 
         <div className="card3">
           <input
             type="text"
-            placeholder="experience"
+            placeholder="Experience"
             className="input2"
             onChange={(v) => setExperience(v.target.value)}
           />
@@ -216,7 +244,7 @@ export default function UserPage() {
         </div>
 
         <div className="card3">
-          <input type="text" placeholder="Phone" className="input2" onChange={(v) => setPhone(v.target.value)} />
+          <input type="text" placeholder="Phone number" className="input2" onChange={(v) => setPhone(v.target.value)} />
         </div>
         <div className="card3">
           <h1> </h1>
@@ -228,38 +256,11 @@ export default function UserPage() {
             {' '}
           </Typography>
           <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => sendData()}>
-            Новый
+            New
           </Button>
         </Stack>
       </Container>
-
-      <Container>
-        <Card sx={{ maxWidth: 600 }}>
-          <input type="text" placeholder="Search" className="input3" onChange={(v) => search(v.target.value)} />
-
-          <Scrollbar>
-            <TableContainer sx={{ maxWidth: 600 }}>
-              <Table>
-                <UserListHead headLabel={TABLE_HEAD} rowCount={USERLIST.length} />
-                <TableBody>
-                  {tableData.map((row, i) => {
-                    return (
-                      <TableRow hover key={i} tabIndex={-1} s>
-
-                     
-
-                        <TableCell align="left">{get(row, 'phone_number', '')}</TableCell>
-
-                        <TableCell align="left">{get(row, 'role', '')}</TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Scrollbar>
-        </Card>
-      </Container>
+      </Card>
     </>
   );
 }

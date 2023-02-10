@@ -124,7 +124,7 @@ export default function MainChat() {
   return (
     <>
       <Helmet>
-        <title> Чат </title>
+        <title> Chat </title>
       </Helmet>
 
       <Container>

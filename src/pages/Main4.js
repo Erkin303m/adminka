@@ -31,16 +31,16 @@ import Scrollbar from '../components/scrollbar';
 
 const TABLE_HEAD = [
   { id: 'id', label: 'ID', alignRight: false },
-  { id: 'name', label: 'Имя', alignRight: false },
-  { id: 'lastName', label: 'Местоположение грузовика', alignRight: false },
-  { id: 'number', label: 'Мощность грузовика', alignRight: false },
+  { id: 'name', label: 'Name', alignRight: false },
+  { id: 'lastName', label: 'Truck location', alignRight: false },
+  { id: 'number', label: 'Truck power', alignRight: false },
 ];
 
 const TABLE_HEAD2 = [
   { id: 'id', label: 'ID', alignRight: false },
-  { id: 'name', label: 'Имя', alignRight: false },
-  { id: 'lastName', label: 'Фамилия', alignRight: false },
-  { id: 'number', label: 'Телефон', alignRight: false },
+  { id: 'name', label: 'Name', alignRight: false },
+  { id: 'lastName', label: 'Surename', alignRight: false },
+  { id: 'number', label: 'Phone', alignRight: false },
 ];
 export default function UserPage() {
   const navigation = useNavigate();
@@ -122,6 +122,7 @@ export default function UserPage() {
   };
 
   const createOrderOwner = async () => {
+    console.log(phoneNumber);
     const config = {
       headers: {
         Authorization: `Bearer ${get(cat, 'access', '')}`,
@@ -136,17 +137,17 @@ export default function UserPage() {
           middle_name: middleName,
           birthday: date,
           gender,
-          avatar,
+          avatar: null,
           experience,
           phone_number: phoneNumber,
-          password_1:password1,
-          password_2:password2,
+          password_1: password1,
+          password_2: password2,
           role: 'order_owner',
         },
         config
       )
       .then((ress) => {
-        console.log(ress)
+        console.log(ress);
         swal({
           title: 'владельцев заказов успешно добавлен!',
           text: 'Ознакомьтесь с добавленным товаром в разделе Заявки',
@@ -183,7 +184,6 @@ export default function UserPage() {
       });
   };
 
-
   const createTruck = async () => {
     const config = {
       headers: {
@@ -202,7 +202,6 @@ export default function UserPage() {
           status: 'main',
         },
         config
-        
       )
       .then((ress) => {
         console.log('success', ress);
@@ -227,13 +226,13 @@ export default function UserPage() {
   return (
     <>
       <Helmet>
-        <title> Сотрудники</title>
+        <title> Main page</title>
       </Helmet>
 
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Главная страница
+            Main page
           </Typography>
           <Card className="cardFilter">
             <BottomNavigation
@@ -243,7 +242,7 @@ export default function UserPage() {
                 setValue(newValue);
               }}
             >
-              <BottomNavigationAction label="Грузовладелец" icon={<BsFillPersonFill />} className="buttonNavigation" />
+              <BottomNavigationAction label="Order owner" icon={<BsFillPersonFill />} className="buttonNavigation" />
               <BottomNavigationAction label="Truck" icon={<AiFillCar />} />
             </BottomNavigation>
             <BottomNavigation
@@ -264,12 +263,12 @@ export default function UserPage() {
         <>
           <Card className="cardMAin">
             <Typography variant="h6" className="mainCenterWord2">
-              владельцев заказов
+              Order owner
             </Typography>
           </Card>
           <div className="card2">
             <div className="card3">
-              <input type="text" placeholder="Имя" className="input2" onChange={(v) => setUserName(v.target.value)} />
+              <input type="text" placeholder="Name" className="input2" onChange={(v) => setUserName(v.target.value)} />
             </div>
             <div className="card3">
               <input
@@ -283,7 +282,7 @@ export default function UserPage() {
             <div className="card3">
               <input
                 type="text"
-                placeholder="MiddleName"
+                placeholder="Middle name"
                 className="input2"
                 onChange={(v) => setMiddleName(v.target.value)}
               />
@@ -305,7 +304,7 @@ export default function UserPage() {
                 <option value="female" />
               </datalist>
             </div>
-
+            {/* 
             <div className="card3">
               <input
                 type="file"
@@ -313,12 +312,12 @@ export default function UserPage() {
                 className="input2"
                 onChange={(v) => setAvatar(v.target.files[0])}
               />
-            </div>
+            </div> */}
 
             <div className="card3">
               <input
                 type="number"
-                placeholder="experience"
+                placeholder="Experience"
                 className="input2"
                 onChange={(v) => setExperience(v.target.value)}
               />
@@ -326,8 +325,8 @@ export default function UserPage() {
 
             <div className="card3">
               <input
-                type="number"
-                placeholder="phoneNumber"
+                type="text"
+                placeholder="Phone number"
                 className="input2"
                 onChange={(v) => setPhoneNumber(v.target.value)}
               />
@@ -336,7 +335,7 @@ export default function UserPage() {
             <div className="card3">
               <input
                 type="text"
-                placeholder="password1"
+                placeholder="Password 1"
                 className="input2"
                 onChange={(v) => setPassword1(v.target.value)}
               />
@@ -345,13 +344,11 @@ export default function UserPage() {
             <div className="card3">
               <input
                 type="text"
-                placeholder="password2"
+                placeholder="Password 2"
                 className="input2"
                 onChange={(v) => setPassword2(v.target.value)}
               />
             </div>
-
-            <div className="card3">{''}</div>
           </div>
           <Container>
             <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
@@ -363,7 +360,7 @@ export default function UserPage() {
                 startIcon={<Iconify icon="eva:plus-fill" />}
                 onClick={() => createOrderOwner()}
               >
-                Новый адрес
+                New address
               </Button>
             </Stack>
           </Container>
@@ -379,12 +376,12 @@ export default function UserPage() {
           </Card>
           <div className="card2">
             <div className="card3">
-              <input type="text" placeholder="Имя" className="input2" onChange={(v) => setName(v.target.value)} />
+              <input type="text" placeholder="Name" className="input2" onChange={(v) => setName(v.target.value)} />
             </div>
             <div className="card3">
               <input
                 type="number"
-                placeholder="Грузоподъёмность"
+                placeholder="Load capacity"
                 className="input2"
                 onChange={(v) => setPowerTruck(v.target.value)}
               />
@@ -393,7 +390,7 @@ export default function UserPage() {
             <div className="card3">
               <input
                 type="number"
-                placeholder="ID Водитель"
+                placeholder="Driver ID"
                 list="data4"
                 className="input2"
                 onChange={(v) => setDriver(v.target.value)}
@@ -417,7 +414,7 @@ export default function UserPage() {
             <div className="card3">
               <input
                 type="text"
-                placeholder="Местоположение грузовика"
+                placeholder="Truck location"
                 className="input2"
                 onChange={(v) => setTruckLocation(v.target.value)}
               />
@@ -426,7 +423,7 @@ export default function UserPage() {
             <div className="card3">
               <input
                 type="text"
-                placeholder="Тип грузовика"
+                placeholder="Truck type"
                 className="input2"
                 onChange={(v) => setTruckType(v.target.value)}
               />
@@ -456,7 +453,7 @@ export default function UserPage() {
                 {' '}
               </Typography>
               <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => createTruck()}>
-                Новый Truck
+                New Truck
               </Button>
             </Stack>
           </Container>
@@ -467,7 +464,7 @@ export default function UserPage() {
         <>
           <Card>
             <Typography variant="h6" className="mainCenterWord">
-              Список грузовиков
+              Truck list
             </Typography>
           </Card>
           <Scrollbar>
@@ -509,11 +506,7 @@ export default function UserPage() {
                           }}
                         >
                           <Typography variant="h6" paragraph>
-                            Не найден
-                          </Typography>
-
-                          <Typography variant="body2">
-                            Попробуйте проверить на опечатки или использовать полные слова.
+                            Not found
                           </Typography>
                         </Paper>
                       </TableCell>
@@ -552,7 +545,7 @@ export default function UserPage() {
         <>
           <Card>
             <Typography variant="h6" className="mainCenterWord">
-              Список владельцев заказов
+              List of order owners
             </Typography>
             {/* <input type="text" placeholder="Search" className="input3" onChange={(v) => search(v.target.value)} /> */}
           </Card>
@@ -595,11 +588,7 @@ export default function UserPage() {
                           }}
                         >
                           <Typography variant="h6" paragraph>
-                            Не найден
-                          </Typography>
-
-                          <Typography variant="body2">
-                            Попробуйте проверить на опечатки или использовать полные слова.
+                            Not found
                           </Typography>
                         </Paper>
                       </TableCell>

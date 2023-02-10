@@ -33,17 +33,17 @@ import USERLIST from '../_mock/user';
 
 const TABLE_HEAD = [
   { id: 'id', label: 'ID', alignRight: false },
-  { id: 'name', label: 'Имя', alignRight: false },
-  { id: 'lastName', label: 'last_name', alignRight: false },
+  { id: 'name', label: 'Name', alignRight: false },
+  { id: 'lastName', label: 'Last name', alignRight: false },
   { id: 'number', label: 'Number', alignRight: false },
   { id: 'user', label: 'User', alignRight: false },
-  { id: 'status', label: 'Чат', alignRight: false },
+  { id: 'status', label: 'Chat', alignRight: false },
 ];
 
 const TABLE_HEAD2 = [
   { id: 'name2', label: 'Room ID', alignRight: false },
   { id: 'number2', label: 'Number', alignRight: false },
-  { id: 'send', label: 'Продолжать', alignRight: false },
+  { id: 'send', label: 'Continue', alignRight: false },
 ];
 
 export default function UserPage() {
@@ -89,7 +89,7 @@ export default function UserPage() {
       console.log('Oldin kim bilan yozishgan', someData);
       setMainData3(get(someData, 'data', []));
     };
-    socket.close = () => {};
+    // socket.close = () => {};
   }, []);
 
   const getDriver = async () => {
@@ -172,13 +172,13 @@ export default function UserPage() {
   return (
     <>
       <Helmet>
-        <title>Чат</title>
+        <title>Chat</title>
       </Helmet>
 
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Чат
+            Chat
           </Typography>
           <BottomNavigation
             showLabels
@@ -187,16 +187,14 @@ export default function UserPage() {
               setValue(newValue);
             }}
           >
-            <BottomNavigationAction label="Водитель" icon={<AiFillCar />} />
-            <BottomNavigationAction label="Владельцы заказов" icon={<BsFillPersonFill />} />
+            <BottomNavigationAction label="Drivers" icon={<AiFillCar />} />
+            <BottomNavigationAction label="Order owners" icon={<BsFillPersonFill />} />
             {/* <BottomNavigationAction label="Rooms" icon={<BsPeopleFill />} /> */}
           </BottomNavigation>
         </Stack>
 
         {value === 0 ? (
           <Card className="driverCard">
-            <input type="text" placeholder="Водитель" className="input3" onChange={(v) => search(v.target.value)} />
-
             <Scrollbar>
               <TableContainer sx={{ minWidth: 800 }}>
                 <Table>
@@ -215,17 +213,17 @@ export default function UserPage() {
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
                               <Typography variant="subtitle2" className="zayavkaName">
-                                {row.id}
+                                {get(row, 'id', '')}
                               </Typography>
                             </Stack>
                           </TableCell>
 
-                          <TableCell align="left">{row.first_name}</TableCell>
+                          <TableCell align="left"> {get(row, 'first_name', '')}</TableCell>
 
-                          <TableCell align="left">{row.last_name}</TableCell>
-                          <TableCell align="left">{row.phone_number}</TableCell>
+                          <TableCell align="left"> {get(row, 'last_name', '')}</TableCell>
+                          <TableCell align="left"> {get(row, 'phone_number', '')}</TableCell>
 
-                          <TableCell align="left">{row.user}</TableCell>
+                          <TableCell align="left"> {get(row, 'user', '')}</TableCell>
 
                           <TableCell align="left">
                             <Button onClick={() => createRoom(row.user)}>Начинать</Button>
@@ -250,11 +248,7 @@ export default function UserPage() {
                             }}
                           >
                             <Typography variant="h6" paragraph>
-                              Не найден
-                            </Typography>
-
-                            <Typography variant="body2">
-                              Попробуйте проверить на опечатки или использовать полные слова.
+                              Not found
                             </Typography>
                           </Paper>
                         </TableCell>
@@ -269,12 +263,12 @@ export default function UserPage() {
 
         {value === 1 ? (
           <Card>
-            <input
+            {/* <input
               type="text"
               placeholder="Search order owner"
               className="input3"
               onChange={(v) => search(v.target.value)}
-            />
+            /> */}
 
             <Scrollbar>
               <TableContainer sx={{ minWidth: 800 }}>
@@ -346,10 +340,10 @@ export default function UserPage() {
           </Card>
         ) : null}
 
-        <h1>Люди, которые писали раньше</h1>
+        <h1>People who have written before</h1>
 
         <Card>
-          <input type="text" placeholder="Search Rooms" className="input3" onChange={(v) => search(v.target.value)} />
+          {/* <input type="text" placeholder="Search Rooms" className="input3" onChange={(v) => search(v.target.value)} /> */}
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>

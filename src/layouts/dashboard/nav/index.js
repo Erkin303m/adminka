@@ -59,33 +59,32 @@ export default function Nav({ openNav, onCloseNav }) {
               icon: icon('ic_analytics'),
             },
             {
-              title: 'Запросы',
+              title: 'Requests',
               path: '/dashboard/products',
               icon: icon('ic_cart'),
             },
             {
-              title: 'Заявки',
+              title: 'Applications',
               path: '/dashboard/user',
               icon: icon2('list'),
             },
-
             {
-              title: 'Главная страница',
+              title: 'Main page',
               path: '/dashboard/main4',
               icon: icon2('chat'),
             },
             {
-              title: 'Чат',
+              title: 'Chat',
               path: '/dashboard/chat',
               icon: icon2('chat'),
             },
             {
-              title: 'Общий список пользователей',
+              title: 'All users',
               path: '/dashboard/allUsers',
               icon: icon('ic_user'),
             },
             {
-              title: 'Сотрудники',
+              title: 'Employees',
               path: '/dashboard/xodim',
               icon: icon('ic_user'),
             },
@@ -97,17 +96,17 @@ export default function Nav({ openNav, onCloseNav }) {
         <NavSection
           data={[
             {
-              title: 'Запрос',
+              title: 'Requests',
               path: '/dashboard/user',
               icon: icon2('list'),
             },
             {
-              title: 'Заявка',
+              title: 'Applications',
               path: '/dashboard/products',
               icon: icon('ic_cart'),
             },
             {
-              title: 'Чат',
+              title: 'Chat',
               path: '/dashboard/chat',
               icon: icon2('chat'),
             },
@@ -119,22 +118,22 @@ export default function Nav({ openNav, onCloseNav }) {
         <NavSection
           data={[
             {
-              title: 'Главная страница',
+              title: 'Main page',
               path: '/dashboard/main4',
               icon: icon2('chat'),
             },
             {
-              title: 'Заявка',
+              title: 'Requests',
               path: '/dashboard/products',
               icon: icon('ic_cart'),
             },
             {
-              title: 'Запрос',
+              title: 'Applications',
               path: '/dashboard/user',
               icon: icon2('list'),
             },
             {
-              title: 'Чат',
+              title: 'Chat',
               path: '/dashboard/chat',
               icon: icon2('chat'),
             },
@@ -146,12 +145,12 @@ export default function Nav({ openNav, onCloseNav }) {
         <NavSection
           data={[
             {
-              title: 'Заявка',
+              title: 'Requests',
               path: '/dashboard/user',
               icon: icon2('list'),
             },
             {
-              title: 'Чат',
+              title: 'Chat',
               path: '/dashboard/chat',
               icon: icon2('chat'),
             },
@@ -163,14 +162,14 @@ export default function Nav({ openNav, onCloseNav }) {
         <NavSection
           data={[
             {
-              title: 'Заявка',
+              title: 'Requests',
               path: '/dashboard/user',
               icon: icon2('list'),
             },
             {
-              title: 'Запрос',
-              path: '/dashboard/products',
-              icon: icon('ic_cart'),
+              title: 'Chat',
+              path: '/dashboard/chat',
+              icon: icon2('chat'),
             },
           ]}
         />
