@@ -326,7 +326,7 @@ export default function UserPage() {
     setPowerTruck(get(row, 'power_truck', ''));
     setDriver(get(row, 'driver.id', ''));
     setTruckLocation(get(row, 'truck_location', ''));
-    setTruckType(get(row, 'truck_type', ''));
+    setTruckType(get(row, 'truck_type.id', ''));
   };
 
   console.log(mainData);
