@@ -300,14 +300,14 @@ export default function UserPage() {
               </datalist>
             </div>
 
-            <div className="card3">
+            {/* <div className="card3">
               <input
                 type="file"
                 placeholder="Avatar"
                 className="input2"
                 onChange={(v) => setAvatar(v.target.files[0])}
               />
-            </div>
+            </div> */}
 
             <div className="card3">
               <input
@@ -357,9 +357,7 @@ export default function UserPage() {
                 onChange={(v) => setPhone(v.target.value)}
               />
             </div>
-            <div className="card3">
-              <h1> </h1>
-            </div>
+            
           </div>
           <Container>
             <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>

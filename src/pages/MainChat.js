@@ -164,10 +164,9 @@ export default function MainChat() {
               type="text"
               placeholder="Message..."
               className="input22"
-              // onChange={(e) => setChangingMessage(e.target.value)}
               onKeyDown={(e) => handleKeyDown(e)}
             />
-            <button onClick={() => console.log('send')} className="sendDataButton">
+            <button  className="sendDataButton" onClick={(e) => handleKeyDown(e)} >
               <CiPaperplane />
             </button>
           </div>
