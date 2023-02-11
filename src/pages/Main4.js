@@ -127,9 +127,29 @@ export default function UserPage() {
     getOrderOwner(0);
     getTruck(0);
     getDriver();
+    getOrderO();
   }, []);
 
   const cat = JSON.parse(localStorage.getItem('userData'));
+
+  const [orderO, setOrderO] = useState([]);
+  const getOrderO = async () => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${get(cat, 'access', '')}`,
+      },
+    };
+
+    await axios
+      .get(`http://185.217.131.179:8888/api/v1/company/staff-create/?order_owner=order_owner&limit=60`, config)
+      .then((ress) => {
+        console.log('Order owner', ress.data);
+        setOrderO(get(ress, 'data.results', ''));
+      })
+      .catch((err) => {
+        console.log('error zayavka', err);
+      });
+  };
 
   const getOrderOwner = async (num) => {
     const config = {
@@ -337,7 +357,7 @@ export default function UserPage() {
         });
     } else {
       // edit order
-      console.log("id",orderEditinID)
+      console.log('id', orderEditinID);
       await axios
         .patch(
           `http://185.217.131.179:8888/api/v1/company/order/${orderEditinID}/`,
@@ -384,6 +404,7 @@ export default function UserPage() {
         });
     }
   };
+
   const handleOpen = (item) => {
     setOpen(true);
     setDataModal(item);
@@ -425,8 +446,6 @@ export default function UserPage() {
     setInfo(get(row, 'order_info', ''));
     setCash(get(row, 'paymentMethod', ''));
     // setMassa(get(row, 'order_weight', ''));
-
-    
   };
 
   return (
@@ -521,13 +540,22 @@ export default function UserPage() {
                 />
               </div>
               <div className="card3">
-                <input
-                  type="number"
-                  placeholder="Order owner"
+                <select
+                  name="cars2"
+                  id="cars2"
                   defaultValue={owner}
                   className="input2"
                   onChange={(v) => setOwner(v.target.value)}
-                />
+                >
+                  <option value={0}>Order owner</option>
+                  {orderO.map((row, i) => {
+                    return (
+                      <option value={get(row, 'id')} key={i}>
+                        {get(row, 'first_name', '')}
+                      </option>
+                    );
+                  })}
+                </select>
               </div>
 
               <div className="card3">
@@ -738,7 +766,7 @@ export default function UserPage() {
                 className="input2"
                 onChange={(v) => setTruckType(v.target.value)}
               />
-               <datalist id="data5">
+              <datalist id="data5">
                 {driverIds.map((v) => {
                   return <option value={v.id} />;
                 })}
@@ -914,7 +942,9 @@ export default function UserPage() {
                                 (row.status === 'sending' && 'primary') ||
                                 (row.status === 'way' && 'warning') ||
                                 (row.status === 'arrived' && 'success') ||
-                                'error'
+                                (row.status === 'main' && 'primary') ||
+                                (row.status === 'declined' && 'error')
+                                // 'error'
                               }
                               disabled
                               // onChange={(item) => changinStatus(item.target.value, i, row)}
