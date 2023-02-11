@@ -297,6 +297,7 @@ export default function UserPage() {
               />
               <datalist id="data4">
                 <option value="male" />
+                <option value="female" />
               </datalist>
             </div>
 

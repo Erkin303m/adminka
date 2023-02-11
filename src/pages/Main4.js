@@ -81,7 +81,6 @@ export default function UserPage() {
   const [mainData, setMainData] = useState([]);
   const [driverIds, setDriverIds] = useState([]);
   const [number1, setNumber1] = useState(0);
-  const [number2, setNumber2] = useState(0);
   const [value, setValue] = useState(0);
   const [value2, setValue2] = useState(0);
 
@@ -494,7 +493,7 @@ export default function UserPage() {
                   onChange={(v) => setPackages(v.target.value)}
                 />
               </div>
-              <div className="card3">
+              {/* <div className="card3">
                 <input
                   type="number"
                   placeholder="First payment"
@@ -502,7 +501,7 @@ export default function UserPage() {
                   className="input2"
                   onChange={(v) => setFirstPayment(v.target.value)}
                 />
-              </div>
+              </div> */}
               <div className="card3">
                 <input
                   type="text"
@@ -597,7 +596,7 @@ export default function UserPage() {
                 />
               </div>
 
-              <div className="card3">
+              {/* <div className="card3">
                 <input
                   type="text"
                   placeholder="Payment"
@@ -610,7 +609,7 @@ export default function UserPage() {
                   <option value="cash" />
                   <option value="card" />
                 </datalist>
-              </div>
+              </div> */}
 
               <div className="card3">
                 <input
