@@ -17,12 +17,23 @@ import {
 import axios from 'axios';
 import { get } from 'lodash';
 import swal from 'sweetalert';
+import {
+  AiOutlineDelete,
+  AiOutlineEdit,
+  AiOutlineArrowRight,
+  AiOutlineShoppingCart,
+  AiOutlineDropbox,
+} from 'react-icons/ai';
+import { BiMoney } from 'react-icons/bi';
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
 
 import { UserListHead } from '../sections/@dashboard/user';
 
 import USERLIST from '../_mock/user';
 import Scrollbar from '../components/scrollbar';
 
+import Label from '../components/label';
 import Iconify from '../components/iconify';
 
 const TABLE_HEAD = [
@@ -32,6 +43,17 @@ const TABLE_HEAD = [
   { id: 'del', label: 'Del', alignRight: false },
   { id: 'edit', label: 'Edit', alignRight: false },
 ];
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid white',
+  boxShadow: 24,
+  p: 4,
+};
 
 export default function UserPage() {
   const [tableData, setTableData] = useState([]);
@@ -53,6 +75,8 @@ export default function UserPage() {
   const [editID, setEditID] = useState(0);
 
   const [value, setValue] = useState(0);
+  const [open, setOpen] = useState(0);
+  const [dataModal, setDataModal] = useState([]);
 
   console.log(avatar);
   useEffect(() => {
@@ -196,8 +220,15 @@ export default function UserPage() {
   const isEditing = (row) => {
     setIsEdit(1);
     setEditID(get(row, 'id', 0));
+    setValue(1);
     // setUserName(get(row,'id',0))
   };
+
+  const handleOpen = (item) => {
+    setOpen(true);
+    setDataModal(item);
+  };
+  const handleClose = () => setOpen(false);
 
   return (
     <>
@@ -235,19 +266,20 @@ export default function UserPage() {
                   <TableBody>
                     {tableData.map((row, i) => {
                       return (
-                        <TableRow hover key={i} tabIndex={-1} s>
+                        <TableRow hover key={i} tabIndex={-1}  onDoubleClick={()=>handleOpen(row)} >
                           <TableCell align="left">{get(row, 'id', '')}</TableCell>
                           <TableCell align="left">{get(row, 'phone_number', '')}</TableCell>
 
                           <TableCell align="left">{get(row, 'role', '')}</TableCell>
+
                           <TableCell align="left">
-                            <Button variant="outlined" color="inherit" onClick={() => del(row.id)}>
-                              Del
+                            <Button className="del" onClick={() => del(row.id)}>
+                              <AiOutlineDelete />
                             </Button>
                           </TableCell>
                           <TableCell align="left">
-                            <Button variant="outlined" color="inherit" onClick={() => isEditing(row)}>
-                              Edit
+                            <Button className="edit" onClick={() => isEditing(row)}>
+                              <AiOutlineEdit />
                             </Button>
                           </TableCell>
                         </TableRow>
@@ -358,7 +390,6 @@ export default function UserPage() {
                 onChange={(v) => setPhone(v.target.value)}
               />
             </div>
-            
           </div>
           <Container>
             <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
@@ -372,6 +403,49 @@ export default function UserPage() {
           </Container>
         </Card>
       )}
+
+      <div>
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style} className="bigModalCard">
+            <div className="cardMiniModal3">
+              <p className="dateTitle">{get(dataModal, 'created_at', '').slice(0, 10)}</p>
+              <Label
+                color={
+                  (get(dataModal, 'status', '') === 'sending' && 'primary') ||
+                  (get(dataModal, 'status', '') === 'way' && 'warning') ||
+                  (get(dataModal, 'status', '') === 'arrived' && 'success') ||
+                  'error'
+                }
+              >
+                {get(dataModal, 'status', '')}
+              </Label>
+            </div>
+            <div className="cardMiniModal">
+              <p className="country">{get(dataModal, 'city_pending', '')}</p>
+              <AiOutlineArrowRight />
+              <p className="country">{get(dataModal, 'city_sending', '')}</p>
+            </div>
+            <p className="sum">
+              <BiMoney /> {get(dataModal, 'full_payment', '')} USD
+            </p>
+
+            <div className="cardMiniModal2">
+              <p className="productNameTitle">
+                <AiOutlineShoppingCart /> {get(dataModal, 'name', '')}
+              </p>
+              <p className="productNameTitle">
+                <AiOutlineDropbox /> {get(dataModal, 'packageMethod', '')}
+              </p>
+            </div>
+            <p className="productNameTitle">{get(dataModal, 'customs[0].name', '')}</p>
+          </Box>
+        </Modal>
+      </div>
     </>
   );
 }
