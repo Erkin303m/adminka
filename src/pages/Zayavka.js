@@ -37,6 +37,15 @@ const TABLE_HEAD2 = [
   { id: 'status', label: 'Status', alignRight: false },
 ];
 
+const TABLE_HEAD4 = [
+  { id: 'name', label: 'Name', alignRight: false },
+  { id: 'company', label: 'Information about order', alignRight: false },
+  { id: 'drop', label: 'Delivery point', alignRight: false },
+  { id: 'date', label: 'Date', alignRight: false },
+  { id: 'status', label: 'Status', alignRight: false },
+  { id: 'arrived', label: 'Arrived', alignRight: false },
+];
+
 const TABLE_HEAD3 = [
   { id: 'name', label: 'Name', alignRight: false },
   { id: 'company', label: 'Driver', alignRight: false },
@@ -376,6 +385,40 @@ export default function UserPage() {
       });
   };
 
+  const Arrived = async (id) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${get(cat, 'access', '')}`,
+      },
+    };
+    await axios
+      .patch(
+        `http://185.217.131.179:8888/api/v1/company/dashboard/director/${id}/`,
+        {
+          status: 'item',
+        },
+        config
+      )
+      .then((ress) => {
+        console.log('success changin status', ress);
+        swal({
+          title: 'Arrived!',
+          icon: 'success',
+          dangerMode: false,
+          timer: 3000,
+        });
+      })
+      .catch((err) => {
+        console.log('error zayavka', err);
+        swal({
+          title: 'Error!',
+          icon: 'error',
+          dangerMode: false,
+          timer: 3000,
+        });
+      });
+  };
+
   return (
     <>
       <Helmet>
@@ -423,7 +466,7 @@ export default function UserPage() {
                 <Table>
                   <UserListHead
                     order={order}
-                    headLabel={TABLE_HEAD2}
+                    headLabel={TABLE_HEAD4}
                     rowCount={USERLIST.length}
                     numSelected={selected.length}
                     onRequestSort={handleRequestSort}
@@ -470,6 +513,10 @@ export default function UserPage() {
                                 <option value="declined">Declined</option>
                               )}
                             </select>
+                          </TableCell>
+
+                          <TableCell align="left">
+                            <Button onClick={() => Arrived(row.id)}>Arrived</Button>
                           </TableCell>
                         </TableRow>
                       );

@@ -138,6 +138,7 @@ export default function UserPage() {
   const [idEditOrderOwner, setIdEditOrderOwner] = useState(0);
 
   const createOrderOwner = async () => {
+    console.log('id', idEditOrderOwner);
     const config = {
       headers: {
         Authorization: `Bearer ${get(cat, 'access', '')}`,
@@ -185,7 +186,7 @@ export default function UserPage() {
       // edit
       await axios
         .patch(
-          `http://185.217.131.179:8888/api/v1/company/dashboard/director/`,
+          `http://185.217.131.179:8888/api/v1/company/dashboard/director/${idEditOrderOwner}/`,
           {
             first_name: username,
             last_name: lastName,
@@ -201,7 +202,7 @@ export default function UserPage() {
           },
           config
         )
-        .then((ress) => {
+        .then(() => {
           swal({
             title: 'Order owners edited successfully!',
             icon: 'success',
@@ -246,6 +247,8 @@ export default function UserPage() {
   const [truckEdit, setTruckEdit] = useState(0);
   const [truckEditinID, setTruckEditinID] = useState(0);
 
+
+
   const createTruck = async () => {
     const config = {
       headers: {
@@ -287,7 +290,7 @@ export default function UserPage() {
         });
     } else {
       await axios
-        .put(
+        .patch(
           `http://185.217.131.179:8888/api/v1/company/truck/${truckEditinID}/`,
           {
             name,
@@ -374,6 +377,7 @@ export default function UserPage() {
         console.log('error zayavka', err);
       });
   };
+
 
   return (
     <>
@@ -779,10 +783,17 @@ export default function UserPage() {
               <input
                 type="text"
                 placeholder="Truck type"
+                list="data5"
                 defaultValue={truckType}
                 className="input2"
                 onChange={(v) => setTruckType(v.target.value)}
               />
+
+              <datalist id="data5">
+                {driverIds.map((v) => {
+                  return <option value={v.id} />;
+                })}
+              </datalist>
             </div>
 
             {/* <div className="card3">

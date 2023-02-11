@@ -25,11 +25,17 @@ import {
   AiOutlineArrowLeft,
   AiOutlineDelete,
   AiOutlineEdit,
+  AiOutlineShoppingCart,
+  AiOutlineDropbox,
 } from 'react-icons/ai';
 
 import swal from 'sweetalert';
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
 
 import { BsFillPersonFill, BsList } from 'react-icons/bs';
+import { BiMoney } from 'react-icons/bi';
+
 import { MdOutlineDone } from 'react-icons/md';
 import { RiDeleteBack2Line } from 'react-icons/ri';
 
@@ -57,6 +63,19 @@ const TABLE_HEAD2 = [
   { id: 'status', label: 'Status', alignRight: false },
   { id: 'relation', label: 'Edit', alignRight: false },
 ];
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
 export default function UserPage() {
   const [mainData2, setMainData2] = useState([]);
   const [mainData, setMainData] = useState([]);
@@ -69,17 +88,8 @@ export default function UserPage() {
   const [truckEdit, setTruckEdit] = useState(0);
   const [truckEditinID, setTruckEditinID] = useState(0);
 
-  // order_owner add states
-  // const [username, setUserName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [middleName, setMiddleName] = useState('');
-  const [date, setDate] = useState(0);
-  const [gender, setGender] = useState('');
-  const [avatar, setAvatar] = useState('');
-  const [experience, setExperience] = useState(0);
-  const [phoneNumber, setPhoneNumber] = useState(0);
-  const [password1, setPassword1] = useState('');
-  const [password2, setPassword2] = useState('');
+  const [orderEdit, setOrderEdit] = useState(0);
+  const [orderEditinID, setOrderEditinID] = useState(0);
 
   // truck add states
   const [name, setName] = useState('');
@@ -99,7 +109,7 @@ export default function UserPage() {
   const [massa, setMassa] = useState('');
   const [info, setInfo] = useState('');
   const [status, setStatus] = useState('');
-  const [country, setCuntry] = useState('');
+  const [country, setCountry] = useState('');
   const [city, setCity] = useState('');
   const [packages, setPackages] = useState('');
   const [cash, setCash] = useState('');
@@ -270,6 +280,117 @@ export default function UserPage() {
       });
   };
 
+  const createOrder = async () => {
+    const fCustoms = customs.split('');
+    const ff = [];
+    for (let i = 0; i < fCustoms.length; i += 1) {
+      ff.push(parseInt(fCustoms[i], 10));
+    }
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${get(cat, 'access', '')}`,
+      },
+    };
+    if (orderEdit === 0) {
+      await axios
+        .post(
+          `http://185.217.131.179:8888/api/v1/company/order/`,
+          {
+            name: userName,
+            packageMethod: packages,
+            // paymentMethod: cash,
+            // first_payment: firstPayment,
+            pending_of_place: waiting,
+            drop_of_place: drop,
+            order_owner: owner,
+            full_payment: fullPayment,
+            order_weight: massa,
+            order_info: info,
+            status: 'main',
+            customs: ff,
+            country,
+            city,
+            country_sending: countrySending,
+            country_pending: countryPending,
+            city_sending: citySending,
+            city_pending: cityPending,
+          },
+          config
+        )
+        .then((ress) => {
+          console.log('success', ress);
+          swal({
+            title: 'Order added!',
+            icon: 'success',
+            dangerMode: false,
+            timer: 3000,
+          });
+        })
+        .catch((err) => {
+          console.log('error', err);
+          swal({
+            title: 'Not added!',
+            icon: 'error',
+            dangerMode: true,
+            timer: 3000,
+          });
+        });
+    } else {
+      // edit order
+      console.log("id",orderEditinID)
+      await axios
+        .patch(
+          `http://185.217.131.179:8888/api/v1/company/order/${orderEditinID}/`,
+          {
+            name: userName,
+            packageMethod: packages,
+            // paymentMethod: cash,
+            // first_payment: firstPayment,
+            pending_of_place: waiting,
+            drop_of_place: drop,
+            order_owner: owner,
+            full_payment: fullPayment,
+            order_weight: massa,
+            order_info: info,
+            status,
+            customs: ff,
+            country,
+            city,
+            country_sending: countrySending,
+            country_pending: countryPending,
+            city_sending: citySending,
+            city_pending: cityPending,
+          },
+          config
+        )
+        .then((ress) => {
+          console.log('success', ress);
+          swal({
+            title: 'Edited!',
+            icon: 'success',
+            dangerMode: false,
+            timer: 3000,
+          });
+          setOrderEdit(0);
+        })
+        .catch((err) => {
+          console.log('error', err);
+          swal({
+            title: 'Not edited!',
+            icon: 'error',
+            dangerMode: true,
+            timer: 3000,
+          });
+        });
+    }
+  };
+  const handleOpen = (item) => {
+    setOpen(true);
+    setDataModal(item);
+  };
+  const handleClose = () => setOpen(false);
+
   const isEdit = (row) => {
     setTruckEditinID(get(row, 'id', 0));
     setTruckEdit(1);
@@ -283,131 +404,32 @@ export default function UserPage() {
     setTruckType(get(row, 'truck_type.id', ''));
   };
 
-  const createOrder = async () => {
-    const fCustoms = customs.split('');
-    const ff = [];
-    for (let i = 0; i < fCustoms.length; i += 1) {
-      ff.push(parseInt(fCustoms[i], 10));
-    }
+  const isEditOrder = (row) => {
+    setOrderEditinID(get(row, 'id', 0));
+    setOrderEdit(1);
+    setValue(0);
+    setValue2(0);
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${get(cat, 'access', '')}`,
-      },
-    };
-    await axios
-      .post(
-        `http://185.217.131.179:8888/api/v1/company/order/`,
-        {
-          name: userName,
-          packageMethod: packages,
-          paymentMethod: cash,
-          first_payment: firstPayment,
-          pending_of_place: waiting,
-          drop_of_place: drop,
-          order_owner: owner,
-          full_payment: fullPayment,
-          order_weight: massa,
-          order_info: info,
-          status: 'main',
-          customs: [1, 2],
-          country,
-          city,
-          country_sending: countrySending,
-          country_pending: countryPending,
-          city_sending: citySending,
-          city_pending: cityPending,
-        },
-        config
-      )
-      .then((ress) => {
-        console.log('success', ress);
-        swal({
-          title: 'Продукт успешно добавлен!',
-          text: 'Ознакомьтесь с добавленным товаром в разделе Заявки',
-          icon: 'success',
-          dangerMode: false,
-          timer: 3000,
-        });
-      })
-      .catch((err) => {
-        console.log('error', err);
-        swal({
-          title: 'Информация введена неверно, проверьте интернет!',
-          icon: 'error',
-          dangerMode: true,
-          timer: 3000,
-        });
-      });
-  };
-  const handleOpen = (item) => {
-    setOpen(true);
-    setDataModal(item);
+    setUserName(get(row, 'name', ''));
+    setPackages(get(row, 'packageMethod', ''));
+    setCityPending(get(row, 'city_pending', ''));
+    setCitySending(get(row, 'city_sending', ''));
+    setCountryPending(get(row, 'country_pending', ''));
+    setCountrySending(get(row, 'country_sending', ''));
+    setfullPayment(get(row, 'full_payment', ''));
+    setStatus(get(row, 'status', ''));
+    setFirstPayment(get(row, 'first_payment', ''));
+    setWaiting(get(row, 'pending_of_place', ''));
+    setDrop(get(row, 'drop_of_place', ''));
+    setOwner(get(row, 'order_owner', ''));
+    setMassa(get(row, 'order_weight', ''));
+    setInfo(get(row, 'order_info', ''));
+    setCash(get(row, 'paymentMethod', ''));
+    // setMassa(get(row, 'order_weight', ''));
+
+    
   };
 
-  const yes = async (row, i) => {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${get(cat, 'access', '')}`,
-      },
-    };
-    const id = get(row, 'id', 0);
-    await axios
-      .post(
-        `http://185.217.131.179:8888/api/v1/company/dashboard/manager/${id}/status_change/`,
-        {
-          status: 'main',
-        },
-        config
-      )
-      .then(() => {
-        const a = [...mainData];
-        a[i].status = 'main';
-        setMainData(a);
-
-        swal({
-          title: 'Success!',
-          icon: 'success',
-          dangerMode: false,
-          timer: 3000,
-        });
-      })
-      .catch((err) => {
-        console.log('error zayavka', err);
-      });
-  };
-
-  const no = async (row, i) => {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${get(cat, 'access', '')}`,
-      },
-    };
-    const id = get(row, 'id', 0);
-    await axios
-      .post(
-        `http://185.217.131.179:8888/api/v1/company/dashboard/manager/${id}/status_change/`,
-        {
-          status: 'declined',
-        },
-        config
-      )
-      .then(() => {
-        const a = [...mainData];
-        a[i].status = 'declined';
-        setMainData(a);
-
-        swal({
-          title: 'Success!',
-          icon: 'success',
-          dangerMode: false,
-          timer: 3000,
-        });
-      })
-      .catch((err) => {
-        console.log('error', err);
-      });
-  };
   return (
     <>
       <Helmet>
@@ -455,21 +477,28 @@ export default function UserPage() {
           <>
             <div className="card2">
               <div className="card3">
-                <input type="text" placeholder="Имя" className="input2" onChange={(v) => setUserName(v.target.value)} />
+                <input
+                  type="text"
+                  placeholder="Name"
+                  className="input2"
+                  defaultValue={userName}
+                  onChange={(v) => setUserName(v.target.value)}
+                />
               </div>
               <div className="card3">
                 <input
                   type="text"
-                  placeholder="Метод упаковки"
+                  placeholder="Packing method"
+                  defaultValue={packages}
                   className="input2"
                   onChange={(v) => setPackages(v.target.value)}
                 />
               </div>
-
               <div className="card3">
                 <input
                   type="number"
-                  placeholder="Первый взнос"
+                  placeholder="First payment"
+                  defaultValue={firstPayment}
                   className="input2"
                   onChange={(v) => setFirstPayment(v.target.value)}
                 />
@@ -477,24 +506,26 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="text"
-                  placeholder="В ожидании места"
+                  placeholder="Waiting for a place"
                   className="input2"
+                  defaultValue={waiting}
                   onChange={(v) => setWaiting(v.target.value)}
                 />
               </div>
-
               <div className="card3">
                 <input
                   type="text"
-                  placeholder="Падение места"
+                  placeholder="Falling place"
                   className="input2"
+                  defaultValue={drop}
                   onChange={(v) => setDrop(v.target.value)}
                 />
               </div>
               <div className="card3">
                 <input
                   type="number"
-                  placeholder="Владелец заказа"
+                  placeholder="Order owner"
+                  defaultValue={owner}
                   className="input2"
                   onChange={(v) => setOwner(v.target.value)}
                 />
@@ -503,15 +534,17 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="number"
-                  placeholder="Вес заказа"
+                  placeholder="Order weight"
                   className="input2"
+                  defaultValue={massa}
                   onChange={(v) => setMassa(v.target.value)}
                 />
               </div>
               <div className="card3">
                 <input
                   type="text"
-                  placeholder="Информация о заказе"
+                  placeholder="Information about order"
+                  defaultValue={info}
                   className="input2"
                   onChange={(v) => setInfo(v.target.value)}
                 />
@@ -521,6 +554,7 @@ export default function UserPage() {
                 <input
                   type="text"
                   placeholder="Status"
+                  defaultValue={status}
                   list="data4"
                   className="input2"
                   onChange={(v) => setStatus(v.target.value)}
@@ -537,6 +571,7 @@ export default function UserPage() {
                 <input
                   type="number"
                   placeholder="Customs"
+                  defaultValue={customs}
                   className="input2"
                   onChange={(v) => setCustoms(v.target.value)}
                 />
@@ -545,20 +580,28 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="text"
-                  placeholder="Страна"
+                  placeholder="Country"
+                  defaultValue={country}
                   className="input2"
-                  onChange={(v) => setCuntry(v.target.value)}
+                  onChange={(v) => setCountry(v.target.value)}
                 />
               </div>
 
               <div className="card3">
-                <input type="text" placeholder="Город" className="input2" onChange={(v) => setCity(v.target.value)} />
+                <input
+                  type="text"
+                  placeholder="City"
+                  defaultValue={city}
+                  className="input2"
+                  onChange={(v) => setCity(v.target.value)}
+                />
               </div>
 
               <div className="card3">
                 <input
                   type="text"
                   placeholder="Payment"
+                  defaultValue={cash}
                   list="data3"
                   className="input2"
                   onChange={(v) => setCash(v.target.value)}
@@ -572,7 +615,8 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="number"
-                  placeholder="Полная оплата"
+                  placeholder="Full payment"
+                  defaultValue={fullPayment}
                   className="input2"
                   onChange={(v) => setfullPayment(v.target.value)}
                 />
@@ -581,7 +625,8 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="text"
-                  placeholder="Страна отправки"
+                  placeholder="Country sending"
+                  defaultValue={countrySending}
                   className="input2"
                   onChange={(v) => setCountrySending(v.target.value)}
                 />
@@ -590,7 +635,8 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="text"
-                  placeholder="Страна ожидании"
+                  placeholder="Country pending"
+                  defaultValue={countryPending}
                   className="input2"
                   onChange={(v) => setCountryPending(v.target.value)}
                 />
@@ -599,7 +645,8 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="text"
-                  placeholder="Город отправки"
+                  placeholder="City sending"
+                  defaultValue={citySending}
                   className="input2"
                   onChange={(v) => setCitySending(v.target.value)}
                 />
@@ -608,7 +655,8 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="text"
-                  placeholder="Город ожидании"
+                  placeholder="City pending"
+                  defaultValue={cityPending}
                   className="input2"
                   onChange={(v) => setCityPending(v.target.value)}
                 />
@@ -672,15 +720,6 @@ export default function UserPage() {
               </datalist>
             </div>
 
-            {/* <div className="card3">
-              <input
-                type="file"
-                placeholder="avgPrice"
-                className="input2"
-                onChange={(v) => setAvgPrice(v.target.value)}
-              />
-            </div> */}
-
             <div className="card3">
               <input
                 type="text"
@@ -694,11 +733,17 @@ export default function UserPage() {
             <div className="card3">
               <input
                 type="text"
+                list="data5"
                 placeholder="Truck type"
                 defaultValue={truckType}
                 className="input2"
                 onChange={(v) => setTruckType(v.target.value)}
               />
+               <datalist id="data5">
+                {driverIds.map((v) => {
+                  return <option value={v.id} />;
+                })}
+              </datalist>
             </div>
 
             {/* <div className="card3">
@@ -895,11 +940,8 @@ export default function UserPage() {
                           )}
                         </TableCell>
                         <TableCell align="left">
-                          <Button
-                            variant="contained"
-                            // onClick={() => navigation('/dashboard/blog', { state: { id: row.id, truck: false } })}
-                          >
-                            Edit
+                          <Button className="edit" onClick={() => isEditOrder(row)}>
+                            <AiOutlineEdit />
                           </Button>
                         </TableCell>
                       </TableRow>
@@ -958,6 +1000,49 @@ export default function UserPage() {
           </div>
         </Card>
       ) : null}
+
+      <div>
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style} className="bigModalCard">
+            <div className="cardMiniModal3">
+              <p className="dateTitle">{get(dataModal, 'created_at', '').slice(0, 10)}</p>
+              <Label
+                color={
+                  (get(dataModal, 'status', '') === 'sending' && 'primary') ||
+                  (get(dataModal, 'status', '') === 'way' && 'warning') ||
+                  (get(dataModal, 'status', '') === 'arrived' && 'success') ||
+                  'error'
+                }
+              >
+                {get(dataModal, 'status', '')}
+              </Label>
+            </div>
+            <div className="cardMiniModal">
+              <p className="country">{get(dataModal, 'city_pending', '')}</p>
+              <AiOutlineArrowRight />
+              <p className="country">{get(dataModal, 'city_sending', '')}</p>
+            </div>
+            <p className="sum">
+              <BiMoney /> {get(dataModal, 'full_payment', '')} USD
+            </p>
+
+            <div className="cardMiniModal2">
+              <p className="productNameTitle">
+                <AiOutlineShoppingCart /> {get(dataModal, 'name', '')}
+              </p>
+              <p className="productNameTitle">
+                <AiOutlineDropbox /> {get(dataModal, 'packageMethod', '')}
+              </p>
+            </div>
+            <p className="productNameTitle">{get(dataModal, 'customs[0].name', '')}</p>
+          </Box>
+        </Modal>
+      </div>
     </>
   );
 }

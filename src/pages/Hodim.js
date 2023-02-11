@@ -30,7 +30,7 @@ const TABLE_HEAD = [
   { id: 'company', label: 'Phone', alignRight: false },
   { id: 'drop', label: 'Role', alignRight: false },
   { id: 'del', label: 'Del', alignRight: false },
-  // { id: 'edit', label: 'Edit', alignRight: false },
+  { id: 'edit', label: 'Edit', alignRight: false },
 ];
 
 export default function UserPage() {
@@ -48,6 +48,9 @@ export default function UserPage() {
   const [gender, setGender] = useState('');
   const [avatar, setAvatar] = useState('');
   const [experience, setExperience] = useState('');
+
+  const [isEdit, setIsEdit] = useState(0);
+  const [editID, setEditID] = useState(0);
 
   const [value, setValue] = useState(0);
 
@@ -67,42 +70,82 @@ export default function UserPage() {
         Authorization: `Bearer ${get(cat, 'access', '')}`,
       },
     };
-    await axios
-      .post(
-        `http://185.217.131.179:8888/api/v1/company/dashboard/director/`,
-        {
-          first_name: userName,
-          last_name: lastName,
-          middle_name: middleName,
-          birthday,
-          gender,
-          // avatar,
-          experience,
-          password_1: password1,
-          password_2: password2,
-          phone_number: phone,
-          role,
-        },
-        config
-      )
-      .then((ress) => {
-        console.log('success', ress);
-        swal({
-          title: 'Сотрудник присоединился!',
-          icon: 'success',
-          dangerMode: false,
-          timer: 3000,
+    if (isEdit === 0) {
+      await axios
+        .post(
+          `http://185.217.131.179:8888/api/v1/company/dashboard/director/`,
+          {
+            first_name: userName,
+            last_name: lastName,
+            middle_name: middleName,
+            birthday,
+            gender,
+            // avatar,
+            experience,
+            password_1: password1,
+            password_2: password2,
+            phone_number: phone,
+            role,
+          },
+          config
+        )
+        .then((ress) => {
+          console.log('success', ress);
+          swal({
+            title: 'Сотрудник присоединился!',
+            icon: 'success',
+            dangerMode: false,
+            timer: 3000,
+          });
+        })
+        .catch((err) => {
+          console.log('error', err);
+          swal({
+            title: 'Сотрудник не присоединился!',
+            icon: 'error',
+            dangerMode: true,
+            timer: 3000,
+          });
         });
-      })
-      .catch((err) => {
-        console.log('error', err);
-        swal({
-          title: 'Сотрудник не присоединился!',
-          icon: 'error',
-          dangerMode: true,
-          timer: 3000,
+    } else {
+      // edit
+      await axios
+        .patch(
+          `http://185.217.131.179:8888/api/v1/company/dashboard/director/${editID}`,
+          {
+            first_name: userName,
+            last_name: lastName,
+            middle_name: middleName,
+            birthday,
+            gender,
+            // avatar,
+            experience,
+            password_1: password1,
+            password_2: password2,
+            phone_number: phone,
+            role,
+          },
+          config
+        )
+        .then((ress) => {
+          console.log('success', ress);
+          swal({
+            title: 'Сотрудник присоединился!',
+            icon: 'success',
+            dangerMode: false,
+            timer: 3000,
+          });
+        })
+        .catch((err) => {
+          console.log('error', err);
+          swal({
+            title: 'Сотрудник не присоединился!',
+            icon: 'error',
+            dangerMode: true,
+            timer: 3000,
+          });
         });
-      });
+    }
   };
 
   const sendWorkers = async () => {
@@ -122,13 +165,40 @@ export default function UserPage() {
       });
   };
 
-  const del = (row) => {
-    console.log(row);
+  const del = async (id) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${get(cat, 'access', '')}`,
+      },
+    };
+    await axios
+      .delete(`http://185.217.131.179:8888/api/v1/company/dashboard/director/${id}`, config)
+      .then((ress) => {
+        console.log('success', ress);
+        swal({
+          title: 'Deleted success!',
+          icon: 'success',
+          dangerMode: false,
+          timer: 3000,
+        });
+      })
+      .catch((err) => {
+        console.log('error', err);
+        swal({
+          title: 'Error!',
+          icon: 'error',
+          dangerMode: true,
+          timer: 3000,
+        });
+      });
   };
 
-  const edit = (row) => {
-    console.log(row);
+  const isEditing = (row) => {
+    setIsEdit(1);
+    setEditID(get(row, 'id', 0));
+    // setUserName(get(row,'id',0))
   };
+
   return (
     <>
       <Helmet>
@@ -171,15 +241,15 @@ export default function UserPage() {
 
                           <TableCell align="left">{get(row, 'role', '')}</TableCell>
                           <TableCell align="left">
-                            <Button variant="outlined" color="inherit" onClick={() => del(row)}>
+                            <Button variant="outlined" color="inherit" onClick={() => del(row.id)}>
                               Del
                             </Button>
                           </TableCell>
-                          {/* <TableCell align="left">
-                          <Button variant="outlined" color="inherit" onClick={() => edit(row)}>
-                            Edit
-                          </Button>
-                        </TableCell> */}
+                          <TableCell align="left">
+                            <Button variant="outlined" color="inherit" onClick={() => isEditing(row)}>
+                              Edit
+                            </Button>
+                          </TableCell>
                         </TableRow>
                       );
                     })}
