@@ -11,6 +11,8 @@ import {
   Container,
   Typography,
   TableContainer,
+  BottomNavigation,
+  BottomNavigationAction,
 } from '@mui/material';
 import axios from 'axios';
 import { get } from 'lodash';
@@ -47,6 +49,8 @@ export default function UserPage() {
   const [avatar, setAvatar] = useState('');
   const [experience, setExperience] = useState('');
 
+  const [value, setValue] = useState(0);
+
   console.log(avatar);
   useEffect(() => {
     sendWorkers();
@@ -72,7 +76,7 @@ export default function UserPage() {
           middle_name: middleName,
           birthday,
           gender,
-          avatar,
+          // avatar,
           experience,
           password_1: password1,
           password_2: password2,
@@ -136,152 +140,169 @@ export default function UserPage() {
           <Typography variant="h4" gutterBottom>
             Employees
           </Typography>
+          <Card className="cardFilter">
+            <BottomNavigation
+              showLabels
+              value={value}
+              onChange={(event, newValue) => {
+                setValue(newValue);
+              }}
+            >
+              <BottomNavigationAction label="List" className="buttonNavigation" />
+              <BottomNavigationAction label="Add" />
+            </BottomNavigation>
+          </Card>
         </Stack>
       </Container>
 
-      <Container>
-        <Card>
-          {/* <input type="text" placeholder="Search" className="input3" onChange={(v) => search(v.target.value)} /> */}
+      {value === 0 ? (
+        <Container>
+          <Card>
+            <Scrollbar>
+              <TableContainer>
+                <Table>
+                  <UserListHead headLabel={TABLE_HEAD} rowCount={USERLIST.length} />
+                  <TableBody>
+                    {tableData.map((row, i) => {
+                      return (
+                        <TableRow hover key={i} tabIndex={-1} s>
+                          <TableCell align="left">{get(row, 'id', '')}</TableCell>
+                          <TableCell align="left">{get(row, 'phone_number', '')}</TableCell>
 
-          <Scrollbar>
-            <TableContainer>
-              <Table>
-                <UserListHead headLabel={TABLE_HEAD} rowCount={USERLIST.length} />
-                <TableBody>
-                  {tableData.map((row, i) => {
-                    return (
-                      <TableRow hover key={i} tabIndex={-1} s>
-                        <TableCell align="left">{get(row, 'id', '')}</TableCell>
-                        <TableCell align="left">{get(row, 'phone_number', '')}</TableCell>
-
-                        <TableCell align="left">{get(row, 'role', '')}</TableCell>
-                        <TableCell align="left">
-                          <Button variant="outlined" color="inherit" onClick={() => del(row)}>
-                            Del
-                          </Button>
-                        </TableCell>
-                        {/* <TableCell align="left">
+                          <TableCell align="left">{get(row, 'role', '')}</TableCell>
+                          <TableCell align="left">
+                            <Button variant="outlined" color="inherit" onClick={() => del(row)}>
+                              Del
+                            </Button>
+                          </TableCell>
+                          {/* <TableCell align="left">
                           <Button variant="outlined" color="inherit" onClick={() => edit(row)}>
                             Edit
                           </Button>
                         </TableCell> */}
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Scrollbar>
-        </Card>
-      </Container>
-
-      <Card className="paddinTop">
-        <div className="card2">
-          <div className="card3">
-            <input type="text" placeholder="Name" className="input2" onChange={(v) => setUserName(v.target.value)} />
-          </div>
-          <div className="card3">
-            <input
-              type="text"
-              placeholder="Last name"
-              className="input2"
-              onChange={(v) => setLastName(v.target.value)}
-            />
-          </div>
-
-          <div className="card3">
-            <input
-              type="text"
-              placeholder="Middle name"
-              className="input2"
-              onChange={(v) => setMiddleName(v.target.value)}
-            />
-          </div>
-
-          <div className="card3">
-            <input type="date" placeholder="Date" className="input2" onChange={(v) => setBirthday(v.target.value)} />
-          </div>
-
-          <div className="card3">
-            <input
-              type="text"
-              placeholder="Gender"
-              list="data4"
-              className="input2"
-              onChange={(v) => setGender(v.target.value)}
-            />
-            <datalist id="data4">
-              <option value="male" />
-            </datalist>
-          </div>
-
-          <div className="card3">
-            <input type="file" placeholder="Avatar" className="input2" onChange={(v) => setAvatar(v.target.files[0])} />
-          </div>
-
-          <div className="card3">
-            <input
-              type="text"
-              placeholder="Experience"
-              className="input2"
-              onChange={(v) => setExperience(v.target.value)}
-            />
-          </div>
-
-          <div className="card3">
-            <input
-              type="text"
-              placeholder="Role"
-              list="data"
-              className="input2"
-              onChange={(v) => setRole(v.target.value)}
-            />
-            <datalist id="data">
-              <option value="manager" />
-              <option value="dispatcher" />
-            </datalist>
-          </div>
-
-          <div className="card3">
-            <input
-              type="text"
-              placeholder="Password 1"
-              className="input2"
-              onChange={(v) => setPassword1(v.target.value)}
-            />
-          </div>
-          <div className="card3">
-            <input
-              type="text"
-              placeholder="Password 2"
-              className="input2"
-              onChange={(v) => setPassword2(v.target.value)}
-            />
-          </div>
-
-          <div className="card3">
-            <input
-              type="text"
-              placeholder="Phone number"
-              className="input2"
-              onChange={(v) => setPhone(v.target.value)}
-            />
-          </div>
-          <div className="card3">
-            <h1> </h1>
-          </div>
-        </div>
-        <Container>
-          <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-            <Typography variant="h4" gutterBottom>
-              {' '}
-            </Typography>
-            <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => sendData()}>
-              New
-            </Button>
-          </Stack>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Scrollbar>
+          </Card>
         </Container>
-      </Card>
+      ) : (
+        <Card className="paddinTop">
+          <div className="card2">
+            <div className="card3">
+              <input type="text" placeholder="Name" className="input2" onChange={(v) => setUserName(v.target.value)} />
+            </div>
+            <div className="card3">
+              <input
+                type="text"
+                placeholder="Last name"
+                className="input2"
+                onChange={(v) => setLastName(v.target.value)}
+              />
+            </div>
+
+            <div className="card3">
+              <input
+                type="text"
+                placeholder="Middle name"
+                className="input2"
+                onChange={(v) => setMiddleName(v.target.value)}
+              />
+            </div>
+
+            <div className="card3">
+              <input type="date" placeholder="Date" className="input2" onChange={(v) => setBirthday(v.target.value)} />
+            </div>
+
+            <div className="card3">
+              <input
+                type="text"
+                placeholder="Gender"
+                list="data4"
+                className="input2"
+                onChange={(v) => setGender(v.target.value)}
+              />
+              <datalist id="data4">
+                <option value="male" />
+              </datalist>
+            </div>
+
+            <div className="card3">
+              <input
+                type="file"
+                placeholder="Avatar"
+                className="input2"
+                onChange={(v) => setAvatar(v.target.files[0])}
+              />
+            </div>
+
+            <div className="card3">
+              <input
+                type="text"
+                placeholder="Experience"
+                className="input2"
+                onChange={(v) => setExperience(v.target.value)}
+              />
+            </div>
+
+            <div className="card3">
+              <input
+                type="text"
+                placeholder="Role"
+                list="data"
+                className="input2"
+                onChange={(v) => setRole(v.target.value)}
+              />
+              <datalist id="data">
+                <option value="manager" />
+                <option value="dispatcher" />
+              </datalist>
+            </div>
+
+            <div className="card3">
+              <input
+                type="text"
+                placeholder="Password 1"
+                className="input2"
+                onChange={(v) => setPassword1(v.target.value)}
+              />
+            </div>
+            <div className="card3">
+              <input
+                type="text"
+                placeholder="Password 2"
+                className="input2"
+                onChange={(v) => setPassword2(v.target.value)}
+              />
+            </div>
+
+            <div className="card3">
+              <input
+                type="text"
+                placeholder="Phone number"
+                className="input2"
+                onChange={(v) => setPhone(v.target.value)}
+              />
+            </div>
+            <div className="card3">
+              <h1> </h1>
+            </div>
+          </div>
+          <Container>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+              <Typography variant="h4" gutterBottom>
+                {' '}
+              </Typography>
+              <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => sendData()}>
+                New
+              </Button>
+            </Stack>
+          </Container>
+        </Card>
+      )}
     </>
   );
 }

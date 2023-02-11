@@ -61,11 +61,11 @@ export default function LoginPage() {
         if (get(ress, 'data.data.role', '') === 'director') {
           navigation('/dashboard/app');
           localStorage.setItem('userData', JSON.stringify(ress.data));
-          // window.location.reload(true);
+          window.location.reload(true);
         } else if (get(ress, 'data.data.role', '') === 'manager' || get(ress, 'data.data.role', '') === 'dispatcher') {
           navigation('/dashboard/products');
           localStorage.setItem('userData', JSON.stringify(ress.data));
-          // window.location.reload(true);
+          window.location.reload(true);
         } else {
           swal({
             title: "Sorry, you don't have access!",
