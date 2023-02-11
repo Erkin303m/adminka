@@ -186,7 +186,7 @@ export default function UserPage() {
       // edit
       await axios
         .patch(
-          `http://185.217.131.179:8888/api/v1/company/dashboard/director/${idEditOrderOwner}/`,
+          `http://185.217.131.179:8888/api/v1/company/staff/edit/${idEditOrderOwner}/`,
           {
             first_name: username,
             last_name: lastName,

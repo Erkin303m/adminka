@@ -172,7 +172,7 @@ export default function UserPage() {
       },
     };
     await axios
-      .delete(`http://185.217.131.179:8888/api/v1/company/dashboard/director/${id}`, config)
+      .delete(`http://185.217.131.179:8888/api/v1/company/staff/edit/${id}/`, config)
       .then((ress) => {
         console.log('success', ress);
         swal({
