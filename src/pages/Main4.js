@@ -949,7 +949,10 @@ export default function UserPage() {
                               disabled
                               // onChange={(item) => changinStatus(item.target.value, i, row)}
                             >
-                              <option disabled value="sending">
+                              <option disabled selected value="sending">
+                                {row.status}
+                              </option>
+                              {/* <option disabled value="sending">
                                 Sending
                               </option>
                               <option disabled value="way">
@@ -964,7 +967,7 @@ export default function UserPage() {
                                 </option>
                               ) : (
                                 <option value="declined">Declined</option>
-                              )}
+                              )} */}
                             </select>
                           )}
                         </TableCell>

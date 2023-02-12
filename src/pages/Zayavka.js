@@ -85,6 +85,8 @@ export default function UserPage() {
   const [orderBy, setOrderBy] = useState('name');
   const [open, setOpen] = useState(false);
   const [dataModal, setDataModal] = useState({});
+  const [open2, setOpen2] = useState(false);
+  const [dataModal2, setDataModal2] = useState({});
   const [number1, setNumber1] = useState(0);
   // **
 
@@ -185,7 +187,6 @@ export default function UserPage() {
       .get(`http://185.217.131.179:8888/api/v1/company/order/?status=way&limit=6&offset=${num}`, config)
       .then((ress) => {
         setMainData2(get(ress, 'data.results', ''));
-        console.log('zayavka way', ress.data);
       })
       .catch((err) => {
         console.log('error zayavka', err);
@@ -203,7 +204,6 @@ export default function UserPage() {
       .get(`http://185.217.131.179:8888/api/v1/company/order/?status=arrived&limit=6&offset=${num}`, config)
       .then((ress) => {
         setMainData3(get(ress, 'data.results', ''));
-        console.log(ress.data);
       })
       .catch((err) => {
         console.log('error zayavka', err);
@@ -221,7 +221,7 @@ export default function UserPage() {
       .get(`http://185.217.131.179:8888/api/v1/company/order/?status=declined&limit=6&offset=${num}`, config)
       .then((ress) => {
         setMainData4(get(ress, 'data.results', ''));
-        console.log(ress.data);
+        console.log('getDeclined', ress.data);
       })
       .catch((err) => {
         console.log('error zayavka', err);
@@ -303,11 +303,21 @@ export default function UserPage() {
     }
     setSelected([]);
   };
+
+  // 1-modal
   const handleOpen = (item) => {
     setOpen(true);
     setDataModal(item);
   };
   const handleClose = () => setOpen(false);
+
+  // 2-modal
+
+  const handleOpen2 = (item) => {
+    setOpen2(true);
+    setDataModal2(item);
+  };
+  const handleClose2 = () => setOpen2(false);
 
   const changinStatus = async (item, i, row) => {
     const config = {
@@ -709,7 +719,7 @@ export default function UserPage() {
                     onSelectAllClick={handleSelectAllClick}
                   />
                   <TableBody>
-                    {declinedData.map((row, i) => {
+                    {mainData4.map((row, i) => {
                       return (
                         <TableRow hover key={i} tabIndex={-1}>
                           <TableCell component="th" scope="row" padding="none" className="nameProduct">
@@ -754,7 +764,7 @@ export default function UserPage() {
                     )}
                   </TableBody>
 
-                  {declinedData.length <= 0 && (
+                  {mainData4.length <= 0 && (
                     <TableBody>
                       <TableRow>
                         <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -823,7 +833,7 @@ export default function UserPage() {
                   <TableBody>
                     {wayTruckData.map((row, i) => {
                       return (
-                        <TableRow hover key={i} tabIndex={-1} onDoubleClick={() => handleOpen(row)}>
+                        <TableRow hover key={i} tabIndex={-1} onDoubleClick={() => handleOpen2(row)}>
                           <TableCell component="th" scope="row" padding="none" className="nameProduct">
                             <Stack direction="row" alignItems="center" spacing={2}>
                               <p className="zayavkaName">{row.name}</p>
@@ -930,7 +940,7 @@ export default function UserPage() {
                 <Table>
                   <UserListHead
                     order={order}
-                    headLabel={TABLE_HEAD2}
+                    headLabel={TABLE_HEAD3}
                     rowCount={USERLIST.length}
                     numSelected={selected.length}
                     onRequestSort={handleRequestSort}
@@ -939,7 +949,7 @@ export default function UserPage() {
                   <TableBody>
                     {arrivedTruckData.map((row, i) => {
                       return (
-                        <TableRow hover key={i} tabIndex={-1} onDoubleClick={() => handleOpen(row)}>
+                        <TableRow hover key={i} tabIndex={-1} onDoubleClick={() => handleOpen2(row)}>
                           <TableCell component="th" scope="row" padding="none" className="nameProduct">
                             <Stack direction="row" alignItems="center" spacing={2}>
                               <p className="zayavkaName">{row.name}</p>
@@ -947,17 +957,17 @@ export default function UserPage() {
                           </TableCell>
 
                           <TableCell align="left" className="nameProduct">
-                            {row.order_info}
+                            {row.driver.first_name}
                           </TableCell>
 
-                          <TableCell align="left">{row.drop_of_place}</TableCell>
+                          <TableCell align="left">{row.truck_location}</TableCell>
 
                           <TableCell align="left">{row.created_at.slice(0, 10)}</TableCell>
 
                           <TableCell align="left">
                             <select
-                              name="cars3"
-                              id="cars3"
+                              name="cars2"
+                              id="cars2"
                               defaultValue={row.status}
                               className={
                                 (row.status === 'sending' && 'primary') ||
@@ -1044,16 +1054,16 @@ export default function UserPage() {
                 <Table>
                   <UserListHead
                     order={order}
-                    headLabel={TABLE_HEAD2}
+                    headLabel={TABLE_HEAD3}
                     rowCount={USERLIST.length}
                     numSelected={selected.length}
                     onRequestSort={handleRequestSort}
                     onSelectAllClick={handleSelectAllClick}
                   />
                   <TableBody>
-                    {mainData4.map((row, i) => {
+                    {declinedData.map((row, i) => {
                       return (
-                        <TableRow hover key={i} tabIndex={-1}>
+                        <TableRow hover key={i} tabIndex={-1} onDoubleClick={() => handleOpen2(row)}>
                           <TableCell component="th" scope="row" padding="none" className="nameProduct">
                             <Stack direction="row" alignItems="center" spacing={2}>
                               <p className="zayavkaName">{row.name}</p>
@@ -1061,17 +1071,17 @@ export default function UserPage() {
                           </TableCell>
 
                           <TableCell align="left" className="nameProduct">
-                            {row.order_info}
+                            {row.driver.first_name}
                           </TableCell>
 
-                          <TableCell align="left">{row.drop_of_place}</TableCell>
+                          <TableCell align="left">{row.truck_location}</TableCell>
 
                           <TableCell align="left">{row.created_at.slice(0, 10)}</TableCell>
 
                           <TableCell align="left">
                             <select
-                              name="cars4"
-                              id="cars4"
+                              name="cars2"
+                              id="cars2"
                               defaultValue={row.status}
                               className={
                                 (row.status === 'sending' && 'primary') ||
@@ -1079,11 +1089,18 @@ export default function UserPage() {
                                 (row.status === 'arrived' && 'success') ||
                                 'error'
                               }
-                              onChange={(item) => changinStatusTruck(item.target.value, i, row)}
+
+                              // onChange={(item) => changinStatusTruck(item.target.value, i, row)}
                             >
-                              <option disabled value="declined">
-                                Declined
-                              </option>
+                              <option value="way">Way</option>
+                              <option value="arrived">Arrived</option>
+                              {row.status === 'declined' ? (
+                                <option disabled value="declined">
+                                  Declined
+                                </option>
+                              ) : (
+                                <option value="declined">Declined</option>
+                              )}
                             </select>
                           </TableCell>
                         </TableRow>
@@ -1096,7 +1113,7 @@ export default function UserPage() {
                     )}
                   </TableBody>
 
-                  {mainData4.length <= 0 && (
+                  {declinedData.length <= 0 && (
                     <TableBody>
                       <TableRow>
                         <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -1122,7 +1139,7 @@ export default function UserPage() {
                   if (number1 > 0) {
                     const a = number1 - 6;
                     setNumber1((pr) => pr - 6);
-                    getDeclined(a);
+                    getDeclinedTruck(a);
                   }
                 }}
               >
@@ -1132,7 +1149,7 @@ export default function UserPage() {
                 onClick={() => {
                   const a = number1 + 6;
                   setNumber1((pr) => pr + 6);
-                  getDeclined(a);
+                  getDeclinedTruck(a);
                 }}
               >
                 <AiOutlineArrowRight />
@@ -1141,6 +1158,7 @@ export default function UserPage() {
           </Card>
         ) : null}
 
+        {/* 1-modal */}
         <div>
           <Modal
             open={open}
@@ -1220,6 +1238,59 @@ export default function UserPage() {
                   </Button>
                 </Stack>
               </Container>
+            </Box>
+          </Modal>
+        </div>
+
+        {/* 2-modal */}
+
+        <div>
+          <Modal
+            open={open2}
+            onClose={handleClose2}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style} className="bigModalCard">
+              <div className="cardMiniModal3">
+                {get(dataModal2, 'name', '')}
+
+                <Label
+                  color={
+                    (get(dataModal2, 'status', '') === 'sending' && 'primary') ||
+                    (get(dataModal2, 'status', '') === 'way' && 'warning') ||
+                    (get(dataModal2, 'status', '') === 'arrived' && 'success') ||
+                    'error'
+                  }
+                >
+                  {get(dataModal2, 'status', '')}
+                </Label>
+              </div>
+              <div className="cardMiniModal">
+                <p className="country">Driver: </p>
+                <p className="country">
+                  {get(dataModal2, 'driver.first_name', '')} {get(dataModal2, 'driver.last_name', '')}
+                </p>
+              </div>
+
+              <div className="cardMiniModal">
+                <p className="country">Phone Number: </p>
+                <p className="country">{get(dataModal2, 'driver.phone_number', '')} </p>
+              </div>
+              <div className="cardMiniModal">
+                <p className="country">Location: </p>
+                <p className="country">{get(dataModal2, 'truck_location', '')} </p>
+              </div>
+              <div className="cardMiniModal">
+                <p className="country">Date: </p>
+                <p className="country">{get(dataModal2, 'created_at', '').slice(0, 10)} </p>
+              </div>
+
+              <div className="cardMiniModal22">
+                <p className="center">Comment</p>
+                <p className="sum">{get(dataModal2, 'truck_type.comment', '')}</p>
+              </div>
+              <p className="productNameTitle">{get(dataModal2, 'customs[0].name', '')}</p>
             </Box>
           </Modal>
         </div>

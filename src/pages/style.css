@@ -95,7 +95,8 @@
   height: 370px;
   overflow: auto;
   padding: 20px 10px;
-
+  background-image: url("./wallper.jpg");
+  background-size: cover;
 }
 .someCard {
   display: flex;
@@ -142,11 +143,11 @@
   width: 400px;
 }
 
-.colorCard1:hover{
+.colorCard1:hover {
   background-color: #dedede;
 }
 
-.colorCard2:hover{
+.colorCard2:hover {
   background-color: #006cbe;
 }
 .colorCard2 {
@@ -272,6 +273,7 @@ option:hover {
 .cardMiniModal3 {
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 .country {
   font-size: 19px;
@@ -287,43 +289,53 @@ option:hover {
   align-items: center;
   border-top: 1px solid rgb(210, 210, 210);
 }
+
+.cardMiniModal22 {
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgb(210, 210, 210);
+}
+
+.center {
+  text-align: center;
+}
 .dateTitle {
   margin-right: 40px;
 }
 .productNameTitle {
   color: #606060;
 }
-.arrows{
+.arrows {
   display: flex;
   justify-content: flex-end;
   margin-top: 30px;
   padding-bottom: 10px;
 }
-.center{
+.center {
   text-align: center;
 }
-.big_card{
+.big_card {
   margin-top: 50px;
 }
 
-.yes{
+.yes {
   padding: 0;
   color: #1e9700;
   font-size: 20px;
   width: 10px;
 }
 
-.no{
+.no {
   padding: 0;
   color: #970000;
   font-size: 20px;
 }
-.nameCard2{
+.nameCard2 {
   display: flex;
   align-items: center;
 }
 
-.buttonBack{
+.buttonBack {
   margin: 0;
   padding: 0;
   background-color: transparent;
@@ -333,12 +345,12 @@ option:hover {
   margin-right: 30px;
 }
 
-.sendDataButton{
+.sendDataButton {
   border-radius: 10px;
   border: 2px solid #006cbe;
   padding: 9px 20px;
   margin-left: 10px;
-  color:#006cbe;
+  color: #006cbe;
   font-weight: bold;
   font-size: 30px;
   display: flex;
@@ -346,31 +358,31 @@ option:hover {
   align-items: center;
 }
 
-.sendDataButton:hover{
- background-color: #006cbe; 
- color: white;
+.sendDataButton:hover {
+  background-color: #006cbe;
+  color: white;
 }
 
-.padding{
+.padding {
   padding: 0 10px;
 }
 
-.paddinTop{
+.paddinTop {
   padding: 30px 0 0 0;
   margin-top: 40px;
 }
 
-.del{
+.del {
   background-color: red;
   color: white;
   font-size: 20px;
 }
 
-.edit{
+.edit {
   background-color: rgb(249, 249, 5);
   color: black;
   font-size: 20px;
 }
-.marginBottom{
+.marginBottom {
   margin-bottom: 30px;
 }
