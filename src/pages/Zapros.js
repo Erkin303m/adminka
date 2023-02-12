@@ -228,8 +228,8 @@ export default function UserPage() {
     };
     const id = get(row, 'id', 0);
     await axios
-      .post(
-        `http://185.217.131.179:8888/api/v1/company/dashboard/manager/${id}/status_change/`,
+      .patch(
+        `http://185.217.131.179:8888/api/v1/company/truck/${id}/`,
         {
           status: 'main',
         },
@@ -260,8 +260,8 @@ export default function UserPage() {
     };
     const id = get(row, 'id', 0);
     await axios
-      .post(
-        `http://185.217.131.179:8888/api/v1/company/dashboard/manager/${id}/status_change/`,
+      .patch(
+        `http://185.217.131.179:8888/api/v1/company/truck/${id}/`,
         {
           status: 'declined',
         },
@@ -280,7 +280,7 @@ export default function UserPage() {
         });
       })
       .catch((err) => {
-        console.log('error', err);
+        console.log('error zayavka', err);
       });
   };
 
@@ -528,15 +528,15 @@ export default function UserPage() {
                                 }
                                 onChange={(item) => changinStatus(item.target.value, i, row)}
                               >
-                                <option value="sending">Ожидающий</option>
-                                <option value="way">В пути</option>
-                                <option value="arrived">Приехал</option>
+                                <option value="sending">Sending</option>
+                                <option value="way">Way</option>
+                                <option value="arrived">Arrived</option>
                                 {row.status === 'declined' ? (
                                   <option disabled value="declined">
-                                    Отклоненный
+                                    Declined
                                   </option>
                                 ) : (
-                                  <option value="declined">Отклоненный</option>
+                                  <option value="declined">Declined</option>
                                 )}
                               </select>
                             )}

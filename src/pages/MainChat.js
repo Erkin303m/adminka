@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { Button, Container, Stack } from '@mui/material';
+import { Button, Container, Stack, Card } from '@mui/material';
 import './style.css';
 import { w3cwebsocket as Socket } from 'websocket';
 import { get } from 'lodash';
@@ -16,6 +16,7 @@ export default function MainChat() {
   const [myMessage, setMyMessage] = useState([]);
   const [userId, setUserId] = useState(get(location, 'state.item', 0));
   const [mainID, setMainId] = useState(0);
+  const [sms, setSms] = useState('');
 
   const cat = JSON.parse(localStorage.getItem('userData'));
 
@@ -55,7 +56,7 @@ export default function MainChat() {
   }, []);
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && event.target.value.length > 0) {
       socket.send(
         JSON.stringify({
           action: 'send_message',
@@ -114,64 +115,63 @@ export default function MainChat() {
         <title> Chat </title>
       </Helmet>
 
-      <Container>
-        <button onClick={() => navigation('/dashboard/chat')} className="buttonBack">
-          <BiArrowBack />
-        </button>
-        <Stack>
-          <div className="topUserCard">
-            <div className="nameCard2">
-              <h1 className="word55">
-                {get(location, 'state.item.first_name', 0) === 0
-                  ? get(location, 'state.item.roomName', '')
-                  : get(location, 'state.item.roomName', '')}{' '}
-                {'  '} {get(location, 'state.item.last_name', '')}
-              </h1>
-            </div>
-            <p className="word55">{get(location, 'state.item.phone_number', '')}</p>
+      <>
+        <div className="topUserCard">
+          <div className="nameCard2">
+            <h1 className="word55">
+              <button onClick={() => navigation('/dashboard/chat')} className="buttonBack">
+                <BiArrowBack />
+              </button>
+              {get(location, 'state.item.first_name', 0) === 0
+                ? get(location, 'state.item.roomName', '')
+                : get(location, 'state.item.roomName', '')}{' '}
+              {'  '} {get(location, 'state.item.last_name', '')}
+            </h1>
           </div>
-        </Stack>
+          <p className="word55">{get(location, 'state.item.phone_number', '')}</p>
+        </div>
+      </>
 
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={1}>
-          <div className="someCard">
-            <div className="mainMassageCard">
-              {myMessage.map((v, i) => {
-                return (
+      <Stack mb={1}>
+        <div className="someCard">
+          <div className="mainMassageCard">
+            {myMessage.map((v, i) => {
+              return (
+                <div
+                  className={
+                    get(v, 'username', '') !== get(cat, 'data.phone_number', 0) ? 'cardMassage1' : 'cardMassage2'
+                  }
+                  key={i}
+                  onDoubleClick={() => isDeleting(get(v, '_id', ''))}
+                >
                   <div
                     className={
-                      get(v, 'username', '') !== get(cat, 'data.phone_number', 0) ? 'cardMassage1' : 'cardMassage2'
+                      get(v, 'username', '') !== get(cat, 'data.phone_number', 0) ? 'colorCard1' : 'colorCard2'
                     }
-                    key={i}
-                    onDoubleClick={() => isDeleting(get(v, '_id', ''))}
                   >
-                    <div
-                      className={
-                        get(v, 'username', '') !== get(cat, 'data.phone_number', 0) ? 'colorCard1' : 'colorCard2'
-                      }
-                    >
-                      <p>{get(v, 'content', '')}</p>
-                    </div>
+                    <p>{get(v, 'content', '')}</p>
                   </div>
-                );
-              })}
-            </div>
+                </div>
+              );
+            })}
           </div>
-        </Stack>
+        </div>
+      </Stack>
 
-        <Stack>
-          <div className="card333">
-            <input
-              type="text"
-              placeholder="Message..."
-              className="input22"
-              onKeyDown={(e) => handleKeyDown(e)}
-            />
-            <button  className="sendDataButton" onClick={(e) => handleKeyDown(e)} >
-              <CiPaperplane />
-            </button>
-          </div>
-        </Stack>
-      </Container>
+      <div className="card333">
+        <Card className="cardSendMessages">
+          <input
+            type="text"
+            placeholder="Message..."
+            className="inputSendMessages"
+            onKeyDown={(e) => handleKeyDown(e)}
+            // onChange={(e) => console.log()}
+          />
+        </Card>
+        <button className="sendDataButton" onClick={(e) => handleKeyDown(e)}>
+          <CiPaperplane />
+        </button>
+      </div>
     </>
   );
 }

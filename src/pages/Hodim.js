@@ -266,7 +266,7 @@ export default function UserPage() {
                   <TableBody>
                     {tableData.map((row, i) => {
                       return (
-                        <TableRow hover key={i} tabIndex={-1}  onDoubleClick={()=>handleOpen(row)} >
+                        <TableRow hover key={i} tabIndex={-1} onDoubleClick={() => handleOpen(row)}>
                           <TableCell align="left">{get(row, 'id', '')}</TableCell>
                           <TableCell align="left">{get(row, 'phone_number', '')}</TableCell>
 
@@ -446,6 +446,59 @@ export default function UserPage() {
           </Box>
         </Modal>
       </div>
+
+      {/* 2-modal */}
+      {/* 
+        <div>
+          <Modal
+            open={open2}
+            onClose={handleClose2}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style} className="bigModalCard">
+              <div className="cardMiniModal3">
+                {get(dataModal2, 'name', '')}
+
+                <Label
+                  color={
+                    (get(dataModal2, 'status', '') === 'sending' && 'primary') ||
+                    (get(dataModal2, 'status', '') === 'way' && 'warning') ||
+                    (get(dataModal2, 'status', '') === 'arrived' && 'success') ||
+                    'error'
+                  }
+                >
+                  {get(dataModal2, 'status', '')}
+                </Label>
+              </div>
+              <div className="cardMiniModal">
+                <p className="country">Driver: </p>
+                <p className="country">
+                  {get(dataModal2, 'driver.first_name', '')} {get(dataModal2, 'driver.last_name', '')}
+                </p>
+              </div>
+
+              <div className="cardMiniModal">
+                <p className="country">Phone Number: </p>
+                <p className="country">{get(dataModal2, 'driver.phone_number', '')} </p>
+              </div>
+              <div className="cardMiniModal">
+                <p className="country">Location: </p>
+                <p className="country">{get(dataModal2, 'truck_location', '')} </p>
+              </div>
+              <div className="cardMiniModal">
+                <p className="country">Date: </p>
+                <p className="country">{get(dataModal2, 'created_at', '').slice(0, 10)} </p>
+              </div>
+
+              <div className="cardMiniModal22">
+                <p className="center">Comment</p>
+                <p className="sum">{get(dataModal2, 'truck_type.comment', '')}</p>
+              </div>
+              <p className="productNameTitle">{get(dataModal2, 'customs[0].name', '')}</p>
+            </Box>
+          </Modal>
+        </div> */}
     </>
   );
 }

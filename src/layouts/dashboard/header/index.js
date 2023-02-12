@@ -12,9 +12,9 @@ import Iconify from '../../../components/iconify';
 
 const NAV_WIDTH = 280;
 
-const HEADER_MOBILE = 64;
+const HEADER_MOBILE = 60;
 
-const HEADER_DESKTOP = 92;
+const HEADER_DESKTOP = 60;
 
 const StyledRoot = styled(AppBar)(({ theme }) => ({
   ...bgBlur({ color: theme.palette.background.default }),

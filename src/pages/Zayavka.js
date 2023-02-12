@@ -59,7 +59,7 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
+  width: 500,
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
@@ -122,6 +122,7 @@ export default function UserPage() {
   }, []);
 
   const changeDriverLoaction = async () => {
+    console.log('driver', driver);
     const config = {
       headers: {
         Authorization: `Bearer ${get(cat, 'access', '')}`,
@@ -164,10 +165,10 @@ export default function UserPage() {
     };
 
     await axios
-      .get(`http://185.217.131.179:8888/api/v1/company/staff-create/?driver=driver`, config)
+      .get(`http://185.217.131.179:8888/api/v1/company/truck/create/`, config)
       .then((ress) => {
         setDrivers(get(ress, 'data.results'));
-        console.log('getDriver', get(ress, 'data.results'));
+        console.log('truklar', get(ress, 'data.results'));
       })
       .catch((err) => {
         console.log('error zayavka', err);
@@ -350,12 +351,12 @@ export default function UserPage() {
       })
       .catch((err) => {
         console.log('error zayavka', err);
-        swal({
-          title: 'Error!',
-          icon: 'error',
-          dangerMode: false,
-          timer: 3000,
-        });
+        // swal({
+        //   title: 'Error!',
+        //   icon: 'error',
+        //   dangerMode: false,
+        //   timer: 3000,
+        // });
       });
   };
 
@@ -420,12 +421,6 @@ export default function UserPage() {
       })
       .catch((err) => {
         console.log('error zayavka', err);
-        swal({
-          title: 'Error!',
-          icon: 'error',
-          dangerMode: false,
-          timer: 3000,
-        });
       });
   };
 
@@ -1198,18 +1193,21 @@ export default function UserPage() {
                 </p>
               </div>
               <p className="productNameTitle">{get(dataModal, 'customs[0].name', '')}</p>
-              <div className="card2">
+              <div className="cardLocation">
                 <select
                   name="cars"
                   id="cars"
                   onChange={(v) => setDriver(v.target.value)}
                   placeholder="Drivers id"
-                  className="input222"
+                  className="inputLocation"
                 >
+                  <option selected value='0'>
+                    Choose Truck
+                  </option>
                   {drivers.map((v, i) => {
                     return (
                       <option key={i} value={get(v, 'id', 0)}>
-                        {get(v, 'first_name', 0)} {get(v, 'last_name', 0)}
+                        {get(v, 'name', '')}
                       </option>
                     );
                   })}
@@ -1219,7 +1217,7 @@ export default function UserPage() {
                   <input
                     type="text"
                     placeholder="Location"
-                    className="input222"
+                    className="inputLocation"
                     onChange={(v) => setMessage(v.target.value)}
                   />
                 </div>
