@@ -41,7 +41,7 @@ const TABLE_HEAD = [
   { id: 'company', label: 'Phone', alignRight: false },
   { id: 'drop', label: 'Role', alignRight: false },
   { id: 'del', label: 'Del', alignRight: false },
-  { id: 'edit', label: 'Edit', alignRight: false },
+  // { id: 'edit', label: 'Edit', alignRight: false },
 ];
 const style = {
   position: 'absolute',
@@ -182,7 +182,7 @@ export default function UserPage() {
       .get(`http://185.217.131.179:8888/api/v1/company/dashboard/director/`, config)
       .then((ress) => {
         setTableData(get(ress, 'data.staffs', []));
-        console.log(ress);
+        console.log(ress.data);
       })
       .catch((err) => {
         console.log('sendWorkers error', err);
@@ -277,11 +277,11 @@ export default function UserPage() {
                               <AiOutlineDelete />
                             </Button>
                           </TableCell>
-                          <TableCell align="left">
+                          {/* <TableCell align="left">
                             <Button className="edit" onClick={() => isEditing(row)}>
                               <AiOutlineEdit />
                             </Button>
-                          </TableCell>
+                          </TableCell> */}
                         </TableRow>
                       );
                     })}
