@@ -51,6 +51,7 @@ const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
   { id: 'lastName', label: 'Truck location', alignRight: false },
   { id: 'number', label: 'Truck power', alignRight: false },
+  { id: 'number', label: 'Rating', alignRight: false },
   { id: 'edit', label: 'Edit', alignRight: false },
   { id: 'delete', label: 'Delete', alignRight: false },
 ];
@@ -119,6 +120,10 @@ export default function UserPage() {
   const [cityPending, setCityPending] = useState('');
   const [customs, setCustoms] = useState('');
 
+  const [avgPrice, setAvgPrice] = useState('');
+  const [rating, setRaiting] = useState('');
+
+
   // **
   const [open, setOpen] = useState(false);
   const [dataModal, setDataModal] = useState({});
@@ -179,6 +184,7 @@ export default function UserPage() {
     await axios
       .get(`http://185.217.131.179:8888/api/v1/company/truck/create/?limit=6&offset=${num}`, config)
       .then((ress) => {
+        console.log("trucks:",ress.data)
         setMainData(get(ress, 'data.results', ''));
       })
       .catch((err) => {
@@ -220,6 +226,8 @@ export default function UserPage() {
             driver,
             truck_location: truckLocation,
             truck_type: truckType,
+            avg_price:avgPrice,
+            rating,
             status: 'main',
           },
           config
@@ -285,7 +293,7 @@ export default function UserPage() {
       },
     };
     await axios
-      .delete(`http://185.217.131.179:8888/api/v1/company/truck/${id}`, config)
+      .delete(`http://185.217.131.179:8888/api/v1/company/truck/${id}/`, config)
       .then(() => {
         swal({
           title: 'Deleted successfully!',
@@ -422,6 +430,9 @@ export default function UserPage() {
     setDriver(get(row, 'driver.id', ''));
     setTruckLocation(get(row, 'truck_location', ''));
     setTruckType(get(row, 'truck_type.id', ''));
+    setAvgPrice(get(row, 'avg_price', ''));
+    setRaiting(get(row, 'rating', ''));
+    
   };
 
   const isEditOrder = (row) => {
@@ -773,20 +784,27 @@ export default function UserPage() {
               </datalist>
             </div>
 
-            {/* <div className="card3">
+            <div className="card3">
               <input
                 type="number"
-                placeholder="Тип грузовика"
-                list="data44"
+                placeholder="Rating"
+                defaultValue={rating}
                 className="input2"
-                onChange={(v) => setTruckType(v.target.value)}
+                onChange={(v) => setRaiting(v.target.value)}
               />
-              <datalist id="data44">
-                {driverIds.map((v) => {
-                  return <option value={v.id} />;
-                })}
-              </datalist>
-            </div> */}
+            </div>
+
+            <div className="card3">
+              <input
+                type="number"
+                placeholder="Avg price"
+                defaultValue={avgPrice}
+                className="input2"
+                onChange={(v) => setAvgPrice(v.target.value)}
+              />
+            </div>
+
+         
             <div className="card3">
               <h1> </h1>
             </div>
@@ -831,6 +849,7 @@ export default function UserPage() {
 
                         <TableCell align="left">{row.truck_location}</TableCell>
                         <TableCell align="left">{row.power_truck}</TableCell>
+                        <TableCell align="left">{row.rating}</TableCell>
                         <TableCell align="left">
                           <Button className="del" onClick={() => deletingTruck(row.id)}>
                             <AiOutlineDelete />
