@@ -38,10 +38,11 @@ import Iconify from '../components/iconify';
 
 const TABLE_HEAD = [
   { id: 'id', label: 'ID', alignRight: false },
+  { id: 'name', label: 'Name', alignRight: false },
   { id: 'company', label: 'Phone', alignRight: false },
   { id: 'drop', label: 'Role', alignRight: false },
   { id: 'del', label: 'Del', alignRight: false },
-  // { id: 'edit', label: 'Edit', alignRight: false },
+  { id: 'edit', label: 'Edit', alignRight: false },
 ];
 const style = {
   position: 'absolute',
@@ -135,26 +136,26 @@ export default function UserPage() {
       // edit
       await axios
         .patch(
-          `http://185.217.131.179:8888/api/v1/company/dashboard/director/${editID}`,
+          `http://185.217.131.179:8888/api/v1/company/staff/edit/${editID}/`,
           {
             first_name: userName,
             last_name: lastName,
             middle_name: middleName,
             birthday,
             gender,
-            // avatar,
+            avatar:null,
             experience,
-            password_1: password1,
-            password_2: password2,
-            phone_number: phone,
-            role,
+            // password_1: password1,
+            // password_2: password2,
+            // phone_number: phone,
+            // role,
           },
           config
         )
         .then((ress) => {
-          console.log('success', ress);
+          setIsEdit(0);
           swal({
-            title: 'Сотрудник присоединился!',
+            title: 'Edit empoyees!',
             icon: 'success',
             dangerMode: false,
             timer: 3000,
@@ -221,7 +222,15 @@ export default function UserPage() {
     setIsEdit(1);
     setEditID(get(row, 'id', 0));
     setValue(1);
-    // setUserName(get(row,'id',0))
+
+    setUserName(get(row, 'first_name', ''));
+    setLastName(get(row, 'last_name', ''));
+    setMiddleName(get(row, 'middle_name', ''));
+    setBirthday(get(row, 'created_at', ''));
+    setGender(get(row, 'gender', ''));
+    setExperience(get(row, 'experience', ''));
+    setRole(get(row, 'user.role', ''));
+    setPhone(get(row, 'phone_number', ''));
   };
 
   const handleOpen = (item) => {
@@ -268,20 +277,23 @@ export default function UserPage() {
                       return (
                         <TableRow hover key={i} tabIndex={-1} onDoubleClick={() => handleOpen(row)}>
                           <TableCell align="left">{get(row, 'id', '')}</TableCell>
+                          <TableCell align="left">
+                            {get(row, 'first_name', '')} {get(row, 'last_name', '')}
+                          </TableCell>
                           <TableCell align="left">{get(row, 'phone_number', '')}</TableCell>
 
-                          <TableCell align="left">{get(row, 'role', '')}</TableCell>
+                          <TableCell align="left">{get(row, 'user.role', '')}</TableCell>
 
                           <TableCell align="left">
                             <Button className="del" onClick={() => del(row.id)}>
                               <AiOutlineDelete />
                             </Button>
                           </TableCell>
-                          {/* <TableCell align="left">
+                          <TableCell align="left">
                             <Button className="edit" onClick={() => isEditing(row)}>
                               <AiOutlineEdit />
                             </Button>
-                          </TableCell> */}
+                          </TableCell>
                         </TableRow>
                       );
                     })}
@@ -295,13 +307,20 @@ export default function UserPage() {
         <Card className="paddinTop">
           <div className="card2">
             <div className="card3">
-              <input type="text" placeholder="Name" className="input2" onChange={(v) => setUserName(v.target.value)} />
+              <input
+                type="text"
+                placeholder="Name"
+                className="input2"
+                defaultValue={userName}
+                onChange={(v) => setUserName(v.target.value)}
+              />
             </div>
             <div className="card3">
               <input
                 type="text"
                 placeholder="Last name"
                 className="input2"
+                defaultValue={lastName}
                 onChange={(v) => setLastName(v.target.value)}
               />
             </div>
@@ -311,12 +330,19 @@ export default function UserPage() {
                 type="text"
                 placeholder="Middle name"
                 className="input2"
+                defaultValue={middleName}
                 onChange={(v) => setMiddleName(v.target.value)}
               />
             </div>
 
             <div className="card3">
-              <input type="date" placeholder="Date" className="input2" onChange={(v) => setBirthday(v.target.value)} />
+              <input
+                type="date"
+                placeholder="Date"
+                className="input2"
+                defaultValue={birthday}
+                onChange={(v) => setBirthday(v.target.value)}
+              />
             </div>
 
             <div className="card3">
@@ -325,6 +351,7 @@ export default function UserPage() {
                 placeholder="Gender"
                 list="data4"
                 className="input2"
+                defaultValue={gender}
                 onChange={(v) => setGender(v.target.value)}
               />
               <datalist id="data4">
@@ -338,6 +365,7 @@ export default function UserPage() {
                 type="file"
                 placeholder="Avatar"
                 className="input2"
+                defaultValue={avatar}
                 onChange={(v) => setAvatar(v.target.files[0])}
               />
             </div> */}
@@ -347,6 +375,7 @@ export default function UserPage() {
                 type="text"
                 placeholder="Experience"
                 className="input2"
+                defaultValue={experience}
                 onChange={(v) => setExperience(v.target.value)}
               />
             </div>
@@ -357,6 +386,7 @@ export default function UserPage() {
                 placeholder="Role"
                 list="data"
                 className="input2"
+                defaultValue={role}
                 onChange={(v) => setRole(v.target.value)}
               />
               <datalist id="data">
@@ -370,6 +400,7 @@ export default function UserPage() {
                 type="text"
                 placeholder="Password 1"
                 className="input2"
+                defaultValue={password1}
                 onChange={(v) => setPassword1(v.target.value)}
               />
             </div>
@@ -378,6 +409,7 @@ export default function UserPage() {
                 type="text"
                 placeholder="Password 2"
                 className="input2"
+                defaultValue={password2}
                 onChange={(v) => setPassword2(v.target.value)}
               />
             </div>
@@ -387,6 +419,7 @@ export default function UserPage() {
                 type="text"
                 placeholder="Phone number"
                 className="input2"
+                defaultValue={phone}
                 onChange={(v) => setPhone(v.target.value)}
               />
             </div>
@@ -404,6 +437,8 @@ export default function UserPage() {
         </Card>
       )}
 
+      {/* 2-modal */}
+
       <div>
         <Modal
           open={open}
@@ -413,92 +448,36 @@ export default function UserPage() {
         >
           <Box sx={style} className="bigModalCard">
             <div className="cardMiniModal3">
-              <p className="dateTitle">{get(dataModal, 'created_at', '').slice(0, 10)}</p>
-              <Label
-                color={
-                  (get(dataModal, 'status', '') === 'sending' && 'primary') ||
-                  (get(dataModal, 'status', '') === 'way' && 'warning') ||
-                  (get(dataModal, 'status', '') === 'arrived' && 'success') ||
-                  'error'
-                }
-              >
-                {get(dataModal, 'status', '')}
-              </Label>
+              <Label color={'success'}>{get(dataModal, 'user.role', '')}</Label>
+              <Label color={'warning'}>ID: {get(dataModal, 'id', '')}</Label>
+            </div>
+            <div className="cardMiniModal3">{get(dataModal, 'name', '')}</div>
+            <div className="cardMiniModal">
+              <p className="country2">Name: </p>
+              <p className="country2">
+                {get(dataModal, 'first_name', '')} {get(dataModal, 'last_name', '')}
+              </p>
+            </div>
+
+            <div className="cardMiniModal">
+              <p className="country2">Phone Number: </p>
+              <p className="country2">{get(dataModal, 'phone_number', '')} </p>
             </div>
             <div className="cardMiniModal">
-              <p className="country">{get(dataModal, 'city_pending', '')}</p>
-              <AiOutlineArrowRight />
-              <p className="country">{get(dataModal, 'city_sending', '')}</p>
+              <p className="country2">Experience: </p>
+              <p className="country2">{get(dataModal, 'experience', '')} </p>
             </div>
-            <p className="sum">
-              <BiMoney /> {get(dataModal, 'full_payment', '')} USD
-            </p>
-
-            <div className="cardMiniModal2">
-              <p className="productNameTitle">
-                <AiOutlineShoppingCart /> {get(dataModal, 'name', '')}
-              </p>
-              <p className="productNameTitle">
-                <AiOutlineDropbox /> {get(dataModal, 'packageMethod', '')}
-              </p>
+            <div className="cardMiniModal">
+              <p className="country2">Gender: </p>
+              <p className="country2">{get(dataModal, 'gender', '')} </p>
             </div>
-            <p className="productNameTitle">{get(dataModal, 'customs[0].name', '')}</p>
+            <div className="cardMiniModal">
+              <p className="country2">Date: </p>
+              <p className="country2">{get(dataModal, 'created_at', '').slice(0, 10)} </p>
+            </div>
           </Box>
         </Modal>
       </div>
-
-      {/* 2-modal */}
-      {/* 
-        <div>
-          <Modal
-            open={open2}
-            onClose={handleClose2}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            <Box sx={style} className="bigModalCard">
-              <div className="cardMiniModal3">
-                {get(dataModal2, 'name', '')}
-
-                <Label
-                  color={
-                    (get(dataModal2, 'status', '') === 'sending' && 'primary') ||
-                    (get(dataModal2, 'status', '') === 'way' && 'warning') ||
-                    (get(dataModal2, 'status', '') === 'arrived' && 'success') ||
-                    'error'
-                  }
-                >
-                  {get(dataModal2, 'status', '')}
-                </Label>
-              </div>
-              <div className="cardMiniModal">
-                <p className="country">Driver: </p>
-                <p className="country">
-                  {get(dataModal2, 'driver.first_name', '')} {get(dataModal2, 'driver.last_name', '')}
-                </p>
-              </div>
-
-              <div className="cardMiniModal">
-                <p className="country">Phone Number: </p>
-                <p className="country">{get(dataModal2, 'driver.phone_number', '')} </p>
-              </div>
-              <div className="cardMiniModal">
-                <p className="country">Location: </p>
-                <p className="country">{get(dataModal2, 'truck_location', '')} </p>
-              </div>
-              <div className="cardMiniModal">
-                <p className="country">Date: </p>
-                <p className="country">{get(dataModal2, 'created_at', '').slice(0, 10)} </p>
-              </div>
-
-              <div className="cardMiniModal22">
-                <p className="center">Comment</p>
-                <p className="sum">{get(dataModal2, 'truck_type.comment', '')}</p>
-              </div>
-              <p className="productNameTitle">{get(dataModal2, 'customs[0].name', '')}</p>
-            </Box>
-          </Modal>
-        </div> */}
     </>
   );
 }
