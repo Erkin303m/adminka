@@ -123,7 +123,6 @@ export default function UserPage() {
   const [avgPrice, setAvgPrice] = useState('');
   const [rating, setRaiting] = useState('');
 
-
   // **
   const [open, setOpen] = useState(false);
   const [dataModal, setDataModal] = useState({});
@@ -133,6 +132,7 @@ export default function UserPage() {
     getTruck(0);
     getDriver();
     getOrderO();
+    getTruckType();
   }, []);
 
   const cat = JSON.parse(localStorage.getItem('userData'));
@@ -184,7 +184,7 @@ export default function UserPage() {
     await axios
       .get(`http://185.217.131.179:8888/api/v1/company/truck/create/?limit=6&offset=${num}`, config)
       .then((ress) => {
-        console.log("trucks:",ress.data)
+        console.log('trucks:', ress.data);
         setMainData(get(ress, 'data.results', ''));
       })
       .catch((err) => {
@@ -226,7 +226,7 @@ export default function UserPage() {
             driver,
             truck_location: truckLocation,
             truck_type: truckType,
-            avg_price:avgPrice,
+            avg_price: avgPrice,
             rating,
             status: 'main',
           },
@@ -413,6 +413,25 @@ export default function UserPage() {
     }
   };
 
+  const [drivers, setDrivers] = useState([]);
+  const getTruckType = async () => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${get(cat, 'access', '')}`,
+      },
+    };
+
+    await axios
+      .get(`http://185.217.131.179:8888/api/v1/company/truck/create/`, config)
+      .then((ress) => {
+        setDrivers(get(ress, 'data.results'));
+        console.log('truklar type', get(ress, 'data.results'));
+      })
+      .catch((err) => {
+        console.log('error zayavka', err);
+      });
+  };
+
   const handleOpen = (item) => {
     setOpen(true);
     setDataModal(item);
@@ -432,7 +451,6 @@ export default function UserPage() {
     setTruckType(get(row, 'truck_type.id', ''));
     setAvgPrice(get(row, 'avg_price', ''));
     setRaiting(get(row, 'rating', ''));
-    
   };
 
   const isEditOrder = (row) => {
@@ -743,19 +761,24 @@ export default function UserPage() {
             </div>
 
             <div className="card3">
-              <input
-                type="number"
-                placeholder="Driver ID"
-                list="data4"
+              <select
+                name="cars2"
+                id="cars2"
                 defaultValue={driver}
                 className="input2"
                 onChange={(v) => setDriver(v.target.value)}
-              />
-              <datalist id="data4">
-                {driverIds.map((v) => {
-                  return <option value={v.id} />;
+              >
+                <option value={0} selected>
+                  Driver
+                </option>
+                {driverIds.map((row, i) => {
+                  return (
+                    <option value={get(row, 'id', 0)} key={i}>
+                      {get(row, 'first_name', '')}
+                    </option>
+                  );
                 })}
-              </datalist>
+              </select>
             </div>
 
             <div className="card3">
@@ -768,7 +791,7 @@ export default function UserPage() {
               />
             </div>
 
-            <div className="card3">
+            {/* <div className="card3">
               <input
                 type="text"
                 list="data5"
@@ -782,6 +805,27 @@ export default function UserPage() {
                   return <option value={v.id} />;
                 })}
               </datalist>
+            </div> */}
+
+            <div className="card3">
+              <select
+                name="cars23"
+                id="cars23"
+                defaultValue={truckType}
+                className="input2"
+                onChange={(v) => setTruckType(v.target.value)}
+              >
+                <option value={0} selected>
+                  Truck type
+                </option>
+                {drivers.map((row, i) => {
+                  return (
+                    <option value={get(row, 'truck_type.id', 0)} key={i}>
+                      Gradus: {get(row, 'truck_type.gradus', '')}, ID: {get(row, 'truck_type.id', '')}
+                    </option>
+                  );
+                })}
+              </select>
             </div>
 
             <div className="card3">
@@ -804,7 +848,6 @@ export default function UserPage() {
               />
             </div>
 
-         
             <div className="card3">
               <h1> </h1>
             </div>

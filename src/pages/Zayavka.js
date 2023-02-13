@@ -1213,14 +1213,12 @@ export default function UserPage() {
                   })}
                 </select>
 
-                <div className="card3">
                   <input
                     type="text"
                     placeholder="Location"
                     className="inputLocation"
                     onChange={(v) => setMessage(v.target.value)}
                   />
-                </div>
               </div>
               <Container>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>

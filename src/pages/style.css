@@ -416,7 +416,8 @@ option:hover {
 
 .cardLocation {
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
+  flex-direction: column;
 }
 
 .inputLocation {
@@ -425,7 +426,5 @@ option:hover {
   border-radius: 10px;
   outline: 1px;
   border: 1px solid rgb(141, 141, 141);
-  /* width: 130px; */
-  flex: 1;
   margin-bottom: 10px;
 }
