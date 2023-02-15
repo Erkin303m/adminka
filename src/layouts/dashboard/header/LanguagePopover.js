@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 // @mui
 import { alpha } from '@mui/material/styles';
 import { MenuItem, Stack, IconButton, Popover } from '@mui/material';
@@ -23,13 +25,15 @@ const LANGS = [
 
 export default function LanguagePopover() {
   const [open, setOpen] = useState(null);
+  const { i18n } = useTranslation();
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = (l) => {
     setOpen(null);
+    i18n.changeLanguage(l);
   };
 
   return (
@@ -69,8 +73,12 @@ export default function LanguagePopover() {
         }}
       >
         <Stack spacing={0.75}>
-          {LANGS.map((option,i) => (
-            <MenuItem key={option.value} selected={option.value === LANGS[0].value} onClick={() => handleClose()}>
+          {LANGS.map((option, i) => (
+            <MenuItem
+              key={option.value}
+              selected={option.value === LANGS[0].value}
+              onClick={() => handleClose(option.value)}
+            >
               <img src={LANGS[i].url} alt={LANGS[i].label} className="imgFlag2" />
               {option.label}
             </MenuItem>

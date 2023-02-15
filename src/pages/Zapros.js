@@ -24,6 +24,7 @@ import { BiMoney } from 'react-icons/bi';
 import { MdOutlineDone } from 'react-icons/md';
 import { RiDeleteBack2Line } from 'react-icons/ri';
 import swal from 'sweetalert';
+import { useTranslation } from 'react-i18next';
 
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
@@ -33,26 +34,6 @@ import Label from '../components/label';
 import Scrollbar from '../components/scrollbar';
 import { UserListHead } from '../sections/@dashboard/user';
 import USERLIST from '../_mock/user';
-
-const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Information about order', alignRight: false },
-  { id: 'drop', label: 'Delivery point', alignRight: false },
-  { id: 'date', label: 'Date', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
-  { id: 'relation', label: 'Connection', alignRight: false },
-  { id: 'yesno', label: 'Yes/No', alignRight: false },
-];
-
-const TABLE_HEAD2 = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Driver', alignRight: false },
-  { id: 'drop', label: 'Location', alignRight: false },
-  { id: 'date', label: 'Date', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
-  { id: 'relation', label: 'Connection', alignRight: false },
-  { id: 'yesno', label: 'Yes/No', alignRight: false },
-];
 
 const style = {
   position: 'absolute',
@@ -67,6 +48,28 @@ const style = {
 };
 
 export default function UserPage() {
+  const { t } = useTranslation();
+
+  const TABLE_HEAD = [
+    { id: 'name', label: t('Name'), alignRight: false },
+    { id: 'company', label: t('Information about order'), alignRight: false },
+    { id: 'drop', label: t('Delivery point'), alignRight: false },
+    { id: 'date', label: t('Date'), alignRight: false },
+    { id: 'status', label: t('Status'), alignRight: false },
+    { id: 'relation', label: t('Connection'), alignRight: false },
+    { id: 'yesno', label: t('Yes/No'), alignRight: false },
+  ];
+
+  const TABLE_HEAD2 = [
+    { id: 'name', label: t('Name'), alignRight: false },
+    { id: 'company', label: t('Driver'), alignRight: false },
+    { id: 'drop', label: t('Location'), alignRight: false },
+    { id: 'date', label: t('Date'), alignRight: false },
+    { id: 'status', label: t('Status'), alignRight: false },
+    { id: 'relation', label: t('Connection'), alignRight: false },
+    { id: 'yesno', label: t('Yes/No'), alignRight: false },
+  ];
+
   const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState('name');
@@ -295,13 +298,13 @@ export default function UserPage() {
   return (
     <>
       <Helmet>
-        <title> Request</title>
+        <title>{t('Request')}</title>
       </Helmet>
 
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Request
+            {t('Request')}
           </Typography>
           <Card className="padding">
             <BottomNavigation
@@ -311,8 +314,8 @@ export default function UserPage() {
                 setValue(newValue);
               }}
             >
-              <BottomNavigationAction label="Order owner" />
-              <BottomNavigationAction label="Truck" />
+              <BottomNavigationAction label={t('Order owners')} />
+              <BottomNavigationAction label={t('Truck')} />
             </BottomNavigation>
           </Card>
         </Stack>
@@ -320,7 +323,7 @@ export default function UserPage() {
         {/* Sending */}
         {value === 0 ? (
           <Card>
-            <h1 className="center">Waiting</h1>
+            <h1 className="center">{t('Waiting')}</h1>
             {/* <input type="text" placeholder="Поиск" className="input3" onChange={(v) => search(v.target.value)} /> */}
             <Scrollbar>
               <TableContainer sx={{ minWidth: 800 }}>
@@ -377,20 +380,20 @@ export default function UserPage() {
                                 onChange={(item) => changinStatus(item.target.value, i, row)}
                               >
                                 <option disabled value="sending">
-                                  Sending
+                                  {t('Sending')}
                                 </option>
                                 <option disabled value="way">
-                                  Way
+                                  {t('Way')}
                                 </option>
                                 <option disabled value="arrived">
-                                  Arrived
+                                  {t('Arrived')}
                                 </option>
                                 {row.status === 'declined' ? (
                                   <option disabled value="declined">
-                                    Declined
+                                    {t('Declined')}
                                   </option>
                                 ) : (
-                                  <option value="declined">Declined</option>
+                                  <option value="declined">{t('Declined')}</option>
                                 )}
                               </select>
                             )}
@@ -400,7 +403,7 @@ export default function UserPage() {
                               variant="contained"
                               onClick={() => navigation('/dashboard/blog', { state: { id: row.id, truck: false } })}
                             >
-                              Connect
+                              {t('Connect')}
                             </Button>
                           </TableCell>
 
@@ -432,10 +435,10 @@ export default function UserPage() {
                             }}
                           >
                             <Typography variant="h6" paragraph>
-                              Not found
+                              {t('Not found')}
                             </Typography>
 
-                            <Typography variant="body2">Try use full words.</Typography>
+                            <Typography variant="body2">{t('Try use full words')}.</Typography>
                           </Paper>
                         </TableCell>
                       </TableRow>
@@ -471,7 +474,7 @@ export default function UserPage() {
 
         {value === 1 ? (
           <Card>
-            <h1 className="center">Waiting</h1>
+            <h1 className="center">{t('Waiting')}</h1>
             {/* <input type="text" placeholder="Поиск" className="input3" onChange={(v) => search(v.target.value)} /> */}
             <Scrollbar>
               <TableContainer sx={{ minWidth: 800 }}>
@@ -528,15 +531,15 @@ export default function UserPage() {
                                 }
                                 onChange={(item) => changinStatus(item.target.value, i, row)}
                               >
-                                <option value="sending">Sending</option>
-                                <option value="way">Way</option>
-                                <option value="arrived">Arrived</option>
+                                <option value="sending">{t('Sending')}</option>
+                                <option value="way">{t('Way')}</option>
+                                <option value="arrived">{t('Arrived')}</option>
                                 {row.status === 'declined' ? (
                                   <option disabled value="declined">
-                                    Declined
+                                    {t('Declined')}
                                   </option>
                                 ) : (
-                                  <option value="declined">Declined</option>
+                                  <option value="declined">{t('Declined')}</option>
                                 )}
                               </select>
                             )}
@@ -548,7 +551,7 @@ export default function UserPage() {
                               variant="contained"
                               onClick={() => navigation('/dashboard/blog', { state: { id: row.id, truck: true } })}
                             >
-                              Connect
+                              {t('Connect')}
                             </Button>
                           </TableCell>
 
@@ -580,10 +583,10 @@ export default function UserPage() {
                             }}
                           >
                             <Typography variant="h6" paragraph>
-                              Not found
+                              {t('Not found')}
                             </Typography>
 
-                            <Typography variant="body2">Try use full words.</Typography>
+                            <Typography variant="body2">{t('Try use full words')}.</Typography>
                           </Paper>
                         </TableCell>
                       </TableRow>
@@ -661,7 +664,7 @@ export default function UserPage() {
                   name="cars"
                   id="cars"
                   onChange={(v) => setDriver(v.target.value)}
-                  placeholder="Drivers id"
+                  placeholder={t("Drivers id")}
                   className="input222"
                 >
                   {drivers.map((v, i) => {
@@ -675,7 +678,7 @@ export default function UserPage() {
                 <div className="card3">
                   <input
                     type="text"
-                    placeholder="Location"
+                    placeholder={t("Location")}
                     className="input222"
                     onChange={(v) => setMessage(v.target.value)}
                   />
@@ -691,7 +694,7 @@ export default function UserPage() {
                     startIcon={<Iconify icon="eva:plus-fill" />}
                     onClick={() => changeDriverLoaction()}
                   >
-                    Новый адрес
+                    {t('New address')}
                   </Button>
                 </Stack>
               </Container>

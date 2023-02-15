@@ -17,37 +17,34 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import { get } from 'lodash';
-import { useNavigate } from 'react-router-dom';
 import { AiFillCar, AiOutlineDelete, AiOutlineEdit, AiOutlineArrowRight, AiOutlineArrowLeft } from 'react-icons/ai';
 import swal from 'sweetalert';
-
 import { BsFillPersonFill } from 'react-icons/bs';
-
+import { useTranslation } from 'react-i18next';
 import { UserListHead } from '../sections/@dashboard/user';
 import Iconify from '../components/iconify';
-
 import USERLIST from '../_mock/user';
 import Scrollbar from '../components/scrollbar';
 
-const TABLE_HEAD = [
-  { id: 'id', label: 'ID', alignRight: false },
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'lastName', label: 'Truck location', alignRight: false },
-  { id: 'number', label: 'Truck power', alignRight: false },
-  { id: 'del', label: 'Del', alignRight: false },
-  { id: 'edit', label: 'Edit', alignRight: false },
-];
-
-const TABLE_HEAD2 = [
-  { id: 'id', label: 'ID', alignRight: false },
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'lastName', label: 'Surename', alignRight: false },
-  { id: 'number', label: 'Phone', alignRight: false },
-  { id: 'del2', label: 'Del', alignRight: false },
-  { id: 'edit2', label: 'Edit', alignRight: false },
-];
 export default function UserPage() {
-  const navigation = useNavigate();
+  const { t } = useTranslation();
+  const TABLE_HEAD = [
+    { id: 'id', label: t('ID'), alignRight: false },
+    { id: 'name', label: t('Name'), alignRight: false },
+    { id: 'lastName', label: t('Truck location'), alignRight: false },
+    { id: 'number', label: t('Truck power'), alignRight: false },
+    { id: 'del', label: t('Delete'), alignRight: false },
+    { id: 'edit', label: t('Edit'), alignRight: false },
+  ];
+
+  const TABLE_HEAD2 = [
+    { id: 'id2', label: t('ID'), alignRight: false },
+    { id: 'name2', label: t('Name'), alignRight: false },
+    { id: 'lastName2', label: t('Surename'), alignRight: false },
+    { id: 'number2', label: t('Phone'), alignRight: false },
+    { id: 'del2', label: t('Delete'), alignRight: false },
+    { id: 'edit2', label: t('Edit'), alignRight: false },
+  ];
   const [mainData2, setMainData2] = useState([]);
   const [mainData, setMainData] = useState([]);
   const [driverIds, setDriverIds] = useState([]);
@@ -247,8 +244,6 @@ export default function UserPage() {
   const [truckEdit, setTruckEdit] = useState(0);
   const [truckEditinID, setTruckEditinID] = useState(0);
 
-
-
   const createTruck = async () => {
     const config = {
       headers: {
@@ -378,17 +373,16 @@ export default function UserPage() {
       });
   };
 
-
   return (
     <>
       <Helmet>
-        <title>All users</title>
+        <title>{t('All users')}</title>
       </Helmet>
 
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            All users
+            {t('All users')}
           </Typography>
           <Card className="cardFilter">
             <BottomNavigation
@@ -398,8 +392,12 @@ export default function UserPage() {
                 setValue(newValue);
               }}
             >
-              <BottomNavigationAction label="Order owner" icon={<BsFillPersonFill />} className="buttonNavigation" />
-              <BottomNavigationAction label="Truck" icon={<AiFillCar />} />
+              <BottomNavigationAction
+                label={t('Order owner')}
+                icon={<BsFillPersonFill />}
+                className="buttonNavigation"
+              />
+              <BottomNavigationAction label={t('Truck')} icon={<AiFillCar />} />
             </BottomNavigation>
             <BottomNavigation
               showLabels
@@ -408,8 +406,8 @@ export default function UserPage() {
                 setValue2(newValue);
               }}
             >
-              <BottomNavigationAction label="Add" className="buttonNavigation" />
-              <BottomNavigationAction label="List" />
+              <BottomNavigationAction label={t('Add')} className="buttonNavigation" />
+              <BottomNavigationAction label={t('List')} />
             </BottomNavigation>
           </Card>
         </Stack>
@@ -419,7 +417,7 @@ export default function UserPage() {
         <>
           <Card>
             <Typography variant="h6" className="mainCenterWord">
-              Truck list
+              {t('Truck list')}
             </Typography>
           </Card>
           <Scrollbar>
@@ -472,7 +470,7 @@ export default function UserPage() {
                           }}
                         >
                           <Typography variant="h6" paragraph>
-                            Not found
+                            {t('Not found')}
                           </Typography>
                         </Paper>
                       </TableCell>
@@ -511,7 +509,7 @@ export default function UserPage() {
         <>
           <Card>
             <Typography variant="h6" className="mainCenterWord">
-              List of order owners
+              {t('List of order owners')}
             </Typography>
             {/* <input type="text" placeholder="Search" className="input3" onChange={(v) => search(v.target.value)} /> */}
           </Card>
@@ -565,7 +563,7 @@ export default function UserPage() {
                           }}
                         >
                           <Typography variant="h6" paragraph>
-                            Not found
+                            {t('Not found')}
                           </Typography>
                         </Paper>
                       </TableCell>
@@ -606,7 +604,7 @@ export default function UserPage() {
         <>
           <Card className="marginBottom">
             <Typography variant="h6" className="mainCenterWord">
-              Add Order owner
+              {t('Add Order owner')}
             </Typography>
           </Card>
           <>
@@ -614,7 +612,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="text"
-                  placeholder="Name"
+                  placeholder={t('Name')}
                   defaultValue={username}
                   className="input2"
                   onChange={(v) => setUsername(v.target.value)}
@@ -623,7 +621,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="text"
-                  placeholder="Last name"
+                  placeholder={t('Last name')}
                   defaultValue={lastName}
                   className="input2"
                   onChange={(v) => setLastName(v.target.value)}
@@ -633,7 +631,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="text"
-                  placeholder="Middle name"
+                  placeholder={t('Middle name')}
                   className="input2"
                   defaultValue={middleName}
                   onChange={(v) => setMiddleName(v.target.value)}
@@ -643,7 +641,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="date"
-                  placeholder="Date"
+                  placeholder={t('Date')}
                   defaultValue={date}
                   className="input2"
                   onChange={(v) => setDate(v.target.value)}
@@ -653,7 +651,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="text"
-                  placeholder="Gender"
+                  placeholder={t('Gender')}
                   defaultValue={gender}
                   className="input2"
                   onChange={(v) => setGender(v.target.value)}
@@ -663,7 +661,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="number"
-                  placeholder="Experience"
+                  placeholder={t('Experience')}
                   defaultValue={experience}
                   className="input2"
                   onChange={(v) => setExperience(v.target.value)}
@@ -673,7 +671,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="text"
-                  placeholder="Phone number"
+                  placeholder={t('Phone number')}
                   defaultValue={phoneNumber}
                   className="input2"
                   onChange={(v) => setPhoneNumber(v.target.value)}
@@ -684,7 +682,7 @@ export default function UserPage() {
                 <input
                   type="text"
                   defaultValue={password1}
-                  placeholder="Password 1"
+                  placeholder={t('Password 1')}
                   className="input2"
                   onChange={(v) => setPassword1(v.target.value)}
                 />
@@ -694,7 +692,7 @@ export default function UserPage() {
                 <input
                   type="text"
                   defaultValue={password2}
-                  placeholder="Password 2"
+                  placeholder={t('Password 2')}
                   className="input2"
                   onChange={(v) => setPassword2(v.target.value)}
                 />
@@ -707,7 +705,7 @@ export default function UserPage() {
                   {' '}
                 </Typography>
                 <Button variant="contained" onClick={() => createOrderOwner()}>
-                  Add
+                  {t('Add')}
                 </Button>
               </Stack>
             </Container>
@@ -721,14 +719,14 @@ export default function UserPage() {
         <>
           <Card className="cardMAin">
             <Typography variant="h6" className="mainCenterWord2">
-              Add Truck
+              {t('Add Truck')}
             </Typography>
           </Card>
           <div className="card2">
             <div className="card3">
               <input
                 type="text"
-                placeholder="Name"
+                placeholder={t('Name')}
                 className="input2"
                 defaultValue={name}
                 onChange={(v) => setName(v.target.value)}
@@ -737,7 +735,7 @@ export default function UserPage() {
             <div className="card3">
               <input
                 type="number"
-                placeholder="Load capacity"
+                placeholder={t('Load capacity')}
                 defaultValue={powerTruck}
                 className="input2"
                 onChange={(v) => setPowerTruck(v.target.value)}
@@ -747,7 +745,7 @@ export default function UserPage() {
             <div className="card3">
               <input
                 type="number"
-                placeholder="Driver ID"
+                placeholder={t('Driver ID')}
                 list="data4"
                 defaultValue={driver}
                 className="input2"
@@ -760,19 +758,10 @@ export default function UserPage() {
               </datalist>
             </div>
 
-            {/* <div className="card3">
-           <input
-             type="file"
-             placeholder="avgPrice"
-             className="input2"
-             onChange={(v) => setAvgPrice(v.target.value)}
-           />
-         </div> */}
-
             <div className="card3">
               <input
                 type="text"
-                placeholder="Truck location"
+                placeholder={t('Truck location')}
                 defaultValue={truckLocation}
                 className="input2"
                 onChange={(v) => setTruckLocation(v.target.value)}
@@ -782,7 +771,7 @@ export default function UserPage() {
             <div className="card3">
               <input
                 type="text"
-                placeholder="Truck type"
+                placeholder={t('Truck type')}
                 list="data5"
                 defaultValue={truckType}
                 className="input2"
@@ -795,21 +784,6 @@ export default function UserPage() {
                 })}
               </datalist>
             </div>
-
-            {/* <div className="card3">
-           <input
-             type="number"
-             placeholder="Тип грузовика"
-             list="data44"
-             className="input2"
-             onChange={(v) => setTruckType(v.target.value)}
-           />
-           <datalist id="data44">
-             {driverIds.map((v) => {
-               return <option value={v.id} />;
-             })}
-           </datalist>
-         </div> */}
             <div className="card3">
               <h1> </h1>
             </div>
@@ -820,7 +794,7 @@ export default function UserPage() {
                 {' '}
               </Typography>
               <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => createTruck()}>
-                New Truck
+                {t('New Truck')}
               </Button>
             </Stack>
           </Container>

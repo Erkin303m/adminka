@@ -23,29 +23,28 @@ import { AiFillCar } from 'react-icons/ai';
 import { BsFillPersonFill, BsPeopleFill } from 'react-icons/bs';
 import { w3cwebsocket as Socket } from 'websocket';
 import Swal from 'sweetalert2';
+import { useTranslation } from 'react-i18next';
 
-import Label from '../components/label';
-import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 import { UserListHead } from '../sections/@dashboard/user';
 import USERLIST from '../_mock/user';
 
-const TABLE_HEAD = [
-  { id: 'id', label: 'ID', alignRight: false },
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'lastName', label: 'Last name', alignRight: false },
-  { id: 'number', label: 'Number', alignRight: false },
-  { id: 'user', label: 'User', alignRight: false },
-  { id: 'status', label: 'Chat', alignRight: false },
-];
-
-const TABLE_HEAD2 = [
-  { id: 'name2', label: 'Room ID', alignRight: false },
-  { id: 'number2', label: 'Number', alignRight: false },
-  { id: 'send', label: 'Continue', alignRight: false },
-];
-
 export default function UserPage() {
+  const { t } = useTranslation();
+  const TABLE_HEAD = [
+    { id: 'id', label: t('ID'), alignRight: false },
+    { id: 'name', label: t('Name'), alignRight: false },
+    { id: 'lastName', label: t('Last name'), alignRight: false },
+    { id: 'number', label: t('Number'), alignRight: false },
+    { id: 'user', label: t('User'), alignRight: false },
+    { id: 'status', label: t('Chat'), alignRight: false },
+  ];
+
+  const TABLE_HEAD2 = [
+    { id: 'name2', label: t('Room ID'), alignRight: false },
+    { id: 'number2', label: t('Number'), alignRight: false },
+    { id: 'send', label: t('Continue'), alignRight: false },
+  ];
   const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState('name');
@@ -171,13 +170,13 @@ export default function UserPage() {
   return (
     <>
       <Helmet>
-        <title>Chat</title>
+        <title>{t('Chat')}</title>
       </Helmet>
 
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Chat
+            {t('Chat')}
           </Typography>
           <BottomNavigation
             showLabels
@@ -186,8 +185,8 @@ export default function UserPage() {
               setValue(newValue);
             }}
           >
-            <BottomNavigationAction label="Drivers" icon={<AiFillCar />} />
-            <BottomNavigationAction label="Order owners" icon={<BsFillPersonFill />} />
+            <BottomNavigationAction label={t('Drivers')} icon={<AiFillCar />} />
+            <BottomNavigationAction label={t('Order owners')} icon={<BsFillPersonFill />} />
             {/* <BottomNavigationAction label="Rooms" icon={<BsPeopleFill />} /> */}
           </BottomNavigation>
         </Stack>
@@ -225,7 +224,7 @@ export default function UserPage() {
                           <TableCell align="left"> {get(row, 'user', '')}</TableCell>
 
                           <TableCell align="left">
-                            <Button onClick={() => createRoom(row.user)}>Create Room</Button>
+                            <Button onClick={() => createRoom(row.user)}>{t('Create Room')}</Button>
                           </TableCell>
                         </TableRow>
                       );
@@ -247,7 +246,7 @@ export default function UserPage() {
                             }}
                           >
                             <Typography variant="h6" paragraph>
-                              Not found
+                              {t('Not found')}
                             </Typography>
                           </Paper>
                         </TableCell>
@@ -262,13 +261,6 @@ export default function UserPage() {
 
         {value === 1 ? (
           <Card>
-            {/* <input
-              type="text"
-              placeholder="Search order owner"
-              className="input3"
-              onChange={(v) => search(v.target.value)}
-            /> */}
-
             <Scrollbar>
               <TableContainer sx={{ minWidth: 800 }}>
                 <Table>
@@ -300,7 +292,7 @@ export default function UserPage() {
                           <TableCell align="left">{row.user}</TableCell>
 
                           <TableCell align="left">
-                            <Button onClick={() => createRoom(row.user)}>Create Room</Button>
+                            <Button onClick={() => createRoom(row.user)}>{t('Create Room')}</Button>
                           </TableCell>
                         </TableRow>
                       );
@@ -322,7 +314,7 @@ export default function UserPage() {
                             }}
                           >
                             <Typography variant="h6" paragraph>
-                              Not found
+                              {t('Not found')}
                             </Typography>
                           </Paper>
                         </TableCell>
@@ -335,7 +327,7 @@ export default function UserPage() {
           </Card>
         ) : null}
 
-        <h1>People who have written before</h1>
+        <h1>{t('People who have written before')}</h1>
 
         <Card>
           {/* <input type="text" placeholder="Search Rooms" className="input3" onChange={(v) => search(v.target.value)} /> */}
@@ -363,7 +355,7 @@ export default function UserPage() {
                               navigation('/dashboard/mainChat', { state: { item: row, isWrited: 1 } });
                             }}
                           >
-                            Chat
+                            {t('Chat')}
                           </Button>
                         </TableCell>
                       </TableRow>
@@ -386,7 +378,7 @@ export default function UserPage() {
                           }}
                         >
                           <Typography variant="h6" paragraph>
-                            Not Found
+                            {t('Not Found')}
                           </Typography>
                         </Paper>
                       </TableCell>

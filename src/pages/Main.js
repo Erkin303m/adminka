@@ -4,11 +4,14 @@ import { Grid, Container, Typography } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { get } from 'lodash';
+import { useTranslation } from 'react-i18next';
+
 import { AppCurrentVisits, AppConversionRates, AppWidgetSummary } from '../sections/@dashboard/app';
 
 export default function DashboardAppPage() {
   const theme = useTheme();
   const [data, setData] = useState([]);
+  const { t } = useTranslation();
 
   const cat = JSON.parse(localStorage.getItem('userData'));
   useEffect(() => {
@@ -33,18 +36,18 @@ export default function DashboardAppPage() {
   return (
     <>
       <Helmet>
-        <title> Dashboard </title>
+        <title> {t('Dashboard')} </title>
       </Helmet>
 
       <Container maxWidth="xl">
         <Typography variant="h4" sx={{ mb: 5 }}>
-          Hello, welcome back
+          {t('Hello, welcome back')}
         </Typography>
 
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary
-              title="Managers"
+              title={t('Managers')}
               total={get(data, 'managers', 0)}
               icon={'material-symbols:domain-verification-rounded'}
             />
@@ -52,7 +55,7 @@ export default function DashboardAppPage() {
 
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary
-              title="Dispatchers"
+              title={t('Dispatchers')}
               total={get(data, 'dispetchers', 0)}
               color="success"
               icon={'material-symbols:phone-android-rounded'}
@@ -61,7 +64,7 @@ export default function DashboardAppPage() {
 
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary
-              title="Order owners"
+              title={t('Order owners')}
               total={get(data, 'order_owners', 0)}
               color="warning"
               icon={'material-symbols:person'}
@@ -70,7 +73,7 @@ export default function DashboardAppPage() {
 
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary
-              title="Driver"
+              title={t('Drivers')}
               total={get(data, 'drivers', 0)}
               color="error"
               icon={'ic:outline-directions-car-filled'}
@@ -78,12 +81,12 @@ export default function DashboardAppPage() {
           </Grid>
           <Grid item xs={12} md={6} lg={5}>
             <AppCurrentVisits
-              title="Employees and others"
+              title={t('Employees and others')}
               chartData={[
-                { label: 'Managers', value: get(data, 'managers', 0) },
-                { label: 'Dispatchers', value: get(data, 'dispetchers', 0) },
-                { label: 'Order owners', value: get(data, 'order_owners', 0) },
-                { label: 'Drivers', value: get(data, 'drivers', 0) },
+                { label: t('Managers'), value: get(data, 'managers', 0) },
+                { label: t('Dispatchers'), value: get(data, 'dispetchers', 0) },
+                { label: t('Order owners'), value: get(data, 'order_owners', 0) },
+                { label: t('Drivers'), value: get(data, 'drivers', 0) },
               ]}
               chartColors={[
                 '#20D82F',
@@ -96,13 +99,13 @@ export default function DashboardAppPage() {
 
           <Grid item xs={12} md={6} lg={7}>
             <AppConversionRates
-              title="Status"
+              title={t('Status')}
               chartData={[
-                { label: 'Declined', value: get(data, 'status_canceled', '0') },
-                { label: 'Arrived ', value: get(data, 'status_arrived', '0') },
-                { label: 'Way', value: get(data, 'status_way', '0') },
-                { label: 'Sending ', value: get(data, 'status_sending', '0') },
-                { label: 'Workers count', value: get(data, 'workers_count', '0') },
+                { label: t('Declined'), value: get(data, 'status_canceled', '0') },
+                { label: t('Arrived'), value: get(data, 'status_arrived', '0') },
+                { label: t('Way'), value: get(data, 'status_way', '0') },
+                { label: t('Sending'), value: get(data, 'status_sending', '0') },
+                { label: t('Workers count'), value: get(data, 'workers_count', '0') },
               ]}
             />
           </Grid>

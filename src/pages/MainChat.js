@@ -1,9 +1,10 @@
 import { Helmet } from 'react-helmet-async';
-import { Button, Container, Stack, Card } from '@mui/material';
+import { Stack, Card } from '@mui/material';
 import './style.css';
 import { w3cwebsocket as Socket } from 'websocket';
+import { useTranslation } from 'react-i18next';
 import { get } from 'lodash';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { BiArrowBack } from 'react-icons/bi';
 import { CiPaperplane } from 'react-icons/ci';
@@ -12,11 +13,11 @@ import Swal from 'sweetalert2';
 export default function MainChat() {
   const location = useLocation();
   const navigation = useNavigate();
+  const { t } = useTranslation();
 
   const [myMessage, setMyMessage] = useState([]);
   const [userId, setUserId] = useState(get(location, 'state.item', 0));
   const [mainID, setMainId] = useState(0);
-  const [sms, setSms] = useState('');
 
   const cat = JSON.parse(localStorage.getItem('userData'));
 
@@ -112,7 +113,7 @@ export default function MainChat() {
   return (
     <>
       <Helmet>
-        <title> Chat </title>
+        <title>{t('Chat')}</title>
       </Helmet>
 
       <>
@@ -162,7 +163,7 @@ export default function MainChat() {
         <Card className="cardSendMessages">
           <input
             type="text"
-            placeholder="Message..."
+            placeholder={`${t('Message')}...`}
             className="inputSendMessages"
             onKeyDown={(e) => handleKeyDown(e)}
             // onChange={(e) => console.log()}

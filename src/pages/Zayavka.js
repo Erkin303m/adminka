@@ -20,6 +20,7 @@ import { get } from 'lodash';
 import swal from 'sweetalert';
 import { AiOutlineArrowRight, AiOutlineShoppingCart, AiOutlineDropbox, AiOutlineArrowLeft } from 'react-icons/ai';
 import { BiMoney } from 'react-icons/bi';
+import { useTranslation } from 'react-i18next';
 
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
@@ -28,31 +29,6 @@ import Scrollbar from '../components/scrollbar';
 import Iconify from '../components/iconify';
 import { UserListHead } from '../sections/@dashboard/user';
 import USERLIST from '../_mock/user';
-
-const TABLE_HEAD2 = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Information about order', alignRight: false },
-  { id: 'drop', label: 'Delivery point', alignRight: false },
-  { id: 'date', label: 'Date', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
-];
-
-const TABLE_HEAD4 = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Information about order', alignRight: false },
-  { id: 'drop', label: 'Delivery point', alignRight: false },
-  { id: 'date', label: 'Date', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
-  { id: 'arrived', label: 'Arrived', alignRight: false },
-];
-
-const TABLE_HEAD3 = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Driver', alignRight: false },
-  { id: 'drop', label: 'Location', alignRight: false },
-  { id: 'date', label: 'Date', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
-];
 
 const style = {
   position: 'absolute',
@@ -68,6 +44,32 @@ const style = {
 
 export default function UserPage() {
   const cat = JSON.parse(localStorage.getItem('userData'));
+  const { t } = useTranslation();
+
+  const TABLE_HEAD2 = [
+    { id: 'name', label: t('Name'), alignRight: false },
+    { id: 'company', label: t('Information about order'), alignRight: false },
+    { id: 'drop', label: t('Delivery point'), alignRight: false },
+    { id: 'date', label: t('Date'), alignRight: false },
+    { id: 'status', label: t('Status'), alignRight: false },
+  ];
+
+  const TABLE_HEAD4 = [
+    { id: 'name2', label: t('Name'), alignRight: false },
+    { id: 'company2', label: t('Information about order'), alignRight: false },
+    { id: 'drop2', label: t('Delivery point'), alignRight: false },
+    { id: 'date2', label: t('Date'), alignRight: false },
+    { id: 'status2', label: t('Status'), alignRight: false },
+    { id: 'arrived', label: t('Arrived'), alignRight: false },
+  ];
+
+  const TABLE_HEAD3 = [
+    { id: 'name3', label: t('Name'), alignRight: false },
+    { id: 'driver', label: t('Driver'), alignRight: false },
+    { id: 'location', label: t('Location'), alignRight: false },
+    { id: 'date2', label: t('Date'), alignRight: false },
+    { id: 'status3', label: t('Status'), alignRight: false },
+  ];
 
   const [driver, setDriver] = useState('');
   const [drivers, setDrivers] = useState([]);
@@ -88,27 +90,6 @@ export default function UserPage() {
   const [open2, setOpen2] = useState(false);
   const [dataModal2, setDataModal2] = useState({});
   const [number1, setNumber1] = useState(0);
-  // **
-
-  // create order states
-  // const [userName, setUserName] = useState('');
-  // const [firstPayment, setFirstPayment] = useState('');
-  // const [waiting, setWaiting] = useState('');
-  // const [drop, setDrop] = useState('');
-  // const [owner, setOwner] = useState('');
-  // const [massa, setMassa] = useState('');
-  // const [info, setInfo] = useState('');
-  // const [status, setStatus] = useState('');
-  // const [country, setCuntry] = useState('');
-  // const [city, setCity] = useState('');
-  // const [packages, setPackages] = useState('');
-  // const [cash, setCash] = useState('');
-  // const [fullPayment, setfullPayment] = useState('');
-  // const [countrySending, setCountrySending] = useState('');
-  // const [countryPending, setCountryPending] = useState('');
-  // const [citySending, setCitySending] = useState('');
-  // const [cityPending, setCityPending] = useState('');
-  // const [customs, setCustoms] = useState('');
 
   useEffect(() => {
     getDriver();
@@ -427,12 +408,12 @@ export default function UserPage() {
   return (
     <>
       <Helmet>
-        <title> Application</title>
+        <title>{t('Application')}</title>
       </Helmet>
       <Container>
         <Stack direction="row" alignItems="flex-start" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Application
+            {t('Application')}
           </Typography>
           <Card className="padding">
             <BottomNavigation
@@ -442,8 +423,8 @@ export default function UserPage() {
                 setValue2(newValue);
               }}
             >
-              <BottomNavigationAction label="Order owner" className="buttonNavigation" />
-              <BottomNavigationAction label="Truck" />
+              <BottomNavigationAction label={t('Order owner')} className="buttonNavigation" />
+              <BottomNavigationAction label={t('Truck')} />
             </BottomNavigation>
 
             <BottomNavigation
@@ -453,9 +434,9 @@ export default function UserPage() {
                 setValue(newValue);
               }}
             >
-              <BottomNavigationAction label="Way" />
-              <BottomNavigationAction label="Arrived" />
-              <BottomNavigationAction label="Declined" />
+              <BottomNavigationAction label={t('Way')} />
+              <BottomNavigationAction label={t('Arrived')} />
+              <BottomNavigationAction label={t('Declined')} />
             </BottomNavigation>
           </Card>
         </Stack>
@@ -464,7 +445,7 @@ export default function UserPage() {
 
         {value === 0 && value2 === 0 ? (
           <Card className="big_card">
-            <h1 className="center">Way</h1>
+            <h1 className="center">{t('Way')}</h1>
             {/* <input type="text" placeholder="Поиск" className="input3" onChange={(v) => search(v.target.value)} /> */}
             <Scrollbar>
               <TableContainer sx={{ minWidth: 800 }}>
@@ -508,14 +489,14 @@ export default function UserPage() {
                               }
                               onChange={(item) => changinStatus(item.target.value, i, row)}
                             >
-                              <option value="way">Way</option>
-                              <option value="arrived">Arrived</option>
+                              <option value="way">{t('Way')}</option>
+                              <option value="arrived">{t('Arrived')}</option>
                               {row.status === 'declined' ? (
                                 <option disabled value="declined">
-                                  Declined
+                                  {t('Declined')}
                                 </option>
                               ) : (
-                                <option value="declined">Declined</option>
+                                <option value="declined">{t('Declined')}</option>
                               )}
                             </select>
                           </TableCell>
@@ -543,10 +524,10 @@ export default function UserPage() {
                             }}
                           >
                             <Typography variant="h6" paragraph>
-                              Not found
+                              {t('Not found')}
                             </Typography>
 
-                            <Typography variant="body2">Try use full words.</Typography>
+                            <Typography variant="body2">{t('Try use full words')}.</Typography>
                           </Paper>
                         </TableCell>
                       </TableRow>
@@ -584,7 +565,7 @@ export default function UserPage() {
 
         {value === 1 && value2 === 0 ? (
           <Card className="big_card">
-            <h1 className="center">Arrived</h1>
+            <h1 className="center">{t('Arrived')}</h1>
             {/* <input type="text" placeholder="Поиск" className="input3" onChange={(v) => search(v.target.value)} /> */}
             <Scrollbar>
               <TableContainer sx={{ minWidth: 800 }}>
@@ -628,14 +609,14 @@ export default function UserPage() {
                               }
                               onChange={(item) => changinStatus(item.target.value, i, row)}
                             >
-                              <option value="way">Way</option>
-                              <option value="arrived">Arrived</option>
+                              <option value="way">{t('Way')}</option>
+                              <option value="arrived">{t('Arrived')}</option>
                               {row.status === 'declined' ? (
                                 <option disabled value="declined">
-                                  Declined
+                                  {t('Declined')}
                                 </option>
                               ) : (
-                                <option value="declined">Declined</option>
+                                <option value="declined">{t('Declined')}</option>
                               )}
                             </select>
                           </TableCell>
@@ -659,10 +640,10 @@ export default function UserPage() {
                             }}
                           >
                             <Typography variant="h6" paragraph>
-                              Not found
+                              {t('Not found')}
                             </Typography>
 
-                            <Typography variant="body2">Try use full words.</Typography>
+                            <Typography variant="body2">{t('Try use full words')}.</Typography>
                           </Paper>
                         </TableCell>
                       </TableRow>
@@ -700,7 +681,7 @@ export default function UserPage() {
 
         {value === 2 && value2 === 0 ? (
           <Card className="big_card">
-            <h1 className="center">Declined</h1>
+            <h1 className="center">{t('Declined')}</h1>
             {/* <input type="text" placeholder="Поиск" className="input3" onChange={(v) => search(v.target.value)} /> */}
             <Scrollbar>
               <TableContainer sx={{ minWidth: 800 }}>
@@ -745,7 +726,7 @@ export default function UserPage() {
                               onChange={(item) => changinStatus(item.target.value, i, row)}
                             >
                               <option disabled value="declined">
-                                Declined
+                                {t('Declined')}
                               </option>
                             </select>
                           </TableCell>
@@ -769,10 +750,10 @@ export default function UserPage() {
                             }}
                           >
                             <Typography variant="h6" paragraph>
-                              Not found
+                              {t('Not found')}
                             </Typography>
 
-                            <Typography variant="body2">Try use full words.</Typography>
+                            <Typography variant="body2">{t('Try use full words')}.</Typography>
                           </Paper>
                         </TableCell>
                       </TableRow>
@@ -812,7 +793,7 @@ export default function UserPage() {
 
         {value === 0 && value2 === 1 ? (
           <Card className="big_card">
-            <h1 className="center">Way</h1>
+            <h1 className="center">{t('Way')}</h1>
             {/* <input type="text" placeholder="Поиск" className="input3" onChange={(v) => search(v.target.value)} /> */}
             <Scrollbar>
               <TableContainer sx={{ minWidth: 800 }}>
@@ -856,14 +837,14 @@ export default function UserPage() {
                               }
                               onChange={(item) => changinStatusTruck(item.target.value, i, row)}
                             >
-                              <option value="way">Way</option>
-                              <option value="arrived">Arrived</option>
+                              <option value="way">{t('Way')}</option>
+                              <option value="arrived">{t('Arrived')}</option>
                               {row.status === 'declined' ? (
                                 <option disabled value="declined">
-                                  Declined
+                                  {t('Declined')}
                                 </option>
                               ) : (
-                                <option value="declined">Declined</option>
+                                <option value="declined">{t('Declined')}</option>
                               )}
                             </select>
                           </TableCell>
@@ -887,10 +868,10 @@ export default function UserPage() {
                             }}
                           >
                             <Typography variant="h6" paragraph>
-                              Not found
+                              {t('Not found')}
                             </Typography>
 
-                            <Typography variant="body2">Try use full words.</Typography>
+                            <Typography variant="body2">{t('Try use full words')}.</Typography>
                           </Paper>
                         </TableCell>
                       </TableRow>
@@ -928,7 +909,7 @@ export default function UserPage() {
 
         {value === 1 && value2 === 1 ? (
           <Card className="big_card">
-            <h1 className="center">Arrived</h1>
+            <h1 className="center">{t('Arrived')}</h1>
             {/* <input type="text" placeholder="Поиск" className="input3" onChange={(v) => search(v.target.value)} /> */}
             <Scrollbar>
               <TableContainer sx={{ minWidth: 800 }}>
@@ -972,14 +953,14 @@ export default function UserPage() {
                               }
                               onChange={(item) => changinStatusTruck(item.target.value, i, row)}
                             >
-                              <option value="way">Way</option>
-                              <option value="arrived">Arrived</option>
+                              <option value="way">{t('Way')}</option>
+                              <option value="arrived">{t('Arrived')}</option>
                               {row.status === 'declined' ? (
                                 <option disabled value="declined">
-                                  Declined
+                                  {t('Declined')}
                                 </option>
                               ) : (
-                                <option value="declined">Declined</option>
+                                <option value="declined">{t('Declined')}</option>
                               )}
                             </select>
                           </TableCell>
@@ -1003,7 +984,7 @@ export default function UserPage() {
                             }}
                           >
                             <Typography variant="h6" paragraph>
-                              Not Found
+                              {t('Not Found')}
                             </Typography>
                           </Paper>
                         </TableCell>
@@ -1042,7 +1023,7 @@ export default function UserPage() {
 
         {value === 2 && value2 === 1 ? (
           <Card className="big_card">
-            <h1 className="center">Declined</h1>
+            <h1 className="center">{t('Declined')}</h1>
             {/* <input type="text" placeholder="Поиск" className="input3" onChange={(v) => search(v.target.value)} /> */}
             <Scrollbar>
               <TableContainer sx={{ minWidth: 800 }}>
@@ -1087,14 +1068,14 @@ export default function UserPage() {
 
                               // onChange={(item) => changinStatusTruck(item.target.value, i, row)}
                             >
-                              <option value="way">Way</option>
-                              <option value="arrived">Arrived</option>
+                              <option value="way">{t('Way')}</option>
+                              <option value="arrived">{t('Arrived')}</option>
                               {row.status === 'declined' ? (
                                 <option disabled value="declined">
-                                  Declined
+                                  {t('Declined')}
                                 </option>
                               ) : (
-                                <option value="declined">Declined</option>
+                                <option value="declined">{t('Declined')}</option>
                               )}
                             </select>
                           </TableCell>
@@ -1118,7 +1099,7 @@ export default function UserPage() {
                             }}
                           >
                             <Typography variant="h6" paragraph>
-                              Not found
+                              {t('Not found')}
                             </Typography>
                           </Paper>
                         </TableCell>
@@ -1201,8 +1182,8 @@ export default function UserPage() {
                   placeholder="Drivers id"
                   className="inputLocation"
                 >
-                  <option selected value='0'>
-                    Choose Truck
+                  <option selected value="0">
+                    {t('Choose Truck')}
                   </option>
                   {drivers.map((v, i) => {
                     return (
@@ -1213,12 +1194,12 @@ export default function UserPage() {
                   })}
                 </select>
 
-                  <input
-                    type="text"
-                    placeholder="Location"
-                    className="inputLocation"
-                    onChange={(v) => setMessage(v.target.value)}
-                  />
+                <input
+                  type="text"
+                  placeholder={t("Location")}
+                  className="inputLocation"
+                  onChange={(v) => setMessage(v.target.value)}
+                />
               </div>
               <Container>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
@@ -1230,7 +1211,7 @@ export default function UserPage() {
                     startIcon={<Iconify icon="eva:plus-fill" />}
                     onClick={() => changeDriverLoaction()}
                   >
-                    New address
+                    {t('New address')}
                   </Button>
                 </Stack>
               </Container>
@@ -1263,27 +1244,27 @@ export default function UserPage() {
                 </Label>
               </div>
               <div className="cardMiniModal">
-                <p className="country">Driver: </p>
+                <p className="country">{t('Driver')}: </p>
                 <p className="country">
                   {get(dataModal2, 'driver.first_name', '')} {get(dataModal2, 'driver.last_name', '')}
                 </p>
               </div>
 
               <div className="cardMiniModal">
-                <p className="country">Phone Number: </p>
+                <p className="country">{t('Phone Number')}: </p>
                 <p className="country">{get(dataModal2, 'driver.phone_number', '')} </p>
               </div>
               <div className="cardMiniModal">
-                <p className="country">Location: </p>
+                <p className="country">{t('Location')}: </p>
                 <p className="country">{get(dataModal2, 'truck_location', '')} </p>
               </div>
               <div className="cardMiniModal">
-                <p className="country">Date: </p>
+                <p className="country">{t('Date')}: </p>
                 <p className="country">{get(dataModal2, 'created_at', '').slice(0, 10)} </p>
               </div>
 
               <div className="cardMiniModal22">
-                <p className="center">Comment</p>
+                <p className="center">{t('Comment')}</p>
                 <p className="sum">{get(dataModal2, 'truck_type.comment', '')}</p>
               </div>
               <p className="productNameTitle">{get(dataModal2, 'customs[0].name', '')}</p>

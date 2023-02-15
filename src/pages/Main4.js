@@ -32,6 +32,7 @@ import {
 import swal from 'sweetalert';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
+import { useTranslation } from 'react-i18next';
 
 import { BsFillPersonFill, BsList } from 'react-icons/bs';
 import { BiMoney } from 'react-icons/bi';
@@ -46,25 +47,6 @@ import Scrollbar from '../components/scrollbar';
 
 import Label from '../components/label';
 
-const TABLE_HEAD = [
-  { id: 'id', label: 'ID', alignRight: false },
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'lastName', label: 'Truck location', alignRight: false },
-  { id: 'number', label: 'Truck power', alignRight: false },
-  { id: 'number', label: 'Rating', alignRight: false },
-  { id: 'edit', label: 'Edit', alignRight: false },
-  { id: 'delete', label: 'Delete', alignRight: false },
-];
-
-const TABLE_HEAD2 = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Information about order', alignRight: false },
-  { id: 'drop', label: 'Delivery point', alignRight: false },
-  { id: 'date', label: 'Date', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
-  { id: 'relation', label: 'Edit', alignRight: false },
-];
-
 const style = {
   position: 'absolute',
   top: '50%',
@@ -78,6 +60,25 @@ const style = {
 };
 
 export default function UserPage() {
+  const { t } = useTranslation();
+  const TABLE_HEAD = [
+    { id: 'id', label: t('ID'), alignRight: false },
+    { id: 'name', label: t('Name'), alignRight: false },
+    { id: 'lastName', label: t('Truck location'), alignRight: false },
+    { id: 'number', label: t('Truck power'), alignRight: false },
+    { id: 'number', label: t('Rating'), alignRight: false },
+    { id: 'edit', label: t('Edit'), alignRight: false },
+    { id: 'delete', label: t('Delete'), alignRight: false },
+  ];
+
+  const TABLE_HEAD2 = [
+    { id: 'name', label: t('Name'), alignRight: false },
+    { id: 'company', label: t('Information about order'), alignRight: false },
+    { id: 'drop', label: t('Delivery point'), alignRight: false },
+    { id: 'date', label: t('Date'), alignRight: false },
+    { id: 'status', label: t('Status'), alignRight: false },
+    { id: 'relation', label: t('Edit'), alignRight: false },
+  ];
   const [mainData2, setMainData2] = useState([]);
   const [mainData, setMainData] = useState([]);
   const [driverIds, setDriverIds] = useState([]);
@@ -480,13 +481,13 @@ export default function UserPage() {
   return (
     <>
       <Helmet>
-        <title> Main page</title>
+        <title>{t('Main page')}</title>
       </Helmet>
 
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Main page
+            {t('Main page')}
           </Typography>
           <Card className="cardFilter">
             <BottomNavigation
@@ -496,8 +497,8 @@ export default function UserPage() {
                 setValue(newValue);
               }}
             >
-              <BottomNavigationAction label="Order" icon={<BsFillPersonFill />} className="buttonNavigation" />
-              <BottomNavigationAction label="Truck" icon={<AiFillCar />} />
+              <BottomNavigationAction label={t('Order')} icon={<BsFillPersonFill />} className="buttonNavigation" />
+              <BottomNavigationAction label={t('Truck')} icon={<AiFillCar />} />
             </BottomNavigation>
             <BottomNavigation
               showLabels
@@ -506,8 +507,8 @@ export default function UserPage() {
                 setValue2(newValue);
               }}
             >
-              <BottomNavigationAction label="Add" icon={<AiOutlinePlusCircle />} />
-              <BottomNavigationAction label="List" icon={<BsList />} />
+              <BottomNavigationAction label={t("Add")} icon={<AiOutlinePlusCircle />} />
+              <BottomNavigationAction label={t("List")} icon={<BsList />} />
             </BottomNavigation>
           </Card>
         </Stack>
@@ -517,7 +518,7 @@ export default function UserPage() {
         <>
           <Card className="cardMAin">
             <Typography variant="h6" className="mainCenterWord2">
-              Add Order
+              {t('Add Order')}
             </Typography>
           </Card>
 
@@ -526,7 +527,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="text"
-                  placeholder="Name"
+                  placeholder={t("Name")}
                   className="input2"
                   defaultValue={userName}
                   onChange={(v) => setUserName(v.target.value)}
@@ -535,7 +536,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="text"
-                  placeholder="Packing method"
+                  placeholder={t("Packing method")}
                   defaultValue={packages}
                   className="input2"
                   onChange={(v) => setPackages(v.target.value)}
@@ -553,7 +554,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="text"
-                  placeholder="Waiting for a place"
+                  placeholder={t("Waiting for a place")}
                   className="input2"
                   defaultValue={waiting}
                   onChange={(v) => setWaiting(v.target.value)}
@@ -562,7 +563,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="text"
-                  placeholder="Falling place"
+                  placeholder={t("Falling place")}
                   className="input2"
                   defaultValue={drop}
                   onChange={(v) => setDrop(v.target.value)}
@@ -576,7 +577,7 @@ export default function UserPage() {
                   className="input2"
                   onChange={(v) => setOwner(v.target.value)}
                 >
-                  <option value={0}>Order owner</option>
+                  <option value={0}>{t('Order owners')}</option>
                   {orderO.map((row, i) => {
                     return (
                       <option value={get(row, 'id')} key={i}>
@@ -590,7 +591,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="number"
-                  placeholder="Order weight"
+                  placeholder={t("Order weight")}
                   className="input2"
                   defaultValue={massa}
                   onChange={(v) => setMassa(v.target.value)}
@@ -599,7 +600,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="text"
-                  placeholder="Information about order"
+                  placeholder={t("Information about order")}
                   defaultValue={info}
                   className="input2"
                   onChange={(v) => setInfo(v.target.value)}
@@ -609,7 +610,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="text"
-                  placeholder="Status"
+                  placeholder={t("Status")}
                   defaultValue={status}
                   list="data4"
                   className="input2"
@@ -626,7 +627,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="number"
-                  placeholder="Customs"
+                  placeholder={t("Customs")}
                   defaultValue={customs}
                   className="input2"
                   onChange={(v) => setCustoms(v.target.value)}
@@ -636,7 +637,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="text"
-                  placeholder="Country"
+                  placeholder={t("Country")}
                   defaultValue={country}
                   className="input2"
                   onChange={(v) => setCountry(v.target.value)}
@@ -646,7 +647,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="text"
-                  placeholder="City"
+                  placeholder={t("City")}
                   defaultValue={city}
                   className="input2"
                   onChange={(v) => setCity(v.target.value)}
@@ -671,7 +672,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="number"
-                  placeholder="Full payment"
+                  placeholder={t("Full payment")}
                   defaultValue={fullPayment}
                   className="input2"
                   onChange={(v) => setfullPayment(v.target.value)}
@@ -681,7 +682,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="text"
-                  placeholder="Country sending"
+                  placeholder={t("Country sending")}
                   defaultValue={countrySending}
                   className="input2"
                   onChange={(v) => setCountrySending(v.target.value)}
@@ -691,7 +692,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="text"
-                  placeholder="Country pending"
+                  placeholder={t("Country pending")}
                   defaultValue={countryPending}
                   className="input2"
                   onChange={(v) => setCountryPending(v.target.value)}
@@ -701,7 +702,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="text"
-                  placeholder="City sending"
+                  placeholder={t("City sending")}
                   defaultValue={citySending}
                   className="input2"
                   onChange={(v) => setCitySending(v.target.value)}
@@ -711,7 +712,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="text"
-                  placeholder="City pending"
+                  placeholder={t("City pending")}
                   defaultValue={cityPending}
                   className="input2"
                   onChange={(v) => setCityPending(v.target.value)}
@@ -725,7 +726,7 @@ export default function UserPage() {
                   {' '}
                 </Typography>
                 <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => createOrder()}>
-                  Новый заказ
+                {t('New order')}
                 </Button>
               </Stack>
             </Container>
@@ -737,14 +738,14 @@ export default function UserPage() {
         <>
           <Card className="cardMAin">
             <Typography variant="h6" className="mainCenterWord2">
-              Add Truck
+              {t('Add Truck')}
             </Typography>
           </Card>
           <div className="card2">
             <div className="card3">
               <input
                 type="text"
-                placeholder="Name"
+                placeholder={t("Name")}
                 className="input2"
                 defaultValue={name}
                 onChange={(v) => setName(v.target.value)}
@@ -753,7 +754,7 @@ export default function UserPage() {
             <div className="card3">
               <input
                 type="number"
-                placeholder="Load capacity"
+                placeholder={t("Load capacity")}
                 defaultValue={powerTruck}
                 className="input2"
                 onChange={(v) => setPowerTruck(v.target.value)}
@@ -769,7 +770,7 @@ export default function UserPage() {
                 onChange={(v) => setDriver(v.target.value)}
               >
                 <option value={0} selected>
-                  Driver
+                  {t('Driver')}
                 </option>
                 {driverIds.map((row, i) => {
                   return (
@@ -784,7 +785,7 @@ export default function UserPage() {
             <div className="card3">
               <input
                 type="text"
-                placeholder="Truck location"
+                placeholder={t("Truck location")}
                 defaultValue={truckLocation}
                 className="input2"
                 onChange={(v) => setTruckLocation(v.target.value)}
@@ -816,12 +817,12 @@ export default function UserPage() {
                 onChange={(v) => setTruckType(v.target.value)}
               >
                 <option value={0} selected>
-                  Truck type
+                  {t('Truck type')}
                 </option>
                 {drivers.map((row, i) => {
                   return (
                     <option value={get(row, 'truck_type.id', 0)} key={i}>
-                      Gradus: {get(row, 'truck_type.gradus', '')}, ID: {get(row, 'truck_type.id', '')}
+                      {t('Gradus')}: {get(row, 'truck_type.gradus', '')}, {t('ID')}: {get(row, 'truck_type.id', '')}
                     </option>
                   );
                 })}
@@ -831,7 +832,7 @@ export default function UserPage() {
             <div className="card3">
               <input
                 type="number"
-                placeholder="Rating"
+                placeholder={t("Rating")}
                 defaultValue={rating}
                 className="input2"
                 onChange={(v) => setRaiting(v.target.value)}
@@ -841,7 +842,7 @@ export default function UserPage() {
             <div className="card3">
               <input
                 type="number"
-                placeholder="Avg price"
+                placeholder={t("Avg price")}
                 defaultValue={avgPrice}
                 className="input2"
                 onChange={(v) => setAvgPrice(v.target.value)}
@@ -858,7 +859,7 @@ export default function UserPage() {
                 {' '}
               </Typography>
               <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => createTruck()}>
-                New Truck
+                {t('New Truck')}
               </Button>
             </Stack>
           </Container>
@@ -869,7 +870,7 @@ export default function UserPage() {
         <>
           <Card>
             <Typography variant="h6" className="mainCenterWord">
-              Truck list
+              {t('Truck list')}
             </Typography>
           </Card>
           <Scrollbar>
@@ -922,7 +923,7 @@ export default function UserPage() {
                           }}
                         >
                           <Typography variant="h6" paragraph>
-                            Not found
+                            {t('Not found')}
                           </Typography>
                         </Paper>
                       </TableCell>
@@ -959,7 +960,7 @@ export default function UserPage() {
 
       {value === 0 && value2 === 1 ? (
         <Card>
-          <h1 className="center">Orders</h1>
+          <h1 className="center">{t('Orders')}</h1>
           {/* <input type="text" placeholder="Поиск" className="input3" onChange={(v) => search(v.target.value)} /> */}
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
@@ -1058,10 +1059,10 @@ export default function UserPage() {
                           }}
                         >
                           <Typography variant="h6" paragraph>
-                            Not found
+                            {t('Not found')}
                           </Typography>
 
-                          <Typography variant="body2">Try use full words.</Typography>
+                          <Typography variant="body2">{t('Try use full words')}.</Typography>
                         </Paper>
                       </TableCell>
                     </TableRow>

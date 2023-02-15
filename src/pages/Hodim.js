@@ -17,33 +17,16 @@ import {
 import axios from 'axios';
 import { get } from 'lodash';
 import swal from 'sweetalert';
-import {
-  AiOutlineDelete,
-  AiOutlineEdit,
-  AiOutlineArrowRight,
-  AiOutlineShoppingCart,
-  AiOutlineDropbox,
-} from 'react-icons/ai';
-import { BiMoney } from 'react-icons/bi';
+import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
-
+import { useTranslation } from 'react-i18next';
 import { UserListHead } from '../sections/@dashboard/user';
-
 import USERLIST from '../_mock/user';
 import Scrollbar from '../components/scrollbar';
-
 import Label from '../components/label';
 import Iconify from '../components/iconify';
 
-const TABLE_HEAD = [
-  { id: 'id', label: 'ID', alignRight: false },
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Phone', alignRight: false },
-  { id: 'drop', label: 'Role', alignRight: false },
-  { id: 'del', label: 'Del', alignRight: false },
-  { id: 'edit', label: 'Edit', alignRight: false },
-];
 const style = {
   position: 'absolute',
   top: '50%',
@@ -57,6 +40,15 @@ const style = {
 };
 
 export default function UserPage() {
+  const { t } = useTranslation();
+  const TABLE_HEAD = [
+    { id: 'id', label: t('ID'), alignRight: false },
+    { id: 'name', label: t('Name'), alignRight: false },
+    { id: 'company', label: t('Phone'), alignRight: false },
+    { id: 'drop', label: t('Role'), alignRight: false },
+    { id: 'del', label: t('Delete'), alignRight: false },
+    { id: 'edit', label: t('Edit'), alignRight: false },
+  ];
   const [tableData, setTableData] = useState([]);
 
   const [userName, setUserName] = useState('');
@@ -64,7 +56,6 @@ export default function UserPage() {
   const [password1, setPassword1] = useState('');
   const [password2, setPassword2] = useState('');
   const [phone, setPhone] = useState('');
-  const [mainData, setMainData] = useState([]);
   const [lastName, setLastName] = useState('');
   const [middleName, setMiddleName] = useState('');
   const [birthday, setBirthday] = useState('');
@@ -143,12 +134,8 @@ export default function UserPage() {
             middle_name: middleName,
             birthday,
             gender,
-            avatar:null,
+            avatar: null,
             experience,
-            // password_1: password1,
-            // password_2: password2,
-            // phone_number: phone,
-            // role,
           },
           config
         )
@@ -237,18 +224,19 @@ export default function UserPage() {
     setOpen(true);
     setDataModal(item);
   };
+
   const handleClose = () => setOpen(false);
 
   return (
     <>
       <Helmet>
-        <title> Employees</title>
+        <title>{t('Employees')}</title>
       </Helmet>
 
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Employees
+            {t('Employees')}
           </Typography>
           <Card className="cardFilter">
             <BottomNavigation
@@ -258,8 +246,8 @@ export default function UserPage() {
                 setValue(newValue);
               }}
             >
-              <BottomNavigationAction label="List" className="buttonNavigation" />
-              <BottomNavigationAction label="Add" />
+              <BottomNavigationAction label={t('List')} className="buttonNavigation" />
+              <BottomNavigationAction label={t('Add')} />
             </BottomNavigation>
           </Card>
         </Stack>
@@ -309,7 +297,7 @@ export default function UserPage() {
             <div className="card3">
               <input
                 type="text"
-                placeholder="Name"
+                placeholder={t('Name')}
                 className="input2"
                 defaultValue={userName}
                 onChange={(v) => setUserName(v.target.value)}
@@ -318,7 +306,7 @@ export default function UserPage() {
             <div className="card3">
               <input
                 type="text"
-                placeholder="Last name"
+                placeholder={t('Last name')}
                 className="input2"
                 defaultValue={lastName}
                 onChange={(v) => setLastName(v.target.value)}
@@ -328,7 +316,7 @@ export default function UserPage() {
             <div className="card3">
               <input
                 type="text"
-                placeholder="Middle name"
+                placeholder={t('Middle name')}
                 className="input2"
                 defaultValue={middleName}
                 onChange={(v) => setMiddleName(v.target.value)}
@@ -338,7 +326,7 @@ export default function UserPage() {
             <div className="card3">
               <input
                 type="date"
-                placeholder="Date"
+                placeholder={t('Date')}
                 className="input2"
                 defaultValue={birthday}
                 onChange={(v) => setBirthday(v.target.value)}
@@ -348,7 +336,7 @@ export default function UserPage() {
             <div className="card3">
               <input
                 type="text"
-                placeholder="Gender"
+                placeholder={t('Gender')}
                 list="data4"
                 className="input2"
                 defaultValue={gender}
@@ -373,7 +361,7 @@ export default function UserPage() {
             <div className="card3">
               <input
                 type="text"
-                placeholder="Experience"
+                placeholder={t('Experience')}
                 className="input2"
                 defaultValue={experience}
                 onChange={(v) => setExperience(v.target.value)}
@@ -383,7 +371,7 @@ export default function UserPage() {
             <div className="card3">
               <input
                 type="text"
-                placeholder="Role"
+                placeholder={t('Role')}
                 list="data"
                 className="input2"
                 defaultValue={role}
@@ -398,7 +386,7 @@ export default function UserPage() {
             <div className="card3">
               <input
                 type="text"
-                placeholder="Password 1"
+                placeholder={t('Password 1')}
                 className="input2"
                 defaultValue={password1}
                 onChange={(v) => setPassword1(v.target.value)}
@@ -407,7 +395,7 @@ export default function UserPage() {
             <div className="card3">
               <input
                 type="text"
-                placeholder="Password 2"
+                placeholder={t('Password 2')}
                 className="input2"
                 defaultValue={password2}
                 onChange={(v) => setPassword2(v.target.value)}
@@ -417,7 +405,7 @@ export default function UserPage() {
             <div className="card3">
               <input
                 type="text"
-                placeholder="Phone number"
+                placeholder={t('Phone number')}
                 className="input2"
                 defaultValue={phone}
                 onChange={(v) => setPhone(v.target.value)}
@@ -430,7 +418,7 @@ export default function UserPage() {
                 {' '}
               </Typography>
               <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => sendData()}>
-                New
+                {t('Add')}
               </Button>
             </Stack>
           </Container>
@@ -453,26 +441,26 @@ export default function UserPage() {
             </div>
             <div className="cardMiniModal3">{get(dataModal, 'name', '')}</div>
             <div className="cardMiniModal">
-              <p className="country2">Name: </p>
+              <p className="country2">{t('Name')}: </p>
               <p className="country2">
                 {get(dataModal, 'first_name', '')} {get(dataModal, 'last_name', '')}
               </p>
             </div>
 
             <div className="cardMiniModal">
-              <p className="country2">Phone Number: </p>
+              <p className="country2">{t('Phone Number')}: </p>
               <p className="country2">{get(dataModal, 'phone_number', '')} </p>
             </div>
             <div className="cardMiniModal">
-              <p className="country2">Experience: </p>
+              <p className="country2">{t('Experience')}: </p>
               <p className="country2">{get(dataModal, 'experience', '')} </p>
             </div>
             <div className="cardMiniModal">
-              <p className="country2">Gender: </p>
+              <p className="country2">{t('Gender')}: </p>
               <p className="country2">{get(dataModal, 'gender', '')} </p>
             </div>
             <div className="cardMiniModal">
-              <p className="country2">Date: </p>
+              <p className="country2">{t('Date')}: </p>
               <p className="country2">{get(dataModal, 'created_at', '').slice(0, 10)} </p>
             </div>
           </Box>
