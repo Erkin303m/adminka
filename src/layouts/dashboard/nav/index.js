@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Box, Drawer, Typography } from '@mui/material';
 import { get } from 'lodash';
+import { useTranslation } from 'react-i18next';
 import useResponsive from '../../../hooks/useResponsive';
 import Scrollbar from '../../../components/scrollbar';
 import NavSection from '../../../components/nav-section';
@@ -24,6 +25,7 @@ Nav.propTypes = {
 };
 
 export default function Nav({ openNav, onCloseNav }) {
+  const { t } = useTranslation();
   const { pathname } = useLocation();
 
   const isDesktop = useResponsive('up', 'lg');
@@ -54,37 +56,37 @@ export default function Nav({ openNav, onCloseNav }) {
         <NavSection
           data={[
             {
-              title: 'Dashboard',
+              title: t('Dashboard'),
               path: '/dashboard/app',
               icon: icon('ic_analytics'),
             },
             {
-              title: 'Requests',
+              title: t('Requests'),
               path: '/dashboard/products',
               icon: icon('ic_cart'),
             },
             {
-              title: 'Applications',
+              title: t('Applications'),
               path: '/dashboard/user',
               icon: icon2('list'),
             },
             {
-              title: 'Main page',
+              title: t('Main page'),
               path: '/dashboard/main4',
               icon: icon2('home'),
             },
             {
-              title: 'Chat',
+              title: t('Chat'),
               path: '/dashboard/chat',
               icon: icon2('chat'),
             },
             {
-              title: 'All users',
+              title: t('All users'),
               path: '/dashboard/allUsers',
               icon: icon('ic_user'),
             },
             {
-              title: 'Employees',
+              title: t('Employees'),
               path: '/dashboard/xodim',
               icon: icon('ic_user'),
             },

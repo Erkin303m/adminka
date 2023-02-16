@@ -507,8 +507,8 @@ export default function UserPage() {
                 setValue2(newValue);
               }}
             >
-              <BottomNavigationAction label={t("Add")} icon={<AiOutlinePlusCircle />} />
-              <BottomNavigationAction label={t("List")} icon={<BsList />} />
+              <BottomNavigationAction label={t('Add')} icon={<AiOutlinePlusCircle />} />
+              <BottomNavigationAction label={t('List')} icon={<BsList />} />
             </BottomNavigation>
           </Card>
         </Stack>
@@ -527,7 +527,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="text"
-                  placeholder={t("Name")}
+                  placeholder={t('Name')}
                   className="input2"
                   defaultValue={userName}
                   onChange={(v) => setUserName(v.target.value)}
@@ -536,7 +536,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="text"
-                  placeholder={t("Packing method")}
+                  placeholder={t('Packing method')}
                   defaultValue={packages}
                   className="input2"
                   onChange={(v) => setPackages(v.target.value)}
@@ -554,7 +554,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="text"
-                  placeholder={t("Waiting for a place")}
+                  placeholder={t('Waiting for a place')}
                   className="input2"
                   defaultValue={waiting}
                   onChange={(v) => setWaiting(v.target.value)}
@@ -563,7 +563,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="text"
-                  placeholder={t("Falling place")}
+                  placeholder={t('Falling place')}
                   className="input2"
                   defaultValue={drop}
                   onChange={(v) => setDrop(v.target.value)}
@@ -591,7 +591,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="number"
-                  placeholder={t("Order weight")}
+                  placeholder={t('Order weight')}
                   className="input2"
                   defaultValue={massa}
                   onChange={(v) => setMassa(v.target.value)}
@@ -600,7 +600,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="text"
-                  placeholder={t("Information about order")}
+                  placeholder={t('Information about order')}
                   defaultValue={info}
                   className="input2"
                   onChange={(v) => setInfo(v.target.value)}
@@ -610,7 +610,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="text"
-                  placeholder={t("Status")}
+                  placeholder={t('Status')}
                   defaultValue={status}
                   list="data4"
                   className="input2"
@@ -627,7 +627,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="number"
-                  placeholder={t("Customs")}
+                  placeholder={t('Customs')}
                   defaultValue={customs}
                   className="input2"
                   onChange={(v) => setCustoms(v.target.value)}
@@ -637,7 +637,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="text"
-                  placeholder={t("Country")}
+                  placeholder={t('Country')}
                   defaultValue={country}
                   className="input2"
                   onChange={(v) => setCountry(v.target.value)}
@@ -647,7 +647,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="text"
-                  placeholder={t("City")}
+                  placeholder={t('City')}
                   defaultValue={city}
                   className="input2"
                   onChange={(v) => setCity(v.target.value)}
@@ -672,7 +672,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="number"
-                  placeholder={t("Full payment")}
+                  placeholder={t('Full payment')}
                   defaultValue={fullPayment}
                   className="input2"
                   onChange={(v) => setfullPayment(v.target.value)}
@@ -682,7 +682,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="text"
-                  placeholder={t("Country sending")}
+                  placeholder={t('Country sending')}
                   defaultValue={countrySending}
                   className="input2"
                   onChange={(v) => setCountrySending(v.target.value)}
@@ -692,7 +692,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="text"
-                  placeholder={t("Country pending")}
+                  placeholder={t('Country pending')}
                   defaultValue={countryPending}
                   className="input2"
                   onChange={(v) => setCountryPending(v.target.value)}
@@ -702,7 +702,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="text"
-                  placeholder={t("City sending")}
+                  placeholder={t('City sending')}
                   defaultValue={citySending}
                   className="input2"
                   onChange={(v) => setCitySending(v.target.value)}
@@ -712,7 +712,7 @@ export default function UserPage() {
               <div className="card3">
                 <input
                   type="text"
-                  placeholder={t("City pending")}
+                  placeholder={t('City pending')}
                   defaultValue={cityPending}
                   className="input2"
                   onChange={(v) => setCityPending(v.target.value)}
@@ -726,7 +726,7 @@ export default function UserPage() {
                   {' '}
                 </Typography>
                 <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => createOrder()}>
-                {t('New order')}
+                  {t('New order')}
                 </Button>
               </Stack>
             </Container>
@@ -741,11 +741,11 @@ export default function UserPage() {
               {t('Add Truck')}
             </Typography>
           </Card>
-          <div className="card2">
+          <div className="cardMainPage">
             <div className="card3">
               <input
                 type="text"
-                placeholder={t("Name")}
+                placeholder={t('Name')}
                 className="input2"
                 defaultValue={name}
                 onChange={(v) => setName(v.target.value)}
@@ -754,7 +754,7 @@ export default function UserPage() {
             <div className="card3">
               <input
                 type="number"
-                placeholder={t("Load capacity")}
+                placeholder={t('Load capacity')}
                 defaultValue={powerTruck}
                 className="input2"
                 onChange={(v) => setPowerTruck(v.target.value)}
@@ -785,7 +785,7 @@ export default function UserPage() {
             <div className="card3">
               <input
                 type="text"
-                placeholder={t("Truck location")}
+                placeholder={t('Truck location')}
                 defaultValue={truckLocation}
                 className="input2"
                 onChange={(v) => setTruckLocation(v.target.value)}
@@ -832,7 +832,7 @@ export default function UserPage() {
             <div className="card3">
               <input
                 type="number"
-                placeholder={t("Rating")}
+                placeholder={t('Rating')}
                 defaultValue={rating}
                 className="input2"
                 onChange={(v) => setRaiting(v.target.value)}
@@ -842,15 +842,11 @@ export default function UserPage() {
             <div className="card3">
               <input
                 type="number"
-                placeholder={t("Avg price")}
+                placeholder={t('Avg price')}
                 defaultValue={avgPrice}
                 className="input2"
                 onChange={(v) => setAvgPrice(v.target.value)}
               />
-            </div>
-
-            <div className="card3">
-              <h1> </h1>
             </div>
           </div>
           <Container>

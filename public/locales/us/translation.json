@@ -84,5 +84,9 @@
   "Password 1": "Password 1",
   "Password 2": "Password 2",
   "Role": "Role",
-  "Employees": "Employees"
+  "Employees": "Employees",
+  "Order owner":"Order owner",
+  "Requests":"Requests",
+  "Applications":"Applications"
+
 }
