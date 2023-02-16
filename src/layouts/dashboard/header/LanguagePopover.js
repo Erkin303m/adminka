@@ -1,12 +1,9 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-// @mui
 import { alpha } from '@mui/material/styles';
 import { MenuItem, Stack, IconButton, Popover } from '@mui/material';
 import './style.css';
-
-// ----------------------------------------------------------------------
 
 const LANGS = [
   {
@@ -21,19 +18,19 @@ const LANGS = [
   },
 ];
 
-// ----------------------------------------------------------------------
-
 export default function LanguagePopover() {
   const [open, setOpen] = useState(null);
+  const [pictureIndex, setPictureIndex] = useState(0);
   const { i18n } = useTranslation();
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
 
-  const handleClose = (l) => {
+  const handleClose = (l, i) => {
     setOpen(null);
     i18n.changeLanguage(l);
+    setPictureIndex(i);
   };
 
   return (
@@ -49,7 +46,7 @@ export default function LanguagePopover() {
           }),
         }}
       >
-        <img src={LANGS[0].url} alt={LANGS[0].label} className="imgFlag" />
+        <img src={LANGS[pictureIndex].url} alt={LANGS[pictureIndex].label} className="imgFlag" />
       </IconButton>
 
       <Popover
@@ -77,7 +74,7 @@ export default function LanguagePopover() {
             <MenuItem
               key={option.value}
               selected={option.value === LANGS[0].value}
-              onClick={() => handleClose(option.value)}
+              onClick={() => handleClose(option.value, i)}
             >
               <img src={LANGS[i].url} alt={LANGS[i].label} className="imgFlag2" />
               {option.label}
