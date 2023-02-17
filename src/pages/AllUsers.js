@@ -46,7 +46,7 @@ export default function UserPage() {
     { id: 'del2', label: t('Delete'), alignRight: false },
     { id: 'edit2', label: t('Edit'), alignRight: false },
   ];
-  
+
   const [mainData2, setMainData2] = useState([]);
   const [mainData, setMainData] = useState([]);
   const [driverIds, setDriverIds] = useState([]);
@@ -241,11 +241,17 @@ export default function UserPage() {
     setDate(get(row, 'birthday', ''));
   };
 
-  const [name, setName] = useState('');
-  const [powerTruck, setPowerTruck] = useState('');
-  const [driver, setDriver] = useState('');
-  const [truckLocation, setTruckLocation] = useState('');
-  const [truckType, setTruckType] = useState('');
+  const [usernamed, setUsernamed] = useState('');
+  const [lastNamed, setLastNamed] = useState('');
+  const [middleNamed, setMiddleNamed] = useState('');
+  const [dated, setDated] = useState('');
+  const [genderd, setGenderd] = useState('');
+  const [avatard, setAvatard] = useState('');
+  const [experienced, setExperienced] = useState('');
+  const [phoneNumberd, setPhoneNumberd] = useState('');
+  const [password1d, setPassword1d] = useState('');
+  const [password2d, setPassword2d] = useState('');
+
   const [truckEdit, setTruckEdit] = useState(0);
   const [truckEditinID, setTruckEditinID] = useState(0);
 
@@ -255,25 +261,30 @@ export default function UserPage() {
         Authorization: `Bearer ${get(cat, 'access', '')}`,
       },
     };
-
     if (truckEdit === 0) {
+      // yaratish
       await axios
         .post(
-          `http://185.217.131.179:8888/api/v1/company/truck/create/`,
+          `http://185.217.131.179:8888/api/v1/company/dashboard/director/`,
           {
-            name,
-            power_truck: powerTruck,
-            driver,
-            truck_location: truckLocation,
-            truck_type: truckType,
-            status: 'main',
+            first_name: usernamed,
+            last_name: lastNamed,
+            middle_name: middleNamed,
+            birthday: dated,
+            genderd,
+            avatar: null,
+            experienced,
+            phone_number: phoneNumberd,
+            password_1: password1d,
+            password_2: password2d,
+            role: 'driver',
           },
           config
         )
-        .then((ress) => {
+        .then(() => {
           swal({
-            title: 'Truck added successfully!',
-            // text: 'Ознакомьтесь с добавленным Truck',
+            title: 'Driver added successfully!',
+            // text: 'Ознакомьтесь с добавленным товаром в разделе Заявки',
             icon: 'success',
             dangerMode: false,
             timer: 3000,
@@ -282,39 +293,45 @@ export default function UserPage() {
         .catch((err) => {
           console.log('error', err);
           swal({
-            title: 'Information entered incorrectly, check the Internet!',
+            title: "Driver didn't add, check the Internet!",
             icon: 'error',
             dangerMode: true,
             timer: 3000,
           });
         });
     } else {
+      // edit
       await axios
         .patch(
-          `http://185.217.131.179:8888/api/v1/company/truck/${truckEditinID}/`,
+          `http://185.217.131.179:8888/api/v1/company/staff/edit/${truckEditinID}/`,
           {
-            name,
-            power_truck: powerTruck,
-            driver,
-            truck_location: truckLocation,
-            truck_type: truckType,
-            status: 'main',
+            first_name: usernamed,
+            last_name: lastNamed,
+            middle_name: middleNamed,
+            birthday: dated,
+            genderd,
+            avatar: null,
+            experienced,
+            phone_number: phoneNumberd,
+            password_1: password1d,
+            password_2: password2d,
+            role: 'driver',
           },
           config
         )
-        .then((ress) => {
+        .then(() => {
           swal({
-            title: 'Truck edited successfully!',
+            title: 'Driver edited successfully!',
             icon: 'success',
             dangerMode: false,
             timer: 3000,
           });
-          setTruckEdit(0);
+          setIsEditOrderOwner(0);
         })
         .catch((err) => {
           console.log('error', err);
           swal({
-            title: 'Not edited!',
+            title: "Driver owners didn't edit, check the Internet!",
             icon: 'error',
             dangerMode: true,
             timer: 3000,
@@ -329,11 +346,14 @@ export default function UserPage() {
     setValue(1);
     setValue2(0);
 
-    setName(get(row, 'name', ''));
-    setPowerTruck(get(row, 'power_truck', ''));
-    setDriver(get(row, 'driver.id', ''));
-    setTruckLocation(get(row, 'truck_location', ''));
-    setTruckType(get(row, 'truck_type.id', ''));
+    setUsernamed(get(row, 'first_name', ''));
+    setLastNamed(get(row, 'last_name', ''));
+    setPhoneNumberd(get(row, 'phone_number', ''));
+    setMiddleNamed(get(row, 'middle_name', ''));
+    setGenderd(get(row, 'gender', ''));
+    setExperienced(get(row, 'experience', ''));
+    setMiddleNamed(get(row, 'middle_name', ''));
+    setDated(get(row, 'birthday', ''));
   };
 
   const deletingTruck = async (id) => {
@@ -727,82 +747,108 @@ export default function UserPage() {
         <>
           <Card className="cardMAin">
             <Typography variant="h6" className="mainCenterWord2">
-              {t('Add Truck')}
+              {t('Add Driver')}
             </Typography>
           </Card>
-          <div className="card2">
-            <div className="card3">
-              <input
-                type="text"
-                placeholder={t('Name')}
-                className="input2"
-                defaultValue={name}
-                onChange={(v) => setName(v.target.value)}
-              />
-            </div>
-            <div className="card3">
-              <input
-                type="number"
-                placeholder={t('Load capacity')}
-                defaultValue={powerTruck}
-                className="input2"
-                onChange={(v) => setPowerTruck(v.target.value)}
-              />
-            </div>
+          <>
+            <div className="card2">
+              <div className="card3">
+                <input
+                  type="text"
+                  placeholder={t('Name')}
+                  defaultValue={usernamed}
+                  className="input2"
+                  onChange={(v) => setUsernamed(v.target.value)}
+                />
+              </div>
+              <div className="card3">
+                <input
+                  type="text"
+                  placeholder={t('Last name')}
+                  defaultValue={lastNamed}
+                  className="input2"
+                  onChange={(v) => setLastNamed(v.target.value)}
+                />
+              </div>
 
-            <div className="card3">
-              <input
-                type="number"
-                placeholder={t('Driver ID')}
-                list="data4"
-                defaultValue={driver}
-                className="input2"
-                onChange={(v) => setDriver(v.target.value)}
-              />
-              <datalist id="data4">
-                {driverIds.map((v) => {
-                  return <option value={v.id} />;
-                })}
-              </datalist>
-            </div>
+              <div className="card3">
+                <input
+                  type="text"
+                  placeholder={t('Middle name')}
+                  className="input2"
+                  defaultValue={middleNamed}
+                  onChange={(v) => setMiddleNamed(v.target.value)}
+                />
+              </div>
 
-            <div className="card3">
-              <input
-                type="text"
-                placeholder={t('Truck location')}
-                defaultValue={truckLocation}
-                className="input2"
-                onChange={(v) => setTruckLocation(v.target.value)}
-              />
-            </div>
+              <div className="card3">
+                <input
+                  type="date"
+                  placeholder={t('Date')}
+                  defaultValue={dated}
+                  className="input2"
+                  onChange={(v) => setDated(v.target.value)}
+                />
+              </div>
 
-            <div className="card3">
-              <input
-                type="text"
-                placeholder={t('Truck type')}
-                list="data5"
-                defaultValue={truckType}
-                className="input2"
-                onChange={(v) => setTruckType(v.target.value)}
-              />
+              <div className="card3">
+                <input
+                  type="text"
+                  placeholder={t('Gender')}
+                  defaultValue={genderd}
+                  className="input2"
+                  onChange={(v) => setGenderd(v.target.value)}
+                />
+              </div>
 
-              <datalist id="data5">
-                {driverIds.map((v) => {
-                  return <option value={v.id} />;
-                })}
-              </datalist>
+              <div className="card3">
+                <input
+                  type="number"
+                  placeholder={t('Experience')}
+                  defaultValue={experienced}
+                  className="input2"
+                  onChange={(v) => setExperienced(v.target.value)}
+                />
+              </div>
+
+              <div className="card3">
+                <input
+                  type="text"
+                  placeholder={t('Phone number')}
+                  defaultValue={phoneNumberd}
+                  className="input2"
+                  onChange={(v) => setPhoneNumberd(v.target.value)}
+                />
+              </div>
+
+              <div className="card3">
+                <input
+                  type="text"
+                  defaultValue={password1d}
+                  placeholder={t('Password 1')}
+                  className="input2"
+                  onChange={(v) => setPassword1d(v.target.value)}
+                />
+              </div>
+
+              <div className="card3">
+                <input
+                  type="text"
+                  defaultValue={password2d}
+                  placeholder={t('Password 2')}
+                  className="input2"
+                  onChange={(v) => setPassword2d(v.target.value)}
+                />
+              </div>
             </div>
-            <div className="card3">
-              <h1> </h1>
-            </div>
-          </div>
+          </>
           <Container>
             <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
               <Typography variant="h4" gutterBottom>
                 {' '}
               </Typography>
               <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => createTruck()}>
-                {t('New Truck')}
+                {t('New Driver')}
               </Button>
             </Stack>
           </Container>
