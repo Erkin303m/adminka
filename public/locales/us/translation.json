@@ -87,6 +87,10 @@
   "Employees": "Employees",
   "Order owner":"Order owner",
   "Requests":"Requests",
-  "Applications":"Applications"
+  "Applications":"Applications",
+  "Sellect truck":"Sellect truck",
+  "Now you can attach one product to the truck":"Now you can attach one product to the truck",
+  "New Location":"New Location",
+  "Now you can attach one truck to a product":"Now you can attach one truck to a product"
 
 }

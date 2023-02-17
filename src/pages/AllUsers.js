@@ -31,8 +31,9 @@ export default function UserPage() {
   const TABLE_HEAD = [
     { id: 'id', label: t('ID'), alignRight: false },
     { id: 'name', label: t('Name'), alignRight: false },
-    { id: 'lastName', label: t('Truck location'), alignRight: false },
-    { id: 'number', label: t('Truck power'), alignRight: false },
+    { id: 'lastName', label: t('Phone'), alignRight: false },
+    { id: 'number', label: t('Experience'), alignRight: false },
+    { id: 'birthday', label: t('Birthday'), alignRight: false },
     { id: 'del', label: t('Delete'), alignRight: false },
     { id: 'edit', label: t('Edit'), alignRight: false },
   ];
@@ -45,6 +46,7 @@ export default function UserPage() {
     { id: 'del2', label: t('Delete'), alignRight: false },
     { id: 'edit2', label: t('Edit'), alignRight: false },
   ];
+  
   const [mainData2, setMainData2] = useState([]);
   const [mainData, setMainData] = useState([]);
   const [driverIds, setDriverIds] = useState([]);
@@ -92,9 +94,12 @@ export default function UserPage() {
     };
 
     await axios
-      .get(`http://185.217.131.179:8888/api/v1/company/truck/create/?limit=6&offset=${num}`, config)
+      // .get(`http://185.217.131.179:8888/api/v1/company/staff-create/?driver=driver`, config)
+
+      .get(`http://185.217.131.179:8888/api/v1/company/staff-create/?driver=driver&limit=6&offset=${num}`, config)
       .then((ress) => {
         setMainData(get(ress, 'data.results', ''));
+        console.log('drivers', get(ress, 'data.results', ''));
       })
       .catch((err) => {
         console.log('error zayavka', err);
@@ -338,7 +343,7 @@ export default function UserPage() {
       },
     };
     await axios
-      .delete(`http://185.217.131.179:8888/api/v1/company/truck/${id}`, config)
+      .delete(`http://185.217.131.179:8888/api/v1/company/staff-create/?driver=driver/${id}`, config)
       .then(() => {
         swal({
           title: 'Deleted successfully!',
@@ -436,10 +441,13 @@ export default function UserPage() {
                           </Stack>
                         </TableCell>
 
-                        <TableCell align="left">{row.name}</TableCell>
+                        <TableCell align="left">
+                          {row.first_name} {row.last_name}
+                        </TableCell>
 
-                        <TableCell align="left">{row.truck_location}</TableCell>
-                        <TableCell align="left">{row.power_truck}</TableCell>
+                        <TableCell align="left">{row.phone_number}</TableCell>
+                        <TableCell align="left">{row.experience}</TableCell>
+                        <TableCell align="left">{row.birthday}</TableCell>
 
                         <TableCell align="left">
                           <Button className="del" onClick={() => deletingTruck(row.id)}>

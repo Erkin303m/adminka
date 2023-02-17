@@ -7,6 +7,7 @@ import swal from 'sweetalert';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AiOutlineArrowRight, AiOutlineShoppingCart, AiOutlineDropbox, AiOutlineArrowLeft } from 'react-icons/ai';
 import { BiMoney, BiArrowBack } from 'react-icons/bi';
+import { useTranslation } from 'react-i18next';
 
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
@@ -32,6 +33,7 @@ const style = {
   p: 4,
 };
 export default function UserPage() {
+  const { t } = useTranslation();
   const location = useLocation();
   const navigation = useNavigate();
   const cat = JSON.parse(localStorage.getItem('userData'));
@@ -81,14 +83,12 @@ export default function UserPage() {
   }, []);
 
   const sendData = async () => {
-    console.log(truck, manager);
     const config = {
       headers: {
         Authorization: `Bearer ${get(cat, 'access', '')}`,
       },
     };
 
-    // if(isTruck){}else{}
     await axios
       .post(
         `http://185.217.131.179:8888/api/v1/company/dashboard/manager/${orderID}/add_truck_to_order/`,
@@ -285,7 +285,7 @@ export default function UserPage() {
   return (
     <>
       <Helmet>
-        <title>Application</title>
+        <title>{t('Application')}</title>
       </Helmet>
 
       <div>
@@ -361,7 +361,7 @@ export default function UserPage() {
                   startIcon={<Iconify icon="eva:plus-fill" />}
                   onClick={() => changeDriverLoaction()}
                 >
-                  New Location
+                  {t('New Location')}
                 </Button>
               </Stack>
             </Container>
@@ -379,10 +379,10 @@ export default function UserPage() {
             <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
               <div>
                 <Typography variant="h4" gutterBottom>
-                  Application
+                  {t('Application')}
                 </Typography>
                 <Typography variant="p" gutterBottom>
-                  Now you can attach one product to the truck.
+                  {t('Now you can attach one product to the truck')}.
                 </Typography>
               </div>
             </Stack>
@@ -400,18 +400,20 @@ export default function UserPage() {
             </div>
 
             <div className="card3">
-              <input
-                type="number"
-                placeholder="Truck id"
-                list="data"
+              <select
+                name="cars"
+                id="cars"
+                defaultValue={t('Sellect truck')}
                 className="input2"
-                onChange={(v) => setTruck(v.target.value)}
-              />
-              <datalist id="data">
+                onChange={(item) => setTruck(item.target.value)}
+              >
+                <option selected value="">
+                  {t('Sellect truck')}
+                </option>
                 {drivers.map((v, i) => {
-                  return <option key={i} value={get(v, 'id', 0)} />;
+                  return <option value={get(v, 'id', '')}>Name: {get(v, 'name', '')}</option>;
                 })}
-              </datalist>
+              </select>
             </div>
 
             <div className="card3">
@@ -430,7 +432,7 @@ export default function UserPage() {
                 {' '}
               </Typography>
               <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => sendData()}>
-                Новый Запрос
+                {t('Connect')}
               </Button>
             </Stack>
           </Container>
@@ -446,10 +448,10 @@ export default function UserPage() {
             <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
               <div>
                 <Typography variant="h4" gutterBottom>
-                  Application
+                  {t('Application')}
                 </Typography>
                 <Typography variant="p" gutterBottom>
-                  Now you can attach one truck to a product.
+                  {t('Now you can attach one truck to a product')}.
                 </Typography>
               </div>
             </Stack>
@@ -492,7 +494,7 @@ export default function UserPage() {
                 {' '}
               </Typography>
               <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => sendData()}>
-                Новый Запрос
+                {t('Connect')}
               </Button>
             </Stack>
           </Container>
@@ -508,7 +510,7 @@ export default function UserPage() {
             <div className="card3">
               <input
                 type="text"
-                placeholder="Метод упаковки"
+                placeholder={t('Packing method')}
                 className="input2"
                 onChange={(v) => setPackages(v.target.value)}
               />
@@ -664,7 +666,7 @@ export default function UserPage() {
                 {' '}
               </Typography>
               <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => createOrder()}>
-                Новый заказ
+                {t('New order')}
               </Button>
             </Stack>
           </Container>
