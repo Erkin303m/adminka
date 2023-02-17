@@ -284,7 +284,6 @@ export default function UserPage() {
         .then(() => {
           swal({
             title: 'Driver added successfully!',
-            // text: 'Ознакомьтесь с добавленным товаром в разделе Заявки',
             icon: 'success',
             dangerMode: false,
             timer: 3000,

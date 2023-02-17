@@ -165,7 +165,7 @@ export default function UserPage() {
     };
 
     await axios
-      .get(`http://185.217.131.179:8888/api/v1/company/order/?limit=6&offset=${num}`, config)
+      .get(`http://185.217.131.179:8888/api/v1/company/order/?status=main&limit=6&offset=${num}`, config)
       .then((ress) => {
         setMainData2(get(ress, 'data.results', ''));
         console.log('order', ress.data);
@@ -981,54 +981,11 @@ export default function UserPage() {
                         <TableCell align="left">{row.created_at.slice(0, 10)}</TableCell>
 
                         <TableCell align="left">
-                          {get(cat, 'data.role', '') === 'dispatcher' ? (
-                            <Label
-                              color={
-                                (row.status === 'sending' && 'primary') ||
-                                (row.status === 'way' && 'warning') ||
-                                (row.status === 'arrived' && 'success') ||
-                                'error'
-                              }
-                            >
-                              {sentenceCase(row.status)}
-                            </Label>
-                          ) : (
-                            <select
-                              name="cars"
-                              id="cars"
-                              defaultValue={row.status}
-                              className={
-                                (row.status === 'sending' && 'primary') ||
-                                (row.status === 'way' && 'warning') ||
-                                (row.status === 'arrived' && 'success') ||
-                                (row.status === 'main' && 'primary') ||
-                                (row.status === 'declined' && 'error')
-                                // 'error'
-                              }
-                              disabled
-                              // onChange={(item) => changinStatus(item.target.value, i, row)}
-                            >
-                              <option disabled selected value="sending">
-                                {row.status}
-                              </option>
-                              {/* <option disabled value="sending">
-                                Sending
-                              </option>
-                              <option disabled value="way">
-                                Way
-                              </option>
-                              <option disabled value="arrived">
-                                Arrived
-                              </option>
-                              {row.status === 'declined' ? (
-                                <option disabled value="declined">
-                                  Declined
-                                </option>
-                              ) : (
-                                <option value="declined">Declined</option>
-                              )} */}
-                            </select>
-                          )}
+                          <select name="cars" id="cars" defaultValue={row.status} className="primary" disabled>
+                            <option disabled selected value="sending">
+                              {row.status}
+                            </option>
+                          </select>
                         </TableCell>
                         <TableCell align="left">
                           <Button className="edit" onClick={() => isEditOrder(row)}>
