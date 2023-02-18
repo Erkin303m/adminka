@@ -21,11 +21,25 @@ import { AiFillCar, AiOutlineDelete, AiOutlineEdit, AiOutlineArrowRight, AiOutli
 import swal from 'sweetalert';
 import { BsFillPersonFill } from 'react-icons/bs';
 import { useTranslation } from 'react-i18next';
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+import Label from '../components/label';
 import { UserListHead } from '../sections/@dashboard/user';
 import Iconify from '../components/iconify';
 import USERLIST from '../_mock/user';
 import Scrollbar from '../components/scrollbar';
 
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 500,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 export default function UserPage() {
   const { t } = useTranslation();
   const TABLE_HEAD = [
@@ -397,6 +411,15 @@ export default function UserPage() {
       });
   };
 
+  const [dataModal2, setDataModal2] = useState({});
+  const [open2, setOpen2] = useState(false);
+
+  const handleOpen2 = (item) => {
+    setOpen2(true);
+    setDataModal2(item);
+  };
+  const handleClose2 = () => setOpen2(false);
+
   return (
     <>
       <Helmet>
@@ -451,7 +474,7 @@ export default function UserPage() {
                 <TableBody>
                   {mainData.map((row, i) => {
                     return (
-                      <TableRow hover key={i} tabIndex={-1} s>
+                      <TableRow hover key={i} tabIndex={-1} onDoubleClick={() => handleOpen2(row)}>
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
                             <Typography variant="subtitle2" className="zayavkaName">
@@ -547,7 +570,7 @@ export default function UserPage() {
                 <TableBody>
                   {mainData2.map((row, i) => {
                     return (
-                      <TableRow hover key={i} tabIndex={-1} s>
+                      <TableRow hover key={i} tabIndex={-1} onDoubleClick={() => handleOpen2(row)}>
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
                             <Typography variant="subtitle2" className="zayavkaName">
@@ -853,6 +876,43 @@ export default function UserPage() {
           </Container>
         </>
       ) : null}
+
+      {/* 2-modal */}
+
+      <div>
+        <Modal
+          open={open2}
+          onClose={handleClose2}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style} className="bigModalCard">
+            <div className="cardMiniModal">
+              <p className="country">{t('ID')}: </p>
+              <p className="country">{get(dataModal2, 'id', '')}</p>
+            </div>
+            <div className="cardMiniModal">
+              <p className="country">{t('Name')}: </p>
+              <p className="country">
+                {get(dataModal2, 'first_name', '')} {get(dataModal2, 'last_name', '')}
+              </p>
+            </div>
+
+            <div className="cardMiniModal">
+              <p className="country">{t('Phone Number')}: </p>
+              <p className="country">{get(dataModal2, 'phone_number', '')} </p>
+            </div>
+            <div className="cardMiniModal">
+              <p className="country">{t('Experience')}: </p>
+              <p className="country">{get(dataModal2, 'experience', 'no')} </p>
+            </div>
+            <div className="cardMiniModal">
+              <p className="country">{t('Birthday')}: </p>
+              <p className="country">{get(dataModal2, 'birthday', '').slice(0, 10)} </p>
+            </div>
+          </Box>
+        </Modal>
+      </div>
     </>
   );
 }
