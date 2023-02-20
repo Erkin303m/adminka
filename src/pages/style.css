@@ -437,3 +437,10 @@ option:hover {
 .none {
   display: none;
 }
+.btnPlus{
+  font-size: 30px;
+}
+.plusCard{
+  display: flex;
+  justify-content: space-between;
+}
