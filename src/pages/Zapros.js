@@ -230,6 +230,7 @@ export default function UserPage() {
       },
     };
     const id = get(row, 'id', 0);
+    console.log(id, typeof id);
     await axios
       .patch(
         `http://185.217.131.179:8888/api/v1/company/truck/${id}/`,

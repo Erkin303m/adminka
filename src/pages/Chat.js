@@ -434,7 +434,7 @@ export default function UserPage() {
                 </Scrollbar>
               </Card>
             ) : null}
-            <p className="productNameTitle">New chat</p>
+            <p className="productNameTitle">{t('New chat')}</p>
           </Box>
         </Modal>
       </div>
