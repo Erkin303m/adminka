@@ -408,14 +408,14 @@ export default function UserPage() {
                             </Button>
                           </TableCell>
 
-                          <TableCell align="left">
+                          {/* <TableCell align="left">
                             <Button className="yes" onClick={() => yes(row, i)}>
                               <MdOutlineDone />
                             </Button>
                             <Button className="no" onClick={() => no(row, i)}>
                               <RiDeleteBack2Line />
                             </Button>
-                          </TableCell>
+                          </TableCell> */}
                         </TableRow>
                       );
                     })}
@@ -665,7 +665,7 @@ export default function UserPage() {
                   name="cars"
                   id="cars"
                   onChange={(v) => setDriver(v.target.value)}
-                  placeholder={t("Drivers id")}
+                  placeholder={t('Drivers id')}
                   className="input222"
                 >
                   {drivers.map((v, i) => {
@@ -679,7 +679,7 @@ export default function UserPage() {
                 <div className="card3">
                   <input
                     type="text"
-                    placeholder={t("Location")}
+                    placeholder={t('Location')}
                     className="input222"
                     onChange={(v) => setMessage(v.target.value)}
                   />

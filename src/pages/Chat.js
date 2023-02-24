@@ -20,7 +20,8 @@ import {
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { AiFillCar, AiOutlinePlusCircle } from 'react-icons/ai';
-import { BsFillPersonFill, BsPeopleFill } from 'react-icons/bs';
+import { BsFillPersonFill } from 'react-icons/bs';
+import { IoMdPersonAdd } from 'react-icons/io';
 
 import { w3cwebsocket as Socket } from 'websocket';
 import Swal from 'sweetalert2';
@@ -40,18 +41,16 @@ const style = {
   width: 700,
   bgcolor: 'background.paper',
   border: '2px solid #000',
-  boxShadow: 24,
+  boxShadow: 1,
   p: 4,
 };
 export default function UserPage() {
   const { t } = useTranslation();
   const TABLE_HEAD = [
     { id: 'id', label: t('ID'), alignRight: false },
-    // { id: 'name', label: t('Name'), alignRight: false },
-    // { id: 'lastName', label: t('Last name'), alignRight: false },
+    { id: 'name', label: t('Name'), alignRight: false },
     { id: 'number', label: t('Number'), alignRight: false },
-    // { id: 'user', label: t('User'), alignRight: false },
-    { id: 'status', label: t('Chat'), alignRight: false },
+    { id: 'status', label: t('Room'), alignRight: false },
   ];
 
   const TABLE_HEAD2 = [
@@ -195,9 +194,9 @@ export default function UserPage() {
       </Helmet>
 
       <Container>
-        <div className='plusCard'>
+        <div className="plusCard">
           <h1>{t('People who have written before')}</h1>
-          <Button className='btnPlus' onClick={() => handleOpen()}>
+          <Button className="btnPlus" onClick={() => handleOpen()}>
             <AiOutlinePlusCircle />
           </Button>
         </div>
@@ -276,7 +275,7 @@ export default function UserPage() {
           <Box sx={style} className="bigModalCard">
             <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
               <Typography variant="h4" gutterBottom>
-                {t('Chat')}
+                {t('New chat')}
               </Typography>
               <BottomNavigation
                 showLabels
@@ -304,13 +303,14 @@ export default function UserPage() {
                         onSelectAllClick={handleSelectAllClick}
                       />
                       <TableBody>
+                        {/* Order owner */}
                         {mainData2.map((row, i) => {
                           return (
                             <TableRow
                               hover
                               key={i}
                               tabIndex={-1}
-                              className={get(row, 'role', '') === 'order_owner' ? '' : 'none'}
+                              className={get(row, 'user.role', '') === 'order_owner' ? '' : 'none'}
                             >
                               <TableCell component="th" scope="row" padding="none">
                                 <Stack direction="row" alignItems="center" spacing={2}>
@@ -320,15 +320,17 @@ export default function UserPage() {
                                 </Stack>
                               </TableCell>
 
-                              {/* <TableCell align="left">{row.first_name}</TableCell>
+                              <TableCell align="left">
+                                {get(row, 'first_name', '')} {get(row, 'last_name', '')}
+                              </TableCell>
 
-                          <TableCell align="left">{row.last_name}</TableCell> */}
                               <TableCell align="left">{row.phone_number}</TableCell>
 
-                              {/* <TableCell align="left">{row.user}</TableCell> */}
-
                               <TableCell align="left">
-                                <Button onClick={() => createRoom(row.user)}>{t('Create Room')}</Button>
+                                <Button onClick={() => createRoom(row.user)} className="create_user_room">
+                                  {' '}
+                                  <IoMdPersonAdd />
+                                </Button>
                               </TableCell>
                             </TableRow>
                           );
@@ -362,6 +364,7 @@ export default function UserPage() {
                 </Scrollbar>
               </Card>
             ) : null}
+
             {value === 0 ? (
               <Card className="driverCard">
                 <Scrollbar>
@@ -382,7 +385,7 @@ export default function UserPage() {
                               hover
                               key={i}
                               tabIndex={-1}
-                              className={get(row, 'role', '') === 'driver' ? '' : 'none'}
+                              className={get(row, 'user.role', '') === 'driver' ? '' : 'none'}
                             >
                               <TableCell component="th" scope="row" padding="none">
                                 <Stack direction="row" alignItems="center" spacing={2}>
@@ -391,16 +394,16 @@ export default function UserPage() {
                                   </Typography>
                                 </Stack>
                               </TableCell>
-                              {/* 
-                          <TableCell align="left"> {get(row, 'first_name', '')}</TableCell>
-
-                          <TableCell align="left"> {get(row, 'last_name', '')}</TableCell> */}
+                              <TableCell align="left">
+                                {get(row, 'first_name', '')} {get(row, 'last_name', '')}
+                              </TableCell>
                               <TableCell align="left"> {get(row, 'phone_number', '')}</TableCell>
 
-                              {/* <TableCell align="left"> {get(row, 'user', '')}</TableCell> */}
-
                               <TableCell align="left">
-                                <Button onClick={() => createRoom(row.user)}>{t('Create Room')}</Button>
+                                <Button onClick={() => createRoom(row.user)} className="create_user_room">
+                                  {' '}
+                                  <IoMdPersonAdd />
+                                </Button>
                               </TableCell>
                             </TableRow>
                           );
@@ -434,7 +437,6 @@ export default function UserPage() {
                 </Scrollbar>
               </Card>
             ) : null}
-            <p className="productNameTitle">{t('New chat')}</p>
           </Box>
         </Modal>
       </div>

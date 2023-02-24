@@ -444,3 +444,8 @@ option:hover {
   display: flex;
   justify-content: space-between;
 }
+
+.create_user_room{
+  font-size: 25px;
+  background-color: #0072c927;
+}
