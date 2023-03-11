@@ -124,9 +124,18 @@ export default function UserPage() {
   const [avgPrice, setAvgPrice] = useState('');
   const [rating, setRaiting] = useState('');
 
+  // table numnber
+  const [tableNumber1, setTableNumber1] = useState(1);
+  const [tableNumber2, setTableNumber2] = useState(1);
+
+  // table numnber
+
   // **
   const [open, setOpen] = useState(false);
   const [dataModal, setDataModal] = useState({});
+
+  const [open2, setOpen2] = useState(false);
+  const [dataModal2, setDataModal2] = useState({});
 
   useEffect(() => {
     getOrderOwner(0);
@@ -438,6 +447,14 @@ export default function UserPage() {
     setDataModal(item);
   };
   const handleClose = () => setOpen(false);
+
+  // 2-modal
+
+  const handleOpen2 = (item) => {
+    setOpen2(true);
+    setDataModal2(item);
+  };
+  const handleClose2 = () => setOpen2(false);
 
   const isEdit = (row) => {
     setTruckEditinID(get(row, 'id', 0));
@@ -876,7 +893,7 @@ export default function UserPage() {
                 <TableBody>
                   {mainData.map((row, i) => {
                     return (
-                      <TableRow hover key={i} tabIndex={-1} s>
+                      <TableRow hover key={i} tabIndex={-1} onDoubleClick={() => handleOpen2(row)}>
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
                             <Typography variant="subtitle2" className="zayavkaName">
@@ -886,7 +903,6 @@ export default function UserPage() {
                         </TableCell>
 
                         <TableCell align="left">{row.name}</TableCell>
-
                         <TableCell align="left">{row.truck_location}</TableCell>
                         <TableCell align="left">{row.power_truck}</TableCell>
                         <TableCell align="left">{row.rating}</TableCell>
@@ -935,16 +951,19 @@ export default function UserPage() {
                     const a = number1 - 6;
                     setNumber1((pr) => pr - 6);
                     getTruck(a);
+                    setTableNumber1((pr) => pr - 1);
                   }
                 }}
               >
                 <AiOutlineArrowLeft />
               </Button>
+              <p>{tableNumber1}</p>
               <Button
                 onClick={() => {
                   const a = number1 + 6;
                   setNumber1((pr) => pr + 6);
                   getTruck(a);
+                  setTableNumber1((pr) => pr + 1);
                 }}
               >
                 <AiOutlineArrowRight />
@@ -1031,16 +1050,19 @@ export default function UserPage() {
                   const a = number1 - 6;
                   setNumber1((pr) => pr - 6);
                   getOrderOwner(a);
+                  setTableNumber2((pr) => pr - 1);
                 }
               }}
             >
               <AiOutlineArrowLeft />
             </Button>
+            <p>{tableNumber2}</p>
             <Button
               onClick={() => {
                 const a = number1 + 6;
                 setNumber1((pr) => pr + 6);
                 getOrderOwner(a);
+                setTableNumber2((pr) => pr + 1);
               }}
             >
               <AiOutlineArrowRight />
@@ -1088,6 +1110,59 @@ export default function UserPage() {
               </p>
             </div>
             <p className="productNameTitle">{get(dataModal, 'customs[0].name', '')}</p>
+          </Box>
+        </Modal>
+      </div>
+
+      {/* 2-modal */}
+
+      <div>
+        <Modal
+          open={open2}
+          onClose={handleClose2}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style} className="bigModalCard">
+            <div className="cardMiniModal3">
+              {get(dataModal2, 'name', '')}
+
+              <Label
+                color={
+                  (get(dataModal2, 'status', '') === 'sending' && 'primary') ||
+                  (get(dataModal2, 'status', '') === 'way' && 'warning') ||
+                  (get(dataModal2, 'status', '') === 'arrived' && 'success') ||
+                  'error'
+                }
+              >
+                {get(dataModal2, 'status', '')}
+              </Label>
+            </div>
+            <div className="cardMiniModal">
+              <p className="country">{t('Driver')}: </p>
+              <p className="country">
+                {get(dataModal2, 'driver.first_name', '')} {get(dataModal2, 'driver.last_name', '')}
+              </p>
+            </div>
+
+            <div className="cardMiniModal">
+              <p className="country">{t('Phone Number')}: </p>
+              <p className="country">{get(dataModal2, 'driver.phone_number', '')} </p>
+            </div>
+            <div className="cardMiniModal">
+              <p className="country">{t('Location')}: </p>
+              <p className="country">{get(dataModal2, 'truck_location', '')} </p>
+            </div>
+            <div className="cardMiniModal">
+              <p className="country">{t('Date')}: </p>
+              <p className="country">{get(dataModal2, 'created_at', '').slice(0, 10)} </p>
+            </div>
+
+            <div className="cardMiniModal22">
+              <p className="center">{t('Comment')}</p>
+              <p className="sum">{get(dataModal2, 'truck_type.comment', '')}</p>
+            </div>
+            <p className="productNameTitle">{get(dataModal2, 'customs[0].name', '')}</p>
           </Box>
         </Modal>
       </div>

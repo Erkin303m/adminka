@@ -36,7 +36,10 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <Avatar src="https://e7.pngegg.com/pngimages/81/570/png-clipart-profile-logo-computer-icons-user-user-blue-heroes-thumbnail.png" alt="photoURL" />
+        <Avatar
+          src="https://e7.pngegg.com/pngimages/81/570/png-clipart-profile-logo-computer-icons-user-user-blue-heroes-thumbnail.png"
+          alt="photoURL"
+        />
       </IconButton>
 
       <Popover
@@ -60,7 +63,7 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap className="topWord">
-            {account.displayName}
+            {account.displayName} {account.displayName2}
           </Typography>
           <Typography variant="subtitle2" noWrap className="topWord">
             {account.email}

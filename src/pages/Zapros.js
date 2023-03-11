@@ -57,7 +57,7 @@ export default function UserPage() {
     { id: 'date', label: t('Date'), alignRight: false },
     { id: 'status', label: t('Status'), alignRight: false },
     { id: 'relation', label: t('Connection'), alignRight: false },
-    { id: 'yesno', label: t('Yes/No'), alignRight: false },
+    // { id: 'yesno', label: t('Yes/No'), alignRight: false },
   ];
 
   const TABLE_HEAD2 = [
@@ -78,6 +78,9 @@ export default function UserPage() {
   const [message, setMessage] = useState('');
   const [orderOwnerData, setOrderOwnerData] = useState([]);
   const [truckData, setTruckData] = useState([]);
+
+  const [tableNumber1, setTableNumber1] = useState(1);
+  const [tableNumber2, setTableNumber2] = useState(1);
 
   const [driver, setDriver] = useState('');
   const [drivers, setDrivers] = useState([]);
@@ -455,16 +458,19 @@ export default function UserPage() {
                     const a = number1 - 6;
                     setNumber1((pr) => pr - 6);
                     getOrderOwner(a);
+                    setTableNumber1((pr) => pr - 1);
                   }
                 }}
               >
                 <AiOutlineArrowLeft />
               </Button>
+              <p>{tableNumber1}</p>
               <Button
                 onClick={() => {
                   const a = number1 + 6;
                   setNumber1((pr) => pr + 6);
                   getOrderOwner(a);
+                  setTableNumber1((pr) => pr + 1);
                 }}
               >
                 <AiOutlineArrowRight />
@@ -603,16 +609,19 @@ export default function UserPage() {
                     const a = number2 - 6;
                     setNumber2((pr) => pr - 6);
                     getTruck(a);
+                    setTableNumber2((pr) => pr - 1);
                   }
                 }}
               >
                 <AiOutlineArrowLeft />
               </Button>
+              <p>{tableNumber2}</p>
               <Button
                 onClick={() => {
                   const a = number2 + 6;
                   setNumber2((pr) => pr + 6);
                   getTruck(a);
+                  setTableNumber2((pr) => pr + 1);
                 }}
               >
                 <AiOutlineArrowRight />

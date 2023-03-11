@@ -38,6 +38,7 @@ Header.propTypes = {
 export default function Header({ onOpenNav }) {
   const cat = JSON.parse(localStorage.getItem('userData'));
   const data = useSelector((state) => state);
+  console.log(cat, 'data');
   return (
     <StyledRoot>
       <StyledToolbar>
@@ -62,14 +63,14 @@ export default function Header({ onOpenNav }) {
           <AccountPopover />
           <div>
             <p className="number">
-              {get(data, 'data.phone_number', '').length > 2
-                ? get(data, 'data.phone_number', '')
-                : get(cat, 'data.phone_number', '')}
-            </p>
-            <p className="companyName">
               {get(data, 'data.first_name', '').length > 2
                 ? get(data, 'data.first_name', '')
                 : get(cat, 'data.first_name', 'User')}
+            </p>
+            <p className="companyName">
+              {get(data, 'data.phone_number', '').length > 2
+                ? get(data, 'data.phone_number', '')
+                : get(cat, 'data.phone_number', 'Number')}
             </p>
           </div>
         </Stack>

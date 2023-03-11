@@ -1,6 +1,5 @@
 import { Helmet } from 'react-helmet-async';
 import { get } from 'lodash';
-import { sentenceCase } from 'change-case';
 import { useEffect, useState } from 'react';
 import {
   Card,
@@ -32,6 +31,7 @@ import Box from '@mui/material/Box';
 import Scrollbar from '../components/scrollbar';
 import { UserListHead } from '../sections/@dashboard/user';
 import USERLIST from '../_mock/user';
+import './style.css';
 
 const style = {
   position: 'absolute',
@@ -55,6 +55,7 @@ export default function UserPage() {
 
   const TABLE_HEAD2 = [
     { id: 'name2', label: t('Room ID'), alignRight: false },
+    { id: 'userName', label: t('Name'), alignRight: false },
     { id: 'number2', label: t('Number'), alignRight: false },
     { id: 'send', label: t('Continue'), alignRight: false },
   ];
@@ -137,7 +138,6 @@ export default function UserPage() {
       .get(`http://185.217.131.179:8888/chat/rooms/get_user_for_room/`, config)
       .then((ress) => {
         setMainData2(get(ress, 'data', []));
-        console.log('order owner', ress.data);
       })
       .catch((err) => {
         console.log('error zayavka', err);
@@ -205,7 +205,7 @@ export default function UserPage() {
           {/* <input type="text" placeholder="Search Rooms" className="input3" onChange={(v) => search(v.target.value)} /> */}
 
           <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
+            <TableContainer sx={{ minWidth: 800 }} className="tableBody">
               <Table>
                 <UserListHead
                   order={order}
@@ -220,6 +220,14 @@ export default function UserPage() {
                     return (
                       <TableRow hover key={i} tabIndex={-1} onDoubleClick={() => isDeleting(get(row, 'roomId', ''))}>
                         <TableCell align="left">{get(row, 'roomId', '')}</TableCell>
+                        <TableCell align="left">
+                          {get(cat, 'data.phone_number', 0) !== get(row, 'users[0].phone_number', '')
+                            ? get(row, 'users[0].full_name.first_name', 'User')
+                            : get(row, 'users[1].full_name.first_name', 'User')}
+
+                          {/* {get(row, 'users[0].full_name.first_name', 'User')}{' '}
+                          {get(row, 'users[0].full_name.last_name', '')} */}
+                        </TableCell>
                         <TableCell align="left">{get(row, 'roomName', '')}</TableCell>
                         <TableCell align="left">
                           <Button
@@ -286,13 +294,12 @@ export default function UserPage() {
               >
                 <BottomNavigationAction label={t('Drivers')} icon={<AiFillCar />} />
                 <BottomNavigationAction label={t('Order owners')} icon={<BsFillPersonFill />} />
-                {/* <BottomNavigationAction label="Rooms" icon={<BsPeopleFill />} /> */}
               </BottomNavigation>
             </Stack>
             {value === 1 ? (
               <Card>
                 <Scrollbar>
-                  <TableContainer sx={{ minWidth: 500 }}>
+                  <TableContainer sx={{ minWidth: 500 }} className="tableBody">
                     <Table>
                       <UserListHead
                         order={order}
@@ -368,7 +375,7 @@ export default function UserPage() {
             {value === 0 ? (
               <Card className="driverCard">
                 <Scrollbar>
-                  <TableContainer sx={{ minWidth: 500 }}>
+                  <TableContainer sx={{ minWidth: 500 }} className="tableBody">
                     <Table>
                       <UserListHead
                         order={order}

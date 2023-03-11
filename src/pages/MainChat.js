@@ -4,7 +4,7 @@ import './style.css';
 import { w3cwebsocket as Socket } from 'websocket';
 import { useTranslation } from 'react-i18next';
 import { get } from 'lodash';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { BiArrowBack } from 'react-icons/bi';
 import { CiPaperplane } from 'react-icons/ci';
@@ -14,6 +14,7 @@ export default function MainChat() {
   const location = useLocation();
   const navigation = useNavigate();
   const { t } = useTranslation();
+  const textRef = useRef(null);
 
   const [myMessage, setMyMessage] = useState([]);
   const [userId, setUserId] = useState(get(location, 'state.item', 0));
@@ -57,7 +58,7 @@ export default function MainChat() {
   }, []);
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter' && event.target.value.length > 0) {
+    if (event.key === 'Enter') {
       socket.send(
         JSON.stringify({
           action: 'send_message',
@@ -72,7 +73,7 @@ export default function MainChat() {
           system: false,
           saved: true,
           distributed: true,
-          seen: true,
+          seen: false,
           deleted: false,
           failure: true,
           disableActions: false,
@@ -81,7 +82,35 @@ export default function MainChat() {
         })
       );
       event.target.value = '';
+      textRef.current = '';
     }
+  };
+
+  const handleKeyDown2 = (e) => {
+    console.log(textRef.current);
+
+    socket.send(
+      JSON.stringify({
+        action: 'send_message',
+        pk: userId.roomId,
+        request_id: Math.random() * 1000000,
+        senderId: mainID,
+        username: 'Вы',
+        avatar: '',
+        content: textRef.current,
+        date: 'Sat Jan 28 2023',
+        timestamp: '2023-01-27T19:05:22.514Z',
+        system: false,
+        saved: true,
+        distributed: true,
+        seen: false,
+        deleted: false,
+        failure: true,
+        disableActions: false,
+        disableReactions: true,
+        reactions: null,
+      })
+    );
   };
 
   const isDeleting = (i) => {
@@ -104,12 +133,13 @@ export default function MainChat() {
       JSON.stringify({
         action: 'delete_message',
         pk: userId.roomId,
-        request_id: 1675870270466,
+        request_id: Math.random() * 10 ** 16,
         message_id: i,
       })
     );
   };
 
+  console.log('myMessage', myMessage);
   return (
     <>
       <Helmet>
@@ -119,15 +149,21 @@ export default function MainChat() {
       <>
         <div className="topUserCard">
           <div className="nameCard2">
-            <h1 className="word55">
-              <button onClick={() => navigation('/dashboard/chat')} className="buttonBack">
-                <BiArrowBack />
-              </button>
-              {get(location, 'state.item.first_name', 0) === 0
+            <button onClick={() => navigation('/dashboard/chat')} className="buttonBack">
+              <BiArrowBack />
+            </button>
+            {/* {get(location, 'state.item.first_name', 0) === 0
                 ? get(location, 'state.item.roomName', '')
                 : get(location, 'state.item.roomName', '')}{' '}
-              {'  '} {get(location, 'state.item.last_name', '')}
-            </h1>
+              {'  '} {get(location, 'state.item.last_name', '')} */}
+            <div className="smCard">
+              <h1 className="word55">
+                {get(cat, 'data.phone_number', 0) !== get(location, 'state.item.users[0].phone_number', '')
+                  ? get(location, 'state.item.users[0].full_name.first_name', '')
+                  : get(location, 'state.item.users[1].full_name.first_name', '')}
+              </h1>
+              <p className="somett">{get(location, 'state.item.roomName', '')}</p>
+            </div>
           </div>
           <p className="word55">{get(location, 'state.item.phone_number', '')}</p>
         </div>
@@ -166,10 +202,12 @@ export default function MainChat() {
             placeholder={`${t('Message')}...`}
             className="inputSendMessages"
             onKeyDown={(e) => handleKeyDown(e)}
-            // onChange={(e) => console.log()}
+            onChange={(e) => {
+              textRef.current = e.target.value;
+            }}
           />
         </Card>
-        <button className="sendDataButton" onClick={(e) => handleKeyDown(e)}>
+        <button className="sendDataButton" onClick={(e) => handleKeyDown2(e)}>
           <CiPaperplane />
         </button>
       </div>

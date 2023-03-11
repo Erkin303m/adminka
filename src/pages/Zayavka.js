@@ -76,6 +76,15 @@ export default function UserPage() {
   const [message, setMessage] = useState('');
   const [selected, setSelected] = useState([]);
 
+  // tablenumbers
+  const [tableNumber1, setTableNumber1] = useState(1);
+  const [tableNumber2, setTableNumber2] = useState(1);
+  const [tableNumber3, setTableNumber3] = useState(1);
+  const [tableNumber4, setTableNumber4] = useState(1);
+  const [tableNumber5, setTableNumber5] = useState(1);
+  const [tableNumber6, setTableNumber6] = useState(1);
+  // tablenumbers
+
   // **
   const [mainData2, setMainData2] = useState([]);
   const [mainData3, setMainData3] = useState([]);
@@ -290,6 +299,7 @@ export default function UserPage() {
   const handleOpen = (item) => {
     setOpen(true);
     setDataModal(item);
+    console.log(item);
   };
   const handleClose = () => setOpen(false);
 
@@ -543,16 +553,19 @@ export default function UserPage() {
                     const a = number1 - 6;
                     setNumber1((pr) => pr - 6);
                     getWay(a);
+                    setTableNumber1((pr) => pr - 1);
                   }
                 }}
               >
                 <AiOutlineArrowLeft />
               </Button>
+              {tableNumber1}
               <Button
                 onClick={() => {
                   const a = number1 + 6;
                   setNumber1((pr) => pr + 6);
                   getWay(a);
+                  setTableNumber1((pr) => pr + 1);
                 }}
               >
                 <AiOutlineArrowRight />
@@ -659,16 +672,19 @@ export default function UserPage() {
                     const a = number1 - 6;
                     setNumber1((pr) => pr - 6);
                     getArrived(a);
+                    setTableNumber2((pr) => pr - 1);
                   }
                 }}
               >
                 <AiOutlineArrowLeft />
               </Button>
+              <p>{tableNumber2}</p>
               <Button
                 onClick={() => {
                   const a = number1 + 6;
                   setNumber1((pr) => pr + 6);
                   getArrived(a);
+                  setTableNumber2((pr) => pr + 1);
                 }}
               >
                 <AiOutlineArrowRight />
@@ -769,16 +785,19 @@ export default function UserPage() {
                     const a = number1 - 6;
                     setNumber1((pr) => pr - 6);
                     getDeclined(a);
+                    setTableNumber3((pr) => pr - 1);
                   }
                 }}
               >
                 <AiOutlineArrowLeft />
               </Button>
+              <p>{tableNumber3}</p>
               <Button
                 onClick={() => {
                   const a = number1 + 6;
                   setNumber1((pr) => pr + 6);
                   getDeclined(a);
+                  setTableNumber3((pr) => pr + 1);
                 }}
               >
                 <AiOutlineArrowRight />
@@ -887,16 +906,19 @@ export default function UserPage() {
                     const a = number1 - 6;
                     setNumber1((pr) => pr - 6);
                     getWay(a);
+                    setTableNumber4((pr) => pr - 1);
                   }
                 }}
               >
                 <AiOutlineArrowLeft />
               </Button>
+              <p>{tableNumber4}</p>
               <Button
                 onClick={() => {
                   const a = number1 + 6;
                   setNumber1((pr) => pr + 6);
                   getWay(a);
+                  setTableNumber4((pr) => pr + 1);
                 }}
               >
                 <AiOutlineArrowRight />
@@ -1001,16 +1023,19 @@ export default function UserPage() {
                     const a = number1 - 6;
                     setNumber1((pr) => pr - 6);
                     getArrived(a);
+                    setTableNumber5((pr) => pr - 1);
                   }
                 }}
               >
                 <AiOutlineArrowLeft />
               </Button>
+              <p>{tableNumber5}</p>
               <Button
                 onClick={() => {
                   const a = number1 + 6;
                   setNumber1((pr) => pr + 6);
                   getArrived(a);
+                  setTableNumber5((pr) => pr + 1);
                 }}
               >
                 <AiOutlineArrowRight />
@@ -1116,16 +1141,19 @@ export default function UserPage() {
                     const a = number1 - 6;
                     setNumber1((pr) => pr - 6);
                     getDeclinedTruck(a);
+                    setTableNumber6((pr) => pr - 1);
                   }
                 }}
               >
                 <AiOutlineArrowLeft />
               </Button>
+              <p>{tableNumber6}</p>
               <Button
                 onClick={() => {
                   const a = number1 + 6;
                   setNumber1((pr) => pr + 6);
                   getDeclinedTruck(a);
+                  setTableNumber6((pr) => pr + 1);
                 }}
               >
                 <AiOutlineArrowRight />
@@ -1183,12 +1211,15 @@ export default function UserPage() {
                   className="inputLocation"
                 >
                   <option selected value="0">
-                    {t('Choose Truck')}
+                    {get(dataModal, 'truck_type.name', 'Choose Truck')}, <p className="driverText">{t('Driver')}</p> :
+                    {get(dataModal, 'truck_type.driver.first_name', 'no')}{' '}
+                    {get(dataModal, 'truck_type.driver.last_name', '')}
                   </option>
                   {drivers.map((v, i) => {
                     return (
                       <option key={i} value={get(v, 'id', 0)}>
-                        {get(v, 'name', '')}
+                        {get(v, 'name', '')}, {'  '}Driver: {get(v, 'driver.first_name', 'no')}{' '}
+                        {get(v, 'driver.last_name', '')}
                       </option>
                     );
                   })}
@@ -1196,7 +1227,7 @@ export default function UserPage() {
 
                 <input
                   type="text"
-                  placeholder={t("Location")}
+                  placeholder={t('Location')}
                   className="inputLocation"
                   onChange={(v) => setMessage(v.target.value)}
                 />

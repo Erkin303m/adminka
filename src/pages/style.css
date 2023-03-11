@@ -192,6 +192,7 @@
 .word55 {
   margin: 0;
   padding: 0;
+  font-size: 25px;
 }
 .card333 {
   display: flex;
@@ -437,15 +438,33 @@ option:hover {
 .none {
   display: none;
 }
-.btnPlus{
+.btnPlus {
   font-size: 30px;
 }
-.plusCard{
+.plusCard {
   display: flex;
   justify-content: space-between;
 }
 
-.create_user_room{
+.create_user_room {
   font-size: 25px;
   background-color: #0072c927;
+}
+
+.driverText {
+  color: #29a210 !important;
+}
+
+.tableBody {
+  height: 450px;
+  overflow: auto;
+}
+
+.tableBody::-webkit-scrollbar {
+  display: none;
+}
+
+.somett {
+  margin: 0;
+  padding: 0;
 }
